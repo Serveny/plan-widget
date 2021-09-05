@@ -1,15 +1,28 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 
 module.exports = {
-  entry: './www/ts/main.ts',
+  entry: [
+    './www/ts/main.ts',
+    './www/styles/main.scss'
+  ],
   module: {
     rules: [{
       test: /\.tsx?$/,
       use: 'ts-loader',
       exclude: /node_modules/,
+    }, {
+      test: /\.s[ac]ss$/i,
+      use: [{
+          loader: 'file-loader',
+          options: {
+            name: 'styles.min.css'
+          },
+        },
+        'sass-loader',
+      ],
     }],
   },
   resolve: {
