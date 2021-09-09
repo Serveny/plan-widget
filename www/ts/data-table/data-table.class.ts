@@ -11,25 +11,26 @@ export interface IDataTableColumn {
 }
 
 export class DataTable {
-  private readonly table: HTMLTableElement;
-  private readonly tHeadRow: HTMLElement;
-  private readonly tBody: HTMLElement;
+  private readonly _tableEl: HTMLDivElement;
+  get tableEl(): HTMLDivElement { return this._tableEl; }
+  private readonly tHeadRowEl: HTMLDivElement;
+  private readonly tBodyEl: HTMLDivElement;
   private layout: IDataTableLayout | null = null;
 
   constructor() {
-    this.table = document.createElement('table');
-    const tHead = document.createElement('thead');
-    this.tHeadRow = document.createElement('tr');
-    this.tBody = document.createElement('tbody');
+    this._tableEl = document.createElement('div');
+    const tHeadEl = document.createElement('div');
+    this.tHeadRowEl = document.createElement('div');
+    this.tBodyEl = document.createElement('div');
     
-    tHead.appendChild(this.tHeadRow);
-    this.table.appendChild(tHead);
-    this.table.appendChild(this.tBody);
+    tHeadEl.appendChild(this.tHeadRowEl);
+    this.tableEl.appendChild(tHeadEl);
+    this.tableEl.appendChild(this.tBodyEl);
   }
 
   appendTo(containerEl: HTMLElement): DataTable {
-    console.log(containerEl, this.table);
-    containerEl.appendChild(this.table);
+    console.log(containerEl, this.tableEl);
+    containerEl.appendChild(this.tableEl);
     return this;
   }
 
@@ -40,7 +41,7 @@ export class DataTable {
 
   addRows(rows: any[]): void {
     rows.forEach(row => 
-      this.tBody.appendChild(this.createRow(row)));
+      this.tBodyEl.appendChild(this.createRow(row)));
   }
 
   updateRows(): void {
@@ -53,11 +54,11 @@ export class DataTable {
 
   private fillHead(columns: Map<string, IDataTableColumn>): void {
     columns.forEach(col => 
-      this.tHeadRow.appendChild(this.createHeadColumn(col)));
+      this.tHeadRowEl.appendChild(this.createHeadColumn(col)));
   }
 
   private createHeadColumn(column: IDataTableColumn): HTMLElement {
-    const th = document.createElement('th');
+    const th = document.createElement('div');
     th.textContent = column.caption ?? `(${column.dataFieldName})`;
     th.title = column.caption ?? `(${column.dataFieldName})`;
 
@@ -65,13 +66,13 @@ export class DataTable {
   }
 
   private createRow(rowData: any): HTMLElement {
-    const row = document.createElement('tr');
+    const row = document.createElement('div');
     this.layout?.columns.forEach(col => this.createCell(rowData, col))
     return row;
   }
 
   private createCell(rowData: any, column: IDataTableColumn): HTMLElement {
-    const cell = document.createElement('td');
+    const cell = document.createElement('div');
     cell.textContent = rowData[column.dataFieldName];
     return cell;
   }
