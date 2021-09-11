@@ -1,11 +1,12 @@
 export class GridSlider {
-  private readonly sliderContainer: HTMLDivElement;
-  private readonly fieldLeft: HTMLDivElement;
-  private readonly sliderLeft: HTMLDivElement;
-  private readonly fieldMiddle: HTMLDivElement;
-  private readonly sliderRight: HTMLDivElement;
-  private readonly fieldRight: HTMLDivElement;
+  readonly fieldLeft: HTMLDivElement;
+  readonly fieldMiddle: HTMLDivElement;
+  readonly fieldRight: HTMLDivElement;
 
+  private readonly sliderContainer: HTMLDivElement;
+  private readonly sliderLeft: HTMLDivElement;
+  private readonly sliderRight: HTMLDivElement;
+  
   private readonly sliderWidthPx = 5;
   private minPx = 0;
   private maxPx = 0;
@@ -53,10 +54,6 @@ export class GridSlider {
     
     window.addEventListener('resize', () => this.onResize());
   }
-
-  appendToLeft(el: HTMLElement) { this.fieldLeft.appendChild(el); }
-  appendToMiddle(el: HTMLElement) { this.fieldMiddle.appendChild(el); }
-  appendToRight(el: HTMLElement) { this.fieldRight.appendChild(el); }
 
   private registerSlide(moveHandler: (ev: MouseEvent) => void) {
     this.sliderContainer.style.cursor = 'e-resize';

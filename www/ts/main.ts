@@ -1,5 +1,5 @@
 import('../../pkg').catch(console.error);
-import { PlanWidget } from './plan-widget';
+import { PlanWidget } from './classes/plan-widget.class';
 import { demoData } from './demo-data';
 
 document.addEventListener("DOMContentLoaded", () => {

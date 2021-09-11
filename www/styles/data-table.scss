@@ -1,7 +1,7 @@
 $tableHeadHeight: 60px;
 
 .dt-table {
-  display: inline-block
+  display: inline-block;
 }
 
 .dt-head {
@@ -10,7 +10,6 @@ $tableHeadHeight: 60px;
   color: #616161;
   background-color: #fafafa;
   height: $tableHeadHeight;
-  align-items: center; /* align vertical */
 }
 
 .dt-row {

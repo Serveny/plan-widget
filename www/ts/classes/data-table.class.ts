@@ -11,15 +11,14 @@ export interface IDataTableColumn {
 }
 
 export class DataTable {
-  private readonly _containerEl: HTMLDivElement;
-  get containerEl(): HTMLDivElement { return this._containerEl; }
+  readonly el: HTMLDivElement;
   private readonly tHeadEl: HTMLDivElement;
   private readonly tBodyEl: HTMLDivElement;
   private layout: IDataTableLayout | null = null;
 
   constructor(tableName: string) {
-    this._containerEl = document.createElement('div');
-    this._containerEl.classList.add('dt-scroll-container');
+    this.el = document.createElement('div');
+    this.el.classList.add('dt-scroll-container');
     const tableEl = document.createElement('div');
     tableEl.classList.add('dt-table');
     this.tHeadEl = document.createElement('div');
@@ -30,11 +29,11 @@ export class DataTable {
 
     tableEl.appendChild(this.tHeadEl);
     tableEl.appendChild(this.tBodyEl);
-    this._containerEl.appendChild(tableEl);
+    this.el.appendChild(tableEl);
   }
 
   appendTo(containerEl: HTMLElement): DataTable {
-    containerEl.appendChild(this._containerEl);
+    containerEl.appendChild(this.el);
     return this;
   }
 
