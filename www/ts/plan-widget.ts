@@ -1,4 +1,4 @@
-import { DataTable } from './data-table/data-table.class';
+import { DataTable } from './data-table.class';
 import { GridSlider } from './grid-slider';
 import { IPlanWidget } from './interfaces/i-plan-widget.interface';
 

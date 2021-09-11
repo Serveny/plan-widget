@@ -21,10 +21,12 @@ export class DataTable {
     this._containerEl = document.createElement('div');
     this._containerEl.classList.add('dt-scroll-container');
     const tableEl = document.createElement('div');
+    tableEl.classList.add('dt-table');
     this.tHeadEl = document.createElement('div');
     this.tHeadEl.textContent = tableName;
     this.tHeadEl.classList.add('dt-head');
     this.tBodyEl = document.createElement('div');
+    this.tBodyEl.classList.add('dt-body');
 
     tableEl.appendChild(this.tHeadEl);
     tableEl.appendChild(this.tBodyEl);
