@@ -1,0 +1,18 @@
+.dt-head {
+  color: #616161;
+  background-color: #fafafa;
+}
+
+.dt-cell {
+  border: 1px solid #eee;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  outline: none;
+  text-align: left;
+  padding: 16px;
+}
+
+.dt-head-cell {
+  font-weight: 500;
+}

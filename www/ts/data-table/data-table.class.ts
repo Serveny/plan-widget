@@ -13,23 +13,21 @@ export interface IDataTableColumn {
 export class DataTable {
   private readonly _tableEl: HTMLDivElement;
   get tableEl(): HTMLDivElement { return this._tableEl; }
-  private readonly tHeadRowEl: HTMLDivElement;
+  private readonly tHeadEl: HTMLDivElement;
   private readonly tBodyEl: HTMLDivElement;
   private layout: IDataTableLayout | null = null;
 
-  constructor() {
+  constructor(tableName: string) {
     this._tableEl = document.createElement('div');
-    const tHeadEl = document.createElement('div');
-    this.tHeadRowEl = document.createElement('div');
+    this.tHeadEl = document.createElement('div');
+    this.tHeadEl.textContent = tableName;
     this.tBodyEl = document.createElement('div');
-    
-    tHeadEl.appendChild(this.tHeadRowEl);
-    this.tableEl.appendChild(tHeadEl);
+
+    this.tableEl.appendChild(this.tHeadEl);
     this.tableEl.appendChild(this.tBodyEl);
   }
 
   appendTo(containerEl: HTMLElement): DataTable {
-    console.log(containerEl, this.tableEl);
     containerEl.appendChild(this.tableEl);
     return this;
   }
@@ -54,7 +52,7 @@ export class DataTable {
 
   private fillHead(columns: Map<string, IDataTableColumn>): void {
     columns.forEach(col => 
-      this.tHeadRowEl.appendChild(this.createHeadColumn(col)));
+      this.tHeadEl.appendChild(this.createHeadColumn(col)));
   }
 
   private createHeadColumn(column: IDataTableColumn): HTMLElement {

@@ -9,6 +9,7 @@ export class GridSlider {
   private readonly sliderWidthPx = 5;
   private minPx = 0;
   private maxPx = 0;
+  
   private sliderLeftPx = 0;
   private sliderRightPx = 0;
 
@@ -22,7 +23,7 @@ export class GridSlider {
     this.sliderLeft = document.createElement('div');
     this.sliderLeft.classList.add('gs-slider-left');
     this.sliderLeft.addEventListener('mousedown', () => 
-      this.registerSlide(ev => this.sliderLeftOnMouseMove(ev)));
+      this.registerSlide(ev => this.sliderLeftOnMouseMove(ev.pageX)));
     
     this.fieldMiddle = document.createElement('div');
     this.fieldMiddle.classList.add('gs-field-middle');
@@ -31,7 +32,7 @@ export class GridSlider {
     this.sliderRight.classList.add('gs-slider-right');
     
     this.sliderRight.addEventListener('mousedown', () => 
-      this.registerSlide(ev => this.sliderRightOnMouseMove(ev)));
+      this.registerSlide(ev => this.sliderRightOnMouseMove(ev.pageX)));
 
     this.fieldRight = document.createElement('div');
     this.fieldRight.classList.add('gs-field-right');
@@ -46,7 +47,11 @@ export class GridSlider {
 
     this.sliderLeftPx = this.sliderLeft.getBoundingClientRect().left;
     this.sliderRightPx = this.sliderRight.getBoundingClientRect().left;
-    this.onResize();
+    const rect = this.sliderContainer.getBoundingClientRect();
+    this.minPx = rect.left;
+    this.maxPx = rect.right;
+    
+    window.addEventListener('resize', () => this.onResize());
   }
 
   appendToLeft(el: HTMLElement) { this.fieldLeft.appendChild(el); }
@@ -64,8 +69,8 @@ export class GridSlider {
     window.addEventListener('mouseup', upHandler);
   }
 
-  private sliderLeftOnMouseMove(ev: MouseEvent) {
-    const pXl = ev.pageX;
+  private sliderLeftOnMouseMove(pageX: number) {
+    const pXl = pageX - this.minPx;
     const pXr = pXl + this.sliderWidthPx;
 
     if (pXl >= this.minPx && pXr <= (this.maxPx - this.sliderWidthPx)) {
@@ -77,8 +82,8 @@ export class GridSlider {
     }
   }
 
-  private sliderRightOnMouseMove(ev: MouseEvent) {
-    const pXl = ev.pageX;
+  private sliderRightOnMouseMove(pageX: number) {
+    const pXl = pageX - this.minPx;
     const pXr = pXl + this.sliderWidthPx;
 
     if ((pXl >= this.minPx + this.sliderWidthPx) && pXr <= this.maxPx) {
@@ -105,8 +110,14 @@ export class GridSlider {
   }
 
   private onResize() {
+    const widthContainer = this.maxPx - this.minPx;
+    const sliderLeftScale = this.sliderLeftPx / widthContainer;
+    const sliderRightScale = this.sliderRightPx / widthContainer;
     const rect = this.sliderContainer.getBoundingClientRect();
     this.minPx = rect.left;
     this.maxPx = rect.right;
+    const newWidthContainer = this.maxPx - this.minPx;
+    this.sliderLeftOnMouseMove(this.minPx + (newWidthContainer * sliderLeftScale));
+    this.sliderRightOnMouseMove(this.minPx + (newWidthContainer * sliderRightScale));
   }
 }

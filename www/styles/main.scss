@@ -1,9 +1,9 @@
 @import "grid-slider";
-
-$body-color: #2a2b2e;
+@import "data-table";
 
 body {
-  background-color: $body-color;
+  background-color: #2a2b2e;
+  color: #FFFFFF;
   margin: 0;
   padding: 0;
 }
