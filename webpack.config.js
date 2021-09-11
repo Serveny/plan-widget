@@ -23,7 +23,8 @@ module.exports = {
         },
         'sass-loader',
       ],
-    }],
+    },
+  ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],

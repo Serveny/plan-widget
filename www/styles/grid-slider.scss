@@ -39,17 +39,21 @@ $slider-width: 5px;
 
 .gs-field-middle {
   @extend .gs-field;
-  left: 20%;
-  right: 20%;
+  left: calc(20% + #{$slider-width});
+  right: 20%
 }
 
 .gs-slider-right {
   @extend .gs-slider;
-  right: 20%
+  left: 80%
 }
 
 .gs-field-right {
   @extend .gs-field;
   right: 0;
-  width: 20%
+  left: calc(80% + #{$slider-width});
+}
+
+:export {
+  sliderWidth: $slider-width;
 }
