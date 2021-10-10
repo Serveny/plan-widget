@@ -20,7 +20,7 @@ export class TimeScaler {
     window.addEventListener('resize', () => this.paint());
   }
 
-  paint() {
+  paint(): void {
     const rect = this.el.getBoundingClientRect();
     this.widthPx = rect.width;
     this.maxVisibleRowItems = this.widthPx / 120;
@@ -35,7 +35,7 @@ export class TimeScaler {
     this.rows.forEach(row => this.drawRow(row));
   }
 
-  private drawRow(row: TimeScalerRow) {
+  private drawRow(row: TimeScalerRow): void {
     const countBlocks = this.cache.focusHorizonSec / row.scale;
     const blockWidthPx = this.widthPx / countBlocks;
     
@@ -58,7 +58,7 @@ export class TimeScaler {
     } while (currentTime < endTime);
   }
 
-  private drawBlock(row: TimeScalerRow, xStart: number, width: number, text: string) {
+  private drawBlock(row: TimeScalerRow, xStart: number, width: number, text: string): void {
     this.ctx.beginPath();
     this.ctx.moveTo(xStart, row.yStart); 
     this.ctx.lineTo(xStart, row.yStart + row.height);
@@ -80,7 +80,7 @@ export class TimeScaler {
     return rows;
   }
 
-  private getRowsForDuration() {
+  private getRowsForDuration(): TimeScalerRow[] {
     const durationSec = this.cache.focusHorizonSec;
     const maxVisibleRowItems = this.maxVisibleRowItems;
 

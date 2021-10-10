@@ -1,6 +1,11 @@
 $tableHeadHeight: 60px;
 
+.data-table {
+  min-width: 100%;
+}
+
 .dt-table {
+  min-width: 100%;
   display: inline-block;
 }
 
@@ -10,6 +15,8 @@ $tableHeadHeight: 60px;
   color: #616161;
   background-color: #fafafa;
   height: $tableHeadHeight;
+  line-height: $tableHeadHeight;
+  text-align: left;
 }
 
 .dt-row {

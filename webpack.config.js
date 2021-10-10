@@ -5,14 +5,21 @@ const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 
 module.exports = {
   entry: [
-    './www/ts/main.ts',
-    './www/styles/main.scss'
+    './src/www/ts/main.ts',
+    './src/www/styles/main.scss'
   ],
   module: {
     rules: [{
-      test: /\.tsx?$/,
+      test: /\.ts$/,
       use: 'ts-loader',
-      exclude: /node_modules/,
+      include: [
+        path.resolve(__dirname, 'src/www/ts'),
+      ],
+      exclude: [
+        /node_modules/,
+        /cypress/,
+        /old/,
+      ],
     }, {
       test: /\.s[ac]ss$/i,
       use: [{
@@ -22,6 +29,9 @@ module.exports = {
           },
         },
         'sass-loader',
+      ],
+      include: [
+        path.resolve(__dirname, 'src/www/styles'),
       ],
     },
   ],
@@ -35,10 +45,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './www/index.html',
+      template: './src/www/index.html',
     }),
     new WasmPackPlugin({
-      crateDirectory: path.resolve(__dirname, '.'),
+      crateDirectory: path.resolve(__dirname, 'src'),
     }),
     // Have this example work in Edge which doesn't ship `TextEncoder` or
     // `TextDecoder` at this time.

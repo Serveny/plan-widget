@@ -1,3 +1,5 @@
+import { IView } from '../src/www/ts/interfaces/i-view.interface';
+
 export interface IDataTableLayout {
   columns: Map<string, IDataTableColumn>;
   width: number | string;
@@ -42,7 +44,7 @@ export class DataTable {
     this.fillHead(layout.columns);
   }
 
-  addRows(rows: any[]): void {
+  addRows(rows: IView[]): void {
     rows.forEach(row =>
       this.tBodyEl.appendChild(this.createRow(row)));
   }

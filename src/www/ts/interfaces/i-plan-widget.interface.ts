@@ -1,4 +1,4 @@
-import { IEntityView, IResourceView} from './i-view.interface';
+import { IEntityView, IResourceView} from './i-view.interface'
 
 export interface IPlanWidget {
   // fitTimeAreaIntoView: () => void;
