@@ -6,7 +6,7 @@ const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 module.exports = {
   entry: [
     './src/www/ts/main.ts',
-    './src/www/styles/main.scss'
+    './src/www/styles/main.sass'
   ],
   module: {
     rules: [{

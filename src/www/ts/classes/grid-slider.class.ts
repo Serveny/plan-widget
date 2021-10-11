@@ -56,7 +56,7 @@ export class GridSlider {
   }
 
   private registerSlide(moveHandler: (ev: MouseEvent) => void): void {
-    this.sliderContainer.style.cursor = 'e-resize'
+    this.sliderContainer.style.cursor = 'ew-resize'
     const upHandler = (): void => {
       this.sliderContainer.style.cursor = 'auto'
       window.removeEventListener('mousemove', moveHandler)

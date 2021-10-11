@@ -1,0 +1,29 @@
+$tableHeadHeight: 60px
+$tableHeadCellSliderWidth: 5px
+  
+.dt-head
+  position: sticky
+  top: 0
+  color: #616161
+  background-color: #fafafa
+  height: $tableHeadHeight
+  line-height: $tableHeadHeight
+  text-align: left
+
+.dt-head-cell
+  font-weight: 500
+  padding: 0
+
+.dt-head-cell-text
+  width: calc(100% - $tableHeadCellSliderWidth)
+  float: left
+  padding: 0 10px
+  box-sizing: border-box
+
+.dt-head-cell-slider
+  width: $tableHeadCellSliderWidth
+  height: $tableHeadHeight
+  float: left
+  cursor: col-resize
+  box-sizing: border-box
+  border-right: 1px solid #eee

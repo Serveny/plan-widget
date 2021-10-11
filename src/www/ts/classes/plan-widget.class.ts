@@ -3,7 +3,7 @@ import { GridSlider } from './grid-slider.class'
 import { TimeScaler } from './time-scaler.class'
 import { CacheService } from '../services/cache.service'
 //import { IEntityView, IResourceView } from '../interfaces/i-view.interface';
-import { DataTable } from './data-table.class'
+import { DataTable } from './data-table/data-table.class'
 import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interface'
 
 export class PlanWidget /*implements IPlanWidget*/ {

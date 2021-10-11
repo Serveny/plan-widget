@@ -1,0 +1,49 @@
+$slider-width: 5px
+
+.gs-container
+  position: relative
+  width: 100%
+  height: 100%
+
+.gs-pos
+  position: absolute
+  top: 0
+  bottom: 0
+
+.gs-field
+  @extend .gs-pos
+  z-index: 100
+
+.gs-slider
+  @extend .gs-pos
+  background-color: #e0e0e0
+  width: $slider-width
+  cursor: ew-resize
+  z-index: 101
+  user-select: none
+
+.gs-field-left
+  @extend .gs-field
+  left: 0
+  width: 20%
+
+.gs-slider-left
+  @extend .gs-slider
+  left: 20%
+
+.gs-field-middle
+  @extend .gs-field
+  left: calc(20% + #{$slider-width})
+  right: 20%
+
+.gs-slider-right
+  @extend .gs-slider
+  left: 80%
+
+.gs-field-right
+  @extend .gs-field
+  right: 0
+  left: calc(80% + #{$slider-width})
+
+:export
+  sliderWidth: $slider-width

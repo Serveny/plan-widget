@@ -10,7 +10,7 @@ export interface IDataTableLayout {
 
 export interface IPlanWidgetDataTableLayout extends IDataTableLayout {
   isEnabled?: boolean | null | undefined;
-  width?: number | null | undefined;
+  width?: string | null | undefined;
 }
 
 export interface IDataTableColumn {
