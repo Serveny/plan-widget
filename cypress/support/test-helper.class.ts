@@ -3,6 +3,8 @@ export default class TestHelper {
     const coords = el.getBoundingClientRect()
     el.dispatchEvent(new MouseEvent('mousedown'))
     el.dispatchEvent(new MouseEvent('mousemove', 
+    { clientX: coords.x, clientY: coords.y }))
+    el.dispatchEvent(new MouseEvent('mousemove', 
       { clientX: coords.x + x, clientY: coords.y + y }))
     el.dispatchEvent(new MouseEvent('mouseup'))
   }

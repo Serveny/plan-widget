@@ -40,21 +40,21 @@ export class DtHead {
     return sliderEl
   }
 
-  private sliderOnMouseDown(): void {
-    console.log('onmousedown')
-    document.body.style.cursor = 'ew-resize'
-    window.addEventListener('mousemove', this.sliderOnMouseMove)
-    window.addEventListener('mouseup', this.sliderOnMouseUp)
-  }
+  private sliderOnMouseDown(ev: MouseEvent): void {
+    const body = document.body, 
+      cell = (ev.target as HTMLElement).parentElement,
+      left = cell?.getBoundingClientRect().left
 
-  private sliderOnMouseMove(ev: MouseEvent): void {
-    console.log('onmousemove', ev)
-  }
-
-  private sliderOnMouseUp(): void {
-    console.log('onmouseup')
-    document.body.style.cursor = 'auto'
-    window.removeEventListener('mousemove', this.sliderOnMouseMove)
-    window.removeEventListener('mouseup', this.sliderOnMouseUp)
+    if (cell == null || left == null) return
+    const mmHandler = (mmEv: MouseEvent): void => {
+      cell.style.width = `${mmEv.clientX - left}px`
+    }
+    const muHandler = (): void => {
+        body.removeEventListener('mousemove', mmHandler)
+        body.removeEventListener('mouseup', muHandler)
+      }
+    
+    body.addEventListener('mousemove', mmHandler)      
+    body.addEventListener('mouseup', muHandler)
   }
 }

@@ -1,5 +1,5 @@
 $tableHeadHeight: 60px
-$tableHeadCellSliderWidth: 5px
+$tableHeadCellSliderWidth: 10px
   
 .dt-head
   position: sticky
@@ -9,21 +9,32 @@ $tableHeadCellSliderWidth: 5px
   height: $tableHeadHeight
   line-height: $tableHeadHeight
   text-align: left
+  white-space: nowrap
 
 .dt-head-cell
+  position: relative
   font-weight: 500
   padding: 0
+  min-width: $tableHeadCellSliderWidth
+
+.dt-head-cell:active
+  cursor: ew-resize
 
 .dt-head-cell-text
-  width: calc(100% - $tableHeadCellSliderWidth)
-  float: left
+  width: 100%
   padding: 0 10px
   box-sizing: border-box
+  display: inline-block
+  z-index: 10
 
 .dt-head-cell-slider
+  position: absolute
+  right: 0
+  top: 0
   width: $tableHeadCellSliderWidth
   height: $tableHeadHeight
   float: left
   cursor: col-resize
   box-sizing: border-box
   border-right: 1px solid #eee
+  z-index: 20
