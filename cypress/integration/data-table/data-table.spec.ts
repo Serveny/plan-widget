@@ -1,26 +1,26 @@
 import { DataTable } from '../../../src/www/ts/classes/data-table/data-table.class'
+import data from '../../test-data/table-layout.data'
 
 describe('testing data-table', () => {
-  const testContainer = document.createElement('div'),
-    dataTable = new DataTable(null).appendTo(testContainer)
+  const dataTable = new DataTable(null)
 
-    it('visit test site', () => {
-      cy.visit('integration-test.html') 
-      cy.get('body').then((el: JQuery<HTMLBodyElement>) => 
-      el.append(testContainer)) 
-    })
+  before('visit test site', () => {
+    cy.visit('integration-test.html')
+    cy.get('body').then((bodyEl: JQuery<HTMLBodyElement>) =>
+      dataTable.appendTo(bodyEl[0]))
+  })
 
-  it('append to container', () => 
+  it('append to container', () =>
     cy.get('.data-table').should('be.visible'))
-  it('has head', () => 
+  it('has head', () =>
     cy.get('.dt-head').should('be.visible'))
-  it('has body', () => 
-    cy.get('.dt-body').should('be.visible'))
+  it('has body', () =>
+    cy.get('.dt-body').should('exist'))
 
   const title = 'Test Table'
   it(`has title '${title}'`, () => {
     dataTable.setTitle(title)
     expect(dataTable.layout?.title).equal(title)
-    cy.get('.dt-head').should('have.text', title)
+    cy.contains('.dt-head', title).should('be.visible')
   })
 })

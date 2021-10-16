@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-namespace */
+/// <reference types="cypress" />
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -13,8 +16,31 @@
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
 //
+declare namespace Cypress {
+  interface Chainable<Subject> {
+    drag(x: number, y: number): Cypress.Chainable<Subject>; // more DRY than the following:
+    // myCustomCommand(value: string): Cypress.Chainable<JQuery>
+  }
+}
+
+function drag(subject: JQuery, x: number, y: number): Cypress.Chainable<JQuery> {
+  const subj = cy.wrap(subject),
+    startX = subject[0].getBoundingClientRect().right,
+    startY = subject[0].getBoundingClientRect().bottom
+  subj.trigger('mousedown').trigger('mousemove', {
+    clientX: startX + x, clientY: startY + y,
+  }).trigger('mouseup')
+  console.log('drag', subject, x, y)
+
+  return subj
+}
+
+Cypress.Commands.add('drag', { prevSubject: 'element'}, drag)
+
 // -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
+// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => {
+//   console.log(subject, options)
+// })
 //
 //
 // -- This is a dual command --

@@ -8,13 +8,12 @@ export class DtHead {
   constructor(layout: IDataTableLayout | null | undefined) {
     this._el = Helper.createDiv('dt-head')
     this.fill(layout)
-    console.log(this._el)
   }
 
   fill(layout: IDataTableLayout | null | undefined): void {
     const cols = layout?.columns
     this._el.innerHTML = Helper.isArrNullOrEmpty(cols)
-      ? '' : (layout?.title ?? '')
+      ? (layout?.title ?? '') : ''
     cols?.filter(col => col.visible === true).forEach(col =>
       this._el.appendChild(this.createHeadCell(col)))
   }
@@ -43,10 +42,13 @@ export class DtHead {
         left = cell?.getBoundingClientRect().left
   
       if (cell == null || left == null) return
+      headEl.style.cursor = 'col-resize'
       const mmHandler = (mmEv: MouseEvent): void => {
-        cell.style.width = `${mmEv.clientX - left}px`
+        const newVal = mmEv.clientX - left
+        if(newVal > 0) cell.style.width = `${newVal}px`
       }
       const muHandler = (): void => {
+        headEl.style.cursor = ''
         headEl.removeEventListener('mousemove', mmHandler)
         headEl.removeEventListener('mouseup', muHandler)
       }
