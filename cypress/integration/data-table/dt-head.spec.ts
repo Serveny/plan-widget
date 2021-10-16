@@ -1,5 +1,4 @@
 import { DtHead } from '../../../src/www/ts/classes/data-table/dt-head.class'
-import TestHelper from '../../support/test-helper.class'
 import TestLayout from '../../test-data/table-layout.data'
 
 describe('testing data table head', () => {
