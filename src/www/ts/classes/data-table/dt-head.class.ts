@@ -8,6 +8,7 @@ export class DtHead {
   constructor(layout: IDataTableLayout | null | undefined) {
     this._el = Helper.createDiv('dt-head')
     this.fill(layout)
+    console.log(this._el)
   }
 
   fill(layout: IDataTableLayout | null | undefined): void {
@@ -36,25 +37,25 @@ export class DtHead {
 
   private createCellSlider(): HTMLElement {
     const sliderEl = Helper.createDiv('dt-head-cell-slider')
-    sliderEl.addEventListener('mousedown', this.sliderOnMouseDown)
-    return sliderEl
-  }
-
-  private sliderOnMouseDown(ev: MouseEvent): void {
-    const body = document.body, 
-      cell = (ev.target as HTMLElement).parentElement,
-      left = cell?.getBoundingClientRect().left
-
-    if (cell == null || left == null) return
-    const mmHandler = (mmEv: MouseEvent): void => {
-      cell.style.width = `${mmEv.clientX - left}px`
-    }
-    const muHandler = (): void => {
-        body.removeEventListener('mousemove', mmHandler)
-        body.removeEventListener('mouseup', muHandler)
+    const mdHandler = (ev: MouseEvent): void => {
+      const cell = (ev.target as HTMLElement).parentElement,
+        headEl = this._el,
+        left = cell?.getBoundingClientRect().left
+  
+      if (cell == null || left == null) return
+      const mmHandler = (mmEv: MouseEvent): void => {
+        cell.style.width = `${mmEv.clientX - left}px`
       }
+      const muHandler = (): void => {
+        headEl.removeEventListener('mousemove', mmHandler)
+        headEl.removeEventListener('mouseup', muHandler)
+      }
+      
+      headEl.addEventListener('mousemove', mmHandler)      
+      headEl.addEventListener('mouseup', muHandler)
+    }
     
-    body.addEventListener('mousemove', mmHandler)      
-    body.addEventListener('mouseup', muHandler)
+    sliderEl.addEventListener('mousedown', mdHandler)
+    return sliderEl
   }
 }

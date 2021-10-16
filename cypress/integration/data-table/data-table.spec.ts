@@ -2,18 +2,25 @@ import { DataTable } from '../../../src/www/ts/classes/data-table/data-table.cla
 
 describe('testing data-table', () => {
   const testContainer = document.createElement('div'),
-    dataTable = new DataTable(null).appendTo(testContainer),
-    dataTableEl = testContainer.querySelector('.data-table') ?? null,
-    headEl = dataTableEl?.querySelector('.dt-head') ?? null,
-    bodyEl = dataTableEl?.querySelector('.dt-body') ?? null
+    dataTable = new DataTable(null).appendTo(testContainer)
 
-  it('appends to container', () => expect(dataTableEl).not.to.be.null)
-  it('has head', () => expect(headEl).not.to.be.null)
-  it('has body', () => expect(bodyEl).not.to.be.null)
+    it('visit test site', () => {
+      cy.visit('integration-test.html') 
+      cy.get('body').then((el: JQuery<HTMLBodyElement>) => 
+      el.append(testContainer)) 
+    })
+
+  it('append to container', () => 
+    cy.get('.data-table').should('be.visible'))
+  it('has head', () => 
+    cy.get('.dt-head').should('be.visible'))
+  it('has body', () => 
+    cy.get('.dt-body').should('be.visible'))
 
   const title = 'Test Table'
   it(`has title '${title}'`, () => {
     dataTable.setTitle(title)
     expect(dataTable.layout?.title).equal(title)
+    cy.get('.dt-head').should('have.text', title)
   })
 })

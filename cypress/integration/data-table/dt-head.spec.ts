@@ -4,40 +4,51 @@ import TestLayout from '../../test-data/table-layout.data'
 
 describe('testing data table head', () => {
   const dtHead = new DtHead(TestLayout),
-    headEl = dtHead.el,
     visColsCount = TestLayout.columns?.filter(col => 
       col.visible === true).length
 
-  it(`has ${visColsCount} head cells`, () =>
-    expect(headEl?.children.length).equal(visColsCount))
+  it('visit test site', () => {
+    cy.visit('integration-test.html') 
+    cy.get('body').then((el: JQuery<HTMLBodyElement>) => 
+    el.append(dtHead.el)) 
+  })
 
-  TestLayout.columns?.forEach((col, i) => {
+  it(`has ${visColsCount} head cells`, () =>
+    cy.get('.dt-head').children()
+      .then(el => expect(el.length)
+        .equal(visColsCount)))
+
+  TestLayout.columns?.forEach((col) => {
+
     if (col.visible === true) {
-      it(`head cell has text '${col.caption}'`, () => {
-        const textEl = headEl?.children[i]
-          ?.querySelector('.dt-head-cell-text')
-        expect(textEl?.textContent)
-        .equals(col.caption)
+      it(`exists head cell with text '${col.caption}'`, () => { 
+        cy.contains('.dt-head-cell-text', col.caption ?? '')
+          .parent().should('be.visible')
       })
 
       it(`head cell has width '${col.width}'`, () => {
-        const el = headEl?.children[i] as HTMLElement
-        expect(el.style.width).equals(col.width)
+        cy.contains('.dt-head-cell', col.caption ?? '')
+            .invoke('outerWidth').then(width => 
+              expect(width).eq(parseInt(col.width ?? '')))
       })
 
       if(col.width?.indexOf('px') !== -1) {
         it('change width of head cell', () => {
-          const el = headEl?.children[i] as HTMLElement,
-            oldWidth = parseInt(col.width ?? ''),
-            sliderEl = el.querySelector(
-              '.dt-head-cell-slider') as HTMLElement
-          expect(sliderEl).not.to.be.null
-          
-          TestHelper.testDrag(sliderEl, 10, 0)
-          expect(el.style.width).eq(`${oldWidth+10}px`)
+          cy.contains('.dt-head-cell', col.caption ?? '')
+          .as('headCell').invoke('outerWidth').then(oldWidth =>
+            cy.get('@headCell').find('.dt-head-cell-slider')
+            .as('slider').should('be.visible').trigger('mousedown').wait(1000)
+            .then(() => cy.get('@headCell').trigger('mousemove', {
+              clientX: oldWidth ?? 0 + 10, clientY : 10,
+            }).invoke('outerWidth').then(newWidth => 
+              expect(newWidth).eq((oldWidth ?? 0) + 10)
+            ))
+          )
         })
       }
+                
     } else it('head cell does not exist', () =>
-      expect(headEl?.children[i]).to.be.undefined)
+      cy.contains('.dt-head-cell', col.caption ?? '')
+        .should('not.exist'))
   })
 })
