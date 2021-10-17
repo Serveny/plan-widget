@@ -68,19 +68,21 @@ export class DtHead {
   private moveCell(ev: MouseEvent): void {
     const dragCell = (ev.target as HTMLElement).parentElement,
       headEl = this._el
-    let oldOrder = dragCell?.style.order
+    let order = dragCell?.style.order, oldOrder: string//, minX = 0, maxX = 0
 
-    if (dragCell != null && !Hlp.isStrNullOrEmpty(oldOrder)) {
+    if (dragCell != null && !Hlp.isStrNullOrEmpty(order)) {
+      headEl.style.cursor = 'grabbing'
       const mmHandler = (mmEv: MouseEvent): void => {
         const dropCell = (mmEv.target as HTMLElement)
           .parentElement as HTMLElement,
           newOrder = dropCell?.style.order
-        
         if (!Hlp.isStrNullOrEmpty(newOrder) 
-          && oldOrder !== newOrder) {
-          console.log(oldOrder, newOrder)
-          dropCell.style.order = oldOrder ?? '0'
-          dragCell.style.order = oldOrder = newOrder
+          && newOrder !== order && newOrder !== oldOrder 
+          //&& mmEv.x >= minX && mmEv.x <= maxX
+          ) {
+          console.log(order, newOrder)
+          dropCell.style.order = oldOrder = order ?? '0'
+          dragCell.style.order = order = newOrder
         }
       }
       const muHandler = (): void => {

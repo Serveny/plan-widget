@@ -3,11 +3,11 @@ import { IDataTableLayout } from '../../interfaces/i-data-table-layout.interface
 import { DtHead } from './dt-head.class'
 
 export class DataTable {
-  readonly el: HTMLDivElement;
-  private readonly head: DtHead;
-  private readonly bodyEl: HTMLDivElement;
+  readonly el: HTMLDivElement
+  private readonly head: DtHead
+  private readonly bodyEl: HTMLDivElement
 
-  private _layout: IDataTableLayout = {};
+  private _layout: IDataTableLayout = {}
   get layout(): IDataTableLayout | null { return this._layout }
 
   constructor(layout: IDataTableLayout | null | undefined) {
