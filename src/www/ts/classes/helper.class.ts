@@ -7,4 +7,7 @@ export default class Helper {
   static isArrNullOrEmpty(arr: unknown[] | null | undefined): boolean {
     return arr == null || arr.length <= 0
   }
+  static isStrNullOrEmpty(str: string | null | undefined): boolean {
+    return str == null || str === ''
+  }
 }

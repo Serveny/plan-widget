@@ -23,4 +23,14 @@ describe('testing helper', () => {
     it('returns false if filled array', () => 
       expect(Helper.isArrNullOrEmpty([1])).equal(false))
   })
+  describe('testing isStrNullOrEmpty()', () => {
+    it('returns true if undefined', () => 
+      expect(Helper.isStrNullOrEmpty(undefined)).equal(true))
+    it('returns true if null', () => 
+      expect(Helper.isStrNullOrEmpty(null)).equal(true))
+    it('returns true if empty string', () => 
+      expect(Helper.isStrNullOrEmpty('')).equal(true))
+    it('returns false if filled string', () => 
+      expect(Helper.isStrNullOrEmpty('test')).equal(false))
+  })
 })

@@ -1,8 +1,12 @@
 import { DtHead } from '../../../src/www/ts/classes/data-table/dt-head.class'
-import TestLayout from '../../test-data/table-layout.data'
+import TestLayout from '../../../src/www/test-data/table-layout.data'
 
 describe('testing data table head', () => {
-  const dtHead = new DtHead(null)
+  const dtHead = new DtHead(null),
+    title = 'Test-Title',
+    cols = TestLayout.columns,
+    visColsCount = cols?.filter(col =>
+      col.visible === true).length ?? 0    
 
   before('visit test site', () => {
     cy.visit('integration-test.html')
@@ -10,14 +14,10 @@ describe('testing data table head', () => {
       el.append(dtHead.el))
   })
 
-  const title = 'Test-Title'
   it(`has title '${title}'`, () => {
     dtHead.fill({title: title})
     cy.contains('.dt-head', title).should('be.visible')
   })
-
-  const visColsCount = TestLayout.columns?.filter(col =>
-    col.visible === true).length
 
   it(`has ${visColsCount} head cells`, () => {
     dtHead.fill(TestLayout)
@@ -25,9 +25,8 @@ describe('testing data table head', () => {
       .then(el => expect(el.length)
         .equal(visColsCount))
   })
-    
-  TestLayout.columns?.forEach((col) => {
 
+  cols?.forEach((col, i) => {
     if (col.visible === true) {
       it(`exists head cell with text '${col.caption}'`, () => {
         cy.contains('.dt-head-cell-text', col.caption ?? '')
@@ -40,18 +39,31 @@ describe('testing data table head', () => {
             expect(width).eq(parseInt(col.width ?? '')))
       })
 
-      if (col.width?.indexOf('px') !== -1) {
+      if (col.width?.indexOf('px') !== -1)
         it(`change width of head cell`, () => {
           cy.contains('.dt-head-cell', col.caption ?? '')
             .as('headCell').invoke('outerWidth').as('oldWidth')
             .then(oldWidth =>
-              cy.get('@headCell').find('.dt-head-cell-slider').drag(200, 10)
-              .then(() => cy.get('@headCell').invoke('outerWidth')
-              .then(newWidth => expect(newWidth).eq((oldWidth ?? 0) + 200)))
+              cy.get('@headCell').find('.dt-head-cell-slider')
+              .drag(200, 10).then(() => 
+                cy.get('@headCell').invoke('outerWidth')
+                .then(newWidth => 
+                  expect(newWidth).eq((oldWidth ?? 0) + 200)))
             )
         })
-      }
-
+      
+      if(visColsCount > 1)
+        it('change positon/index of cell', () => {
+          const isDragLeft = i >= (visColsCount - 1),
+            x = parseInt(cols[isDragLeft
+            ? i-1 : i+1].width ?? '0'),
+            oldIndex = col.visibleIndex
+          cy.contains('.dt-head-cell-text', col.caption ?? '')
+            .as('headCell').drag(isDragLeft? -x : x, 0).then(() => {
+              expect(col.visibleIndex)
+              .eq(oldIndex + (isDragLeft ? -1 : 1))
+            })
+        })
     } else it('head cell does not exist', () =>
       cy.contains('.dt-head-cell', col.caption ?? '')
         .should('not.exist'))

@@ -12,6 +12,8 @@ $tableHeadCellSliderWidth: 10px
   white-space: nowrap
   width: min-content
   min-width: 100%
+  display: inline-flex 
+  flex-direction: row
 
 .dt-head-cell
   position: relative
@@ -19,15 +21,18 @@ $tableHeadCellSliderWidth: 10px
   padding: 0
   min-width: $tableHeadCellSliderWidth
 
-.dt-drag:active
-  cursor: ew-resize
-
 .dt-head-cell-text
   width: 100%
   padding: 0 10px
   box-sizing: border-box
-  display: inline-block
   z-index: 10
+  cursor: grab
+  user-select: none
+  text-overflow: ellipsis
+  overflow: hidden
+
+.dt-head-cell-text:active
+  cursor: grabbing
 
 .dt-head-cell-slider
   position: absolute

@@ -18,8 +18,7 @@
 //
 declare namespace Cypress {
   interface Chainable<Subject> {
-    drag(x: number, y: number): Cypress.Chainable<Subject>; // more DRY than the following:
-    // myCustomCommand(value: string): Cypress.Chainable<JQuery>
+    drag(x: number, y: number): Cypress.Chainable<Subject>;
   }
 }
 
@@ -30,8 +29,6 @@ function drag(subject: JQuery, x: number, y: number): Cypress.Chainable<JQuery> 
   subj.trigger('mousedown').trigger('mousemove', {
     clientX: startX + x, clientY: startY + y,
   }).trigger('mouseup')
-  console.log('drag', subject, x, y)
-
   return subj
 }
 

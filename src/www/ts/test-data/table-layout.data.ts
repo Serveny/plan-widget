@@ -1,11 +1,11 @@
-import { DataType } from '../../src/www/ts/enums/data-type.enum'
-import { HorizontalTextAlign } from '../../src/www/ts/enums/horizontal-text-align.enum'
-import { IDataTableLayout } from '../../src/www/ts/interfaces/i-data-table-layout.interface'
+import { DataType } from '../enums/data-type.enum'
+import { HorizontalTextAlign } from '../enums/horizontal-text-align.enum'
+import { IDataTableLayout } from '../interfaces/i-data-table-layout.interface'
 
-const data: IDataTableLayout = {
+const layout: IDataTableLayout = {
   columns: [
     {
-      visibleIndex: 1,
+      visibleIndex: 2,
       visible: true,
 
       dataField: 'ID',
@@ -15,12 +15,12 @@ const data: IDataTableLayout = {
       caption: 'Number',
     },
     {
-      visibleIndex: 2,
+      visibleIndex: 1,
       visible: true,
 
       dataField: 'Name',
       dataType: DataType.String,
-      width: '300px',
+      width: '150px',
       textAlign: HorizontalTextAlign.Left,
       caption: 'Name',
     },
@@ -32,8 +32,18 @@ const data: IDataTableLayout = {
       dataType: DataType.String,
       textAlign: HorizontalTextAlign.Left,
       caption: 'Description',
+    },
+    {
+      visibleIndex: 4,
+      visible: true,
+
+      dataField: 'Amount',
+      dataType: DataType.Number,
+      width: '80px',
+      textAlign: HorizontalTextAlign.Right,
+      caption: 'Amount of Things',
     }
   ]
 }
 
-export default data
+export default layout
