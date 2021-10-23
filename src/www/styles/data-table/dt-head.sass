@@ -1,5 +1,7 @@
 $tableHeadHeight: 60px
 $tableHeadCellSliderWidth: 10px
+$tableHeadCellBorder: 1px solid #eee
+$tableHeadCellDropBorder: 3px solid #3ddce7
   
 .dt-head
   position: sticky
@@ -24,6 +26,17 @@ $tableHeadCellSliderWidth: 10px
 
 .dt-drag-el
   position: absolute
+  z-index: 1000
+  cursor: grabbing
+  border-left: $tableHeadCellBorder
+  border-right: $tableHeadCellBorder
+  opacity: 0.6
+
+.dt-drop-before
+  border-left: $tableHeadCellDropBorder
+
+.dt-drop-after
+  border-right: $tableHeadCellDropBorder
 
 .dt-head-cell-text
   width: 100%
@@ -47,5 +60,5 @@ $tableHeadCellSliderWidth: 10px
   float: left
   cursor: col-resize
   box-sizing: border-box
-  border-right: 1px solid #eee
+  border-right: $tableHeadCellBorder
   z-index: 20

@@ -54,12 +54,12 @@ describe('testing data table head', () => {
             .as('headCell').then(el => {
               const isDragLeft = i >= (visColsCount - 1),
                 oldIndex = col.visibleIndex,
-                x = (isDragLeft ? el[0].getBoundingClientRect().width : 0) + 100
+                x = (isDragLeft ? el[0].getBoundingClientRect()
+                  .width : 0) + 100
               console.log(isDragLeft, x)
-              cy.get('@headCell').drag(isDragLeft ? -x : x, 10).then(() => {
-                expect(col.visibleIndex)
-                  .eq(oldIndex + (isDragLeft ? -1 : 1))
-              })
+              cy.get('@headCell').drag(isDragLeft ? -x : x, 10)
+                .then(() => expect(col.visibleIndex)
+                  .eq(oldIndex + (isDragLeft ? -1 : 1)))
             })
 
         })

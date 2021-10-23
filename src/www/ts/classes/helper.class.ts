@@ -10,4 +10,11 @@ export default class Helper {
   static isStrNullOrEmpty(str: string | null | undefined): boolean {
     return str == null || str === ''
   }
+  static getAsHtmlElementArr(coll: HTMLCollection): HTMLElement[] {
+    const elArr: HTMLElement[] = []
+    for (let i = 0; i < coll.length; i++)
+      elArr.push(coll[i] as HTMLElement)
+    return elArr
+    //return coll as unknown as HTMLElement[]
+  }
 }

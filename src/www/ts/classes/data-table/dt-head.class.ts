@@ -1,4 +1,5 @@
 import { IDataTableColumn, IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
+import Helper from '../helper.class'
 import Hlp from '../helper.class'
 
 export class DtHead {
@@ -65,28 +66,51 @@ export class DtHead {
     }
   }
 
-  private moveCell(ev: MouseEvent): void {
-    const dragCell = (ev.target as HTMLElement).parentElement,
-      headEl = this._el
-    let order = dragCell?.style.order, oldOrder: string//, minX = 0, maxX = 0
+  private getDropPosis(): DropPosition[] {
+    const cells = Helper.getAsHtmlElementArr(this._el.children)
+      .sort((a, b) => 
+        parseInt(a.style.order) - parseInt(b.style.order))
+    return cells.map((cell, i) => new DropPosition(
+      cell.offsetLeft - (cells[i-1]?.offsetWidth ?? 0) / 2,
+      parseInt(cell.style.order)
+     ))
+  }
 
-    if (dragCell != null && !Hlp.isStrNullOrEmpty(order)) {
-      headEl.style.cursor = 'grabbing'
+  private moveCell(ev: MouseEvent): void {
+    const dragCell = (ev.target as HTMLElement).parentElement
+    //let order = dragCell?.style.order, oldOrder: string
+    if (dragCell != null) {
+      const headEl = this._el,
+        cL = ev.x - dragCell.offsetLeft
+      dragCell.style.left = `${ev.x - cL}px`
+      dragCell.classList.add('dt-drag-el')
+      let //dropCell: HTMLElement, 
+        orderDrop = parseInt(dragCell.style.order)
+      const dropPosis = this.getDropPosis()
       const mmHandler = (mmEv: MouseEvent): void => {
-        const dropCell = (mmEv.target as HTMLElement)
-          .parentElement as HTMLElement,
-          newOrder = dropCell?.style.order
-        if (!Hlp.isStrNullOrEmpty(newOrder) 
-          && newOrder !== order && newOrder !== oldOrder 
-          //&& mmEv.x >= minX && mmEv.x <= maxX
-          ) {
-          console.log(order, newOrder)
-          dropCell.style.order = oldOrder = order ?? '0'
-          dragCell.style.order = order = newOrder
+        dragCell.style.left = `${mmEv.x - cL}px`
+        const newOrder = dropPosis.find(pos => 
+          pos.px >= mmEv.x)?.order ?? 0
+          
+        console.log(orderDrop, newOrder)
+        if (newOrder !== orderDrop) {
+          // if (dropCell != null) dropCell.classList
+          //   .remove('dt-drop-before', 'dt-drop-after')
+          // newDropCell.classList.add('dt-drop-before')
+          orderDrop = newOrder
         }
+        //  newOrder = dropCell?.style.order
+        // if (!Hlp.isStrNullOrEmpty(newOrder) 
+        //   && newOrder !== order && newOrder !== oldOrder
+        //   ) {
+        //   console.log(order, newOrder)
+        //   dropCell.style.order = oldOrder = order ?? '0'
+        //   dragCell.style.order = order = newOrder
+        // }
       }
       const muHandler = (): void => {
-        headEl.style.cursor = ''
+        dragCell.style.left = ''
+        dragCell.classList.remove('dt-drag-el')
         headEl.removeEventListener('mousemove', mmHandler)
         headEl.removeEventListener('mouseup', muHandler)
       }
@@ -94,4 +118,8 @@ export class DtHead {
       headEl.addEventListener('mouseup', muHandler)
     }
   }
+}
+
+class DropPosition {
+  constructor(public px: number, public order: number) {}
 }
