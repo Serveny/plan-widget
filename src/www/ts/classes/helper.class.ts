@@ -15,6 +15,9 @@ export default class Helper {
     for (let i = 0; i < coll.length; i++)
       elArr.push(coll[i] as HTMLElement)
     return elArr
-    //return coll as unknown as HTMLElement[]
+  }
+  static orderByOrderAsc(elements: HTMLElement[]): HTMLElement[] {
+    return elements.sort((a, b) =>
+      parseInt(a.style.order) - parseInt(b.style.order))
   }
 }

@@ -48,4 +48,24 @@ describe('testing helper', () => {
       expect(arr[0].style).is.not.undefined
     })
   })
+  describe('testing orderByOrderAsc()', () => {
+    it('returns empty array', () => 
+      expect(Helper.orderByOrderAsc([]).length).eq(0))
+      
+    it('returns array ordered by style.order', () => {
+      const orders: number[] = [5,8,3,2,1,6,8,4,9],
+        els = orders.map(order => {
+          const el = Helper.createDiv()
+          el.style.order = order.toString()
+          return el
+        })
+      
+      const orderedEls = Helper.orderByOrderAsc(els)
+      orderedEls.forEach((el: HTMLElement, i: number) => {
+        const nextEl = orderedEls[i + 1]
+        if (nextEl != null) expect(
+          parseInt(nextEl.style.order) > parseInt(el.style.order))
+      })
+    })
+  })
 })
