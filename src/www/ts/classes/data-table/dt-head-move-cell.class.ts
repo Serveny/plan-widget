@@ -3,25 +3,27 @@ import Hlp from '../helper.class'
 export class DtHeadMoveCell {
   readonly dragCellLeft: number
   readonly cells: HTMLElement[]
-  readonly dummy: HTMLElement
+  readonly dummyEl: HTMLElement
   readonly dragCTxtEl: HTMLElement | null
   readonly orderDrag: number
   readonly dropPosis: DropPosition[]
+  readonly dropPreviewEl: HTMLElement
   orderDrop: number
 
   constructor(
     ev: MouseEvent,
-    public dragCell: HTMLElement,
-    public headEl: HTMLElement,
+    public readonly dragCell: HTMLElement,
+    public readonly headEl: HTMLElement,
   ) {
     this.cells = this.getChildrenAsc(headEl)
     this.dragCellLeft = ev.x - dragCell.offsetLeft,
-      this.dummy = this.createMoveDummy(
+      this.dummyEl = this.createMoveDummy(
         dragCell.textContent, dragCell.offsetWidth)
     this.dragCTxtEl = dragCell.querySelector(
       '.dt-head-cell-text') as HTMLElement | null
     this.orderDrag = parseInt(dragCell.style.order)
     this.dropPosis = this.getDropPosis().reverse()
+    this.dropPreviewEl = Hlp.createDiv('dt-head-drop-preview')
     this.orderDrop = this.orderDrag
     this.addEventListeners()
     this.startDrag(ev.x)
@@ -38,39 +40,49 @@ export class DtHeadMoveCell {
     this.headEl.addEventListener('mouseup', muHandler)
   }
 
+  private startDrag(x: number): void {
+    if (this.dragCTxtEl != null) this.dragCTxtEl.style.opacity = '0'
+    this.dummyEl.style.left = `${x - this.dragCellLeft}px`
+    this.dropPreviewEl.style.left = `${x - this.dragCellLeft}px`
+    this.headEl.append(this.dummyEl, this.dropPreviewEl)
+  }
+
   private dragHandler(x: number): void {
     this.moveDummyTo(x)
     const newOrder = this.getDropOrderByPx(x)
 
-    if (newOrder != null && newOrder !== this.orderDrop)
+    if (newOrder != null && newOrder !== this.orderDrop) {
       this.orderDrop = newOrder
+      this.posDropPreview()
+    }
   }
 
   private dropHandler(): void {
     this.orderCells(this.orderDrag, this.orderDrop, this.cells)
     this.dragCell.style.order = this.orderDrop.toString()
     if (this.dragCTxtEl != null) this.dragCTxtEl.style.opacity = '1'
-    this.dummy.remove()
+    this.dummyEl.remove()
+    this.dropPreviewEl.remove()
   }
 
   private moveDummyTo(x: number): void {
-    this.dummy.style.left = `${x - this.dragCellLeft}px`
+    this.dummyEl.style.left = `${x - this.dragCellLeft}px`
   }
 
-  // private showDropPreview() {
-  //   if (dropCell != null) dropCell.classList
-  //     .remove('dt-drop-before', 'dt-drop-after')
-  //   newDropCell.classList.add('dt-drop-before')
-  // }
+  private posDropPreview(): void {
+    this.dropPreviewEl.style.left = 
+      `${this.orderDrop === this.orderDrag 
+        ? this.dragCell.offsetLeft 
+        : this.getPreviewPxByOrder(this.orderDrop)
+      }px`
+  }
 
   private getDropOrderByPx(x: number): number | undefined {
     return this.dropPosis.find(pos => pos.px <= x)?.order
   }
 
-  private startDrag(x: number): void {
-    if (this.dragCTxtEl != null) this.dragCTxtEl.style.opacity = '0'
-    this.dummy.style.left = `${x - this.dragCellLeft}px`
-    this.headEl.appendChild(this.dummy)
+  private getPreviewPxByOrder(order: number): number | undefined {
+    return this.dropPosis.find(pos => pos.order === order)?.previewPx
   }
 
   private getChildrenAsc(el: HTMLElement): HTMLElement[] {
@@ -95,7 +107,8 @@ export class DtHeadMoveCell {
       const order = parseInt(cell.style.order)
       const dp = new DropPosition(
         cell.offsetLeft - (lastWidth ?? 0) / 2,
-        order > this.orderDrag ? lastOrder ?? 0 : order)
+        order > this.orderDrag ? lastOrder ?? 0 : order,
+        cell.offsetLeft)
       lastWidth = cell.offsetWidth
       lastOrder = order
       return dp
@@ -103,7 +116,9 @@ export class DtHeadMoveCell {
     const lastCell = this.cells[this.cells.length - 1]
     posis.push(new DropPosition(
       lastCell.offsetLeft + (lastCell.offsetWidth / 2),
-      lastOrder ?? 0))
+      lastOrder ?? 0,
+      lastCell.offsetLeft + lastCell.offsetWidth
+    ))
     return posis
   }
 
@@ -129,5 +144,9 @@ export class DtHeadMoveCell {
 }
 
 export class DropPosition {
-  constructor(public px: number, public order: number) { }
+  constructor(
+    public px: number, 
+    public order: number,
+    public previewPx: number
+  ) { }
 }

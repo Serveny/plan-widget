@@ -32,12 +32,6 @@ $tableHeadCellDropBorder: 3px solid #3ddce7
   border-right: $tableHeadCellBorder
   opacity: 0.6
 
-.dt-drop-before
-  border-left: $tableHeadCellDropBorder
-
-.dt-drop-after
-  border-right: $tableHeadCellDropBorder
-
 .dt-head-cell-text
   width: 100%
   padding: 0 10px
@@ -62,3 +56,10 @@ $tableHeadCellDropBorder: 3px solid #3ddce7
   box-sizing: border-box
   border-right: $tableHeadCellBorder
   z-index: 20
+
+.dt-head-drop-preview
+  position: absolute
+  top: 0
+  height: $tableHeadHeight
+  border-left: $tableHeadCellDropBorder
+  z-index: 999
