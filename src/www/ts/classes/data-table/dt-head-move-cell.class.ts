@@ -30,8 +30,8 @@ export class DtHeadMoveCell {
   }
 
   private addEventListeners(): void {
-    const mmHandler = (ev: MouseEvent): void => this.dragHandler(ev.x),
-      muHandler = (): void => {
+    const mmHandler = (ev: MouseEvent): void => 
+      this.dragHandler(ev.x), muHandler = (): void => {
         this.headEl.removeEventListener('mousemove', mmHandler)
         this.headEl.removeEventListener('mouseup', muHandler)
         this.dropHandler()

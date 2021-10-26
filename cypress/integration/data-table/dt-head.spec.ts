@@ -32,10 +32,11 @@ describe('testing data table head', () => {
         cy.contains('.dt-head-cell-text', col.caption ?? '')
           .parent().should('be.visible'))
 
-      it(`head cell has width '${col.width}'`, () =>
-        cy.contains('.dt-head-cell', col.caption ?? '')
-          .invoke('outerWidth').then(width =>
-            expect(width).eq(parseInt(col.width ?? ''))))
+      if (col.width != null && col.width.includes('px')) 
+        it(`head cell has width '${col.width}'`, () =>
+          cy.contains('.dt-head-cell', col.caption ?? '')
+            .invoke('outerWidth').then(width =>
+              expect(width).eq(parseInt(col.width ?? ''))))
 
       if (col.width?.indexOf('px') !== -1)
         it(`change width of head cell`, () =>
@@ -46,23 +47,25 @@ describe('testing data table head', () => {
                 .drag(200, 10).then(() =>
                   cy.get('@headCell').invoke('outerWidth')
                     .then(newWidth =>
-                      expect(newWidth).eq((oldWidth ?? 0) + 200)))))
+                      expect(Math.ceil(newWidth ?? 0))
+                      .eq(Math.ceil((oldWidth ?? 0) + 200))))))
 
       if (visColsCount > 1)
-        it('change positon/index of cell', () => {
+        it('change positon/index of cell', () =>
           cy.contains('.dt-head-cell-text', col.caption ?? '')
-            .as('headCell').then(el => {
-              const isDragLeft = i >= (visColsCount - 1),
+            .as('txtCell').then(el => {
+              const toLeft = i >= (visColsCount - 1),
                 oldIndex = col.visibleIndex,
-                x = (isDragLeft ? el[0].getBoundingClientRect()
-                  .width : 0) + 100
-              console.log(isDragLeft, x)
-              cy.get('@headCell').drag(isDragLeft ? -x : x, 10)
-                .then(() => expect(col.visibleIndex)
-                  .eq(oldIndex + (isDragLeft ? -1 : 1)))
+                x = (toLeft ? el[0].getBoundingClientRect()
+                  .width : 0) + parseInt(cols[i + (toLeft ? -1 : 1)]
+                  ?.width ?? '0')
+              console.log(toLeft, x)
+              cy.get('@txtCell').drag(toLeft ? -x : x, 10)
+              .then(el => expect(
+                  parseInt(el[0].parentElement?.style.order ?? '0'))
+                  .eq(oldIndex + (toLeft ? -1 : 1)))
             })
-
-        })
+        )
     } else it('head cell does not exist', () =>
       cy.contains('.dt-head-cell', col.caption ?? '')
         .should('not.exist'))
