@@ -1,4 +1,4 @@
-import { DataTable } from '../../../src/www/ts/classes/data-table/data-table.class'
+import { DataTable } from '../../src/www/ts/classes/data-table/data-table.class'
 
 describe('testing data-table', () => {
   const dataTable = new DataTable(null)

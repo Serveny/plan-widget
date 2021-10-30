@@ -49,22 +49,21 @@ export class DtHead {
 
   private resizeCell(ev: MouseEvent): void {
     const cell = (ev.target as HTMLElement).parentElement,
-      left = cell?.getBoundingClientRect().left,
-      headEl = this._el
+      left = cell?.getBoundingClientRect().left
 
     if (cell != null && left != null) {
-      headEl.style.cursor = 'col-resize'
+      document.body.style.cursor = 'col-resize'
       const mmHandler = (mmEv: MouseEvent): void => {
         const newVal = mmEv.clientX - left
         if (newVal > 0) cell.style.width = `${newVal}px`
       }
       const muHandler = (): void => {
-        headEl.style.cursor = ''
-        headEl.removeEventListener('mousemove', mmHandler)
-        headEl.removeEventListener('mouseup', muHandler)
+        document.body.style.cursor = ''
+        window.removeEventListener('mousemove', mmHandler)
+        window.removeEventListener('mouseup', muHandler)
       }
-      headEl.addEventListener('mousemove', mmHandler)
-      headEl.addEventListener('mouseup', muHandler)
+      window.addEventListener('mousemove', mmHandler)
+      window.addEventListener('mouseup', muHandler)
     }
   }
 

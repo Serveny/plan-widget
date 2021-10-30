@@ -1,18 +1,18 @@
 export class GridSlider {
-  readonly fieldLeft: HTMLDivElement;
-  readonly fieldMiddle: HTMLDivElement;
-  readonly fieldRight: HTMLDivElement;
+  readonly fieldLeft: HTMLDivElement
+  readonly fieldMiddle: HTMLDivElement
+  readonly fieldRight: HTMLDivElement
 
-  private readonly sliderContainer: HTMLDivElement;
-  private readonly sliderLeft: HTMLDivElement;
-  private readonly sliderRight: HTMLDivElement;
+  private readonly sliderContainer: HTMLDivElement
+  private readonly sliderLeft: HTMLDivElement
+  private readonly sliderRight: HTMLDivElement
   
-  private readonly sliderWidthPx = 5;
-  private minPx = 0;
-  private maxPx = 0;
+  private readonly sliderWidthPx = 5
+  private minPx = 0
+  private maxPx = 0
   
-  private sliderLeftPx = 0;
-  private sliderRightPx = 0;
+  private sliderLeftPx = 0
+  private sliderRightPx = 0
 
   constructor(containerEl: HTMLElement) {
     this.sliderContainer = document.createElement('div')
@@ -67,35 +67,26 @@ export class GridSlider {
   }
 
   private sliderLeftOnMouseMove(pageX: number): void {
-    const pXl = pageX - this.minPx
-    const pXr = pXl + this.sliderWidthPx
-
+    const pXl = pageX - this.minPx, pXr = pXl + this.sliderWidthPx
     if (pXl >= this.minPx && pXr <= (this.maxPx - this.sliderWidthPx)) {
       this.moveSliderLeftTo(pXl, pXr)
-
-      if (this.sliderLeftPx >= this.sliderRightPx) {
-        this.moveSliderRightTo(pXl + this.sliderWidthPx, pXr + this.sliderWidthPx)
-      }
+      if (this.sliderLeftPx >= this.sliderRightPx) this.moveSliderRightTo(
+        pXl + this.sliderWidthPx, pXr + this.sliderWidthPx)
     }
   }
 
   private sliderRightOnMouseMove(pageX: number): void {
-    const pXl = pageX - this.minPx
-    const pXr = pXl + this.sliderWidthPx
-
+    const pXl = pageX - this.minPx, pXr = pXl + this.sliderWidthPx
     if ((pXl >= this.minPx + this.sliderWidthPx) && pXr <= this.maxPx) {
       this.moveSliderRightTo(pXl, pXr)
-
-      if (this.sliderRightPx <= this.sliderLeftPx) {
-        this.moveSliderLeftTo(pXl - this.sliderWidthPx, pXr - this.sliderWidthPx)
-      }
+      if (this.sliderRightPx <= this.sliderLeftPx) this.moveSliderLeftTo(
+        pXl - this.sliderWidthPx, pXr - this.sliderWidthPx)
     }
   }
 
   private moveSliderLeftTo(pXl: number, pXr: number): void {
     this.sliderLeftPx = pXl
-    this.fieldLeft.style.width = `${pXl}px`
-    this.sliderLeft.style.left = `${pXl}px`
+    this.fieldLeft.style.width = this.sliderLeft.style.left = `${pXl}px`
     this.fieldMiddle.style.left = `${pXr}px`
   }
 
@@ -107,14 +98,16 @@ export class GridSlider {
   }
 
   private onResize(): void {
-    const widthContainer = this.maxPx - this.minPx
-    const sliderLeftScale = this.sliderLeftPx / widthContainer
-    const sliderRightScale = this.sliderRightPx / widthContainer
-    const rect = this.sliderContainer.getBoundingClientRect()
+    const widthContainer = this.maxPx - this.minPx,
+      sliderLeftScale = this.sliderLeftPx / widthContainer,
+      sliderRightScale = this.sliderRightPx / widthContainer,
+      rect = this.sliderContainer.getBoundingClientRect()
     this.minPx = rect.left
     this.maxPx = rect.right
     const newWidthContainer = this.maxPx - this.minPx
-    this.sliderLeftOnMouseMove(this.minPx + (newWidthContainer * sliderLeftScale))
-    this.sliderRightOnMouseMove(this.minPx + (newWidthContainer * sliderRightScale))
+    this.sliderLeftOnMouseMove(this.minPx 
+      + (newWidthContainer * sliderLeftScale))
+    this.sliderRightOnMouseMove(this.minPx
+      + (newWidthContainer * sliderRightScale))
   }
 }

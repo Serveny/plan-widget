@@ -32,12 +32,12 @@ export class DtHeadMoveCell {
   private addEventListeners(): void {
     const mmHandler = (ev: MouseEvent): void => 
       this.dragHandler(ev.x), muHandler = (): void => {
-        this.headEl.removeEventListener('mousemove', mmHandler)
-        this.headEl.removeEventListener('mouseup', muHandler)
+        window.removeEventListener('mousemove', mmHandler)
+        window.removeEventListener('mouseup', muHandler)
         this.dropHandler()
       }
-    this.headEl.addEventListener('mousemove', mmHandler)
-    this.headEl.addEventListener('mouseup', muHandler)
+    window.addEventListener('mousemove', mmHandler)
+    window.addEventListener('mouseup', muHandler)
   }
 
   private startDrag(x: number): void {
@@ -59,6 +59,7 @@ export class DtHeadMoveCell {
 
   private dropHandler(): void {
     this.orderCells(this.orderDrag, this.orderDrop, this.cells)
+    console.log(this.orderDrag, this.dragCell.style.order, this.orderDrop.toString())
     this.dragCell.style.order = this.orderDrop.toString()
     if (this.dragCTxtEl != null) this.dragCTxtEl.style.opacity = '1'
     this.dummyEl.remove()
