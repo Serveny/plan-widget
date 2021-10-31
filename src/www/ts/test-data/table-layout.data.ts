@@ -26,7 +26,7 @@ const layout: IDataTableLayout = {
     },
     {
       visibleIndex: 3,
-      visible: true,
+      visible: false,
 
       dataField: 'Desc',
       dataType: DataType.String,

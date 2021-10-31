@@ -59,7 +59,6 @@ export class DtHeadMoveCell {
 
   private dropHandler(): void {
     this.orderCells(this.orderDrag, this.orderDrop, this.cells)
-    console.log(this.orderDrag, this.dragCell.style.order, this.orderDrop.toString())
     this.dragCell.style.order = this.orderDrop.toString()
     if (this.dragCTxtEl != null) this.dragCTxtEl.style.opacity = '1'
     this.dummyEl.remove()

@@ -37,7 +37,7 @@ function drag(subject: JQuery, x: number, y: number): Cypress.Chainable<JQuery> 
       win.dispatchEvent(new MouseEvent('mouseup'))
     })
   )
-  return subj
+  return cy.wrap(subject)
 }
 
 function dragTo(subject: JQuery, 
@@ -55,7 +55,7 @@ function dragTo(subject: JQuery,
       win.dispatchEvent(new MouseEvent('mouseup'))
     })
   )
-  return subj
+  return cy.wrap(subject)
 }
 
 Cypress.Commands.add('drag', { prevSubject: 'element' }, drag)
