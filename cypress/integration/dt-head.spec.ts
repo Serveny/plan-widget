@@ -1,8 +1,7 @@
 import TestLayout from '../../src/www/ts/test-data/table-layout.data'
 
 describe('testing data table head', () => {
-  const // title = 'Test-Title',
-    cols = TestLayout.columns,
+  const cols = TestLayout.columns,
     visCols = cols?.filter(col =>
       col.visible === true) ?? []
 
@@ -12,19 +11,7 @@ describe('testing data table head', () => {
       .dragTo(Cypress.config('viewportWidth') - 10, null)
   })
 
-  // it(`has title '${title}'`, () => {
-  //   dtHead.fill({ title: title })
-  //   cy.contains('.dt-head', title).should('be.visible')
-  // })
-
-  // it(`has ${visColsCount} head cells`, () => {
-  //   dtHead.fill(TestLayout)
-  //   cy.get('.dt-head').children()
-  //     .then(el => expect(el.length)
-  //       .equal(visColsCount))
-  // })
-
-  cols?.forEach((col, i) => {
+  cols?.forEach(col => {
     describe(`testing head cell '${col.caption}'`, () => {
       if (col.visible === true) {
         it(`exists head cell with text '${col.caption}'`, () =>
@@ -41,20 +28,17 @@ describe('testing data table head', () => {
           it(`change width of head cell`, () =>
             cy.contains('.dt-head-cell', col.caption ?? '')
               .as('headCell').invoke('outerWidth').as('oldWidth')
-              .then(oldWidth =>
-                cy.get('@headCell').find('.dt-head-cell-slider')
-                  .drag(100, 10).then(() =>
+              .then(oldWidth => cy.get('@headCell')
+                .find('.dt-head-cell-slider').drag(100, 10).then(() =>
                     cy.get('@headCell').invoke('outerWidth').then(newWidth =>
                       expect((newWidth ?? 0) > (oldWidth ?? 0)).to.be.true))))
 
-        if (visCols.length > 1) {
+        if (visCols.length > 1)
           it('change positon/index of cell', () => {
             cy.contains('.dt-head-cell-text', col.caption ?? '')
             .dragTo(10, null).then(el => expect(parseInt(
               el[0].parentElement?.style.order ?? '0')).eq(1))
           })
-        }
-          
       } else it('head cell does not exist', () =>
         cy.contains('.dt-head-cell', col.caption ?? '')
           .should('not.exist'))
