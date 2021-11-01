@@ -1,7 +1,8 @@
-$tableHeadHeight: 60px
 $tableHeadCellSliderWidth: 10px
-$tableHeadCellBorder: 1px solid #eee
 $tableHeadCellDropBorder: 3px solid #3ddce7
+$tableHeadHeight: 60px
+$tableHeadCellPadding: 10px
+$tableHeadLineHeight: $tableHeadHeight - ($tableHeadCellPadding * 2)
   
 .dt-head
   position: sticky
@@ -9,7 +10,7 @@ $tableHeadCellDropBorder: 3px solid #3ddce7
   color: #616161
   background-color: #fafafa
   height: $tableHeadHeight
-  line-height: $tableHeadHeight
+  line-height: $tableHeadLineHeight
   text-align: left
   white-space: nowrap
   width: min-content
@@ -28,13 +29,13 @@ $tableHeadCellDropBorder: 3px solid #3ddce7
   position: absolute
   z-index: 1000
   cursor: grabbing
-  border-left: $tableHeadCellBorder
-  border-right: $tableHeadCellBorder
+  border-left: $tableBorder
+  border-right: $tableBorder
   opacity: 0.6
 
 .dt-head-cell-text
   width: 100%
-  padding: 0 10px
+  padding: $tableHeadCellPadding
   box-sizing: border-box
   z-index: 10
   cursor: grab
@@ -54,7 +55,7 @@ $tableHeadCellDropBorder: 3px solid #3ddce7
   float: left
   cursor: col-resize
   box-sizing: border-box
-  border-right: $tableHeadCellBorder
+  border-right: $tableBorder
   z-index: 20
 
 .dt-head-drop-preview

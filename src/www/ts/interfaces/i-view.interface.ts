@@ -8,46 +8,54 @@ export interface IView {
 }
 
 export interface IResourceView extends IView {
+  Name?: string;
   CalendarID?: string;
   CapacityCurveID?: string;
   LoadCurveID?: string;
   ParentID?: string;
+  PM_CollapseState: number;
   PM_CollapsedRowDesign?: RowDesign;
   PM_TableColor?: string;
   PM_TableTextColor?: string;
   PM_RowSymbolIDs?: string[];
+  [x: string]: unknown;
 }
 
 export interface ICalendarView extends IView {
+  Name?: string;
   Entries: ICalendarEntry[];
 }
 
 export interface ICalendarEntry {
-  Start?: Date;
-  End?: Date;
+  Start?: Date | string;
+  End?: Date | string;
   TimeType?: TimeType;
 }
 
 export interface IActivityView extends IView {
-  ParentID?: string;
+  Name?: string;
+  Start?: Date | string;
+  End?: Date | string;
+  ParentID?: string | null;
   Progress?: number;
   PM_ProgressColor?: string;
   PM_ProgressNonworkingTimeColor?: string;
   PM_Color?: string;
   PM_BorderColor?: string;
   PM_TextColor?: string;
-  ActivityType?: ActivityType;
+  ActivityType?: ActivityType | number;
   CanMove?: boolean;
   CanResize?: boolean;
   CalendarID?: string;
   CollapseBehavior?: number;
-  PM_Status2Visible: boolean;
+  PM_Status2Visible?: boolean;
   PM_Status2Color?: string;
-  PM_Status3Visible: boolean;
+  PM_Status3Visible?: boolean;
   PM_Status3Color?: string;
   PM_TopLeftBarSymbolID?: string;
   PM_TopRightBarSymbolID?: string;
-  PM_RowSymbolIDs: string[];
+  PM_RowSymbolIDs?: string[];
+  PM_NonworkingTimeColor?: string;
 }
 
 export interface IAllocationView extends IView {
@@ -55,20 +63,20 @@ export interface IAllocationView extends IView {
   ActivityID: string;
   ResourceID?: string;
   TerminRuestEnde?: Date;
-  ADVARIS_CanMove?: boolean;
-  ADVARIS_CanResize?: boolean;
-  PM_Status2Visible: boolean;
+  CanMove?: boolean;
+  CanResize?: boolean;
+  PM_Status2Visible?: boolean;
   PM_Status2Color?: string;
-  PM_Status3Visible: boolean;
+  PM_Status3Visible?: boolean;
   PM_Status3Color?: string;
   PM_TopLeftBarSymbolID?: string;
   PM_TopRightBarSymbolID?: string;
-  Entries: IAllocationEntry[];
+  Entries?: IAllocationEntry[];
 }
 
 export interface IAllocationEntry {
-  Start?: Date | null | undefined;
-  End?: Date | null | undefined;
+  Start?: Date | string;
+  End?: Date | string;
   Custom_Color?: string | null | undefined;
 }
 
@@ -77,17 +85,33 @@ export interface ILinkView extends IView {
   Description?: string;
   SourceActivityID: string;
   TargetActivityID: string;
-  RelationType: LinkRealtionType;
+  RelationType?: LinkRealtionType;
   PM_Color?: string;
+  [x: string]: unknown;
 }
 
 export interface IEntityView extends IView {
   Name?: string;
   ParentID?: string;
-  PM_RowSymbolIDs: string[];
+  PM_RowSymbolIDs?: string[];
+  PM_TooltipText?: string;
+  [x: string]: unknown; 
 }
 
 export interface ISymbol {
   ID?: string;
   URL?: string;
 }
+
+export interface ICurveView extends IView {
+    Type?: number;
+    PM_FillColor?: string;
+    PM_StrokeColor?: string;
+    PM_OverloadColor?: string;
+    CurvePointEntries?: ICurvePointEntry[];
+ }
+
+ export interface ICurvePointEntry {
+    PointInTime: Date | string;
+    Value: number;
+ }

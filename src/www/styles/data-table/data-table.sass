@@ -1,3 +1,7 @@
+$tableBorder: 1px solid #eee
+$tableRowHeight: 40px
+$tableCellPadding: 5px
+$tableLineHeight: $tableRowHeight - ($tableCellPadding * 2)
 @import "dt-head"
 
 .data-table
@@ -6,6 +10,18 @@
 .dt-table
   min-width: 100%
 
+.dt-body
+  display: flex 
+  flex-direction: column
+
+.dt-row
+  white-space: nowrap
+  width: min-content
+  min-width: 100%
+  display: inline-flex 
+  flex-direction: row
+  border-bottom: $tableBorder
+
 .dt-cell
   display: inline-block
   box-sizing: border-box
@@ -13,6 +29,13 @@
   overflow: hidden
   outline: none
   text-align: left
+  border-right: $tableBorder
+
+.dt-row-cell
+  @extend .dt-cell
+  height: $tableRowHeight
+  line-height: $tableLineHeight
+  padding: $tableCellPadding
 
 .dt-scroll-container
   overflow: scroll

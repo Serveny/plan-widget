@@ -2,16 +2,16 @@ import { GridSlider } from './grid-slider.class'
 //import { IPlanWidget } from '../interfaces/i-plan-widget.interface';
 import { TimeScaler } from './time-scaler.class'
 import { CacheService } from '../services/cache.service'
-//import { IEntityView, IResourceView } from '../interfaces/i-view.interface';
+import { IEntityView, IResourceView } from '../interfaces/i-view.interface'
 import { DataTable } from './data-table/data-table.class'
 import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interface'
 
 export class PlanWidget /*implements IPlanWidget*/ {
-  private readonly gridSlider: GridSlider;
-  private readonly resourceTable: DataTable;
-  private readonly entityTable: DataTable;
-  private readonly timeScaler: TimeScaler;
-  private readonly cache: CacheService;
+  private readonly gridSlider: GridSlider
+  private readonly resourceTable: DataTable
+  private readonly entityTable: DataTable
+  private readonly timeScaler: TimeScaler
+  private readonly cache: CacheService
   
   constructor(containerEl: HTMLElement | null, options: IPlanWidgetOptions) {
     if (containerEl == null) throw '[PlanWidget] containerEl is null'
@@ -29,13 +29,13 @@ export class PlanWidget /*implements IPlanWidget*/ {
     this.timeScaler.paint()
   }
 
-  // addResources(resources: IResourceView[]): void {
-  //   this.resourceTable.addRows(resources);
-  // }
+  addResources(resources: IResourceView[]): void {
+    this.resourceTable.addRows(resources)
+  }
 
-  // addEntities(resources: IEntityView[]): void {
-  //   this.entityTable.addRows(resources);
-  // }
+  addEntities(resources: IEntityView[]): void {
+    this.entityTable.addRows(resources)
+  }
 
   // private addMonths(dateIn: Date, months: number): Date {
   //   const d = dateIn.getDate();

@@ -1,5 +1,7 @@
-﻿export const demoData = {
-   "Symbols": [
+﻿import { ISymbol, IEntityView, IResourceView, IActivityView, IAllocationView, ICurveView, ILinkView, ICalendarView } from './interfaces/i-view.interface'
+
+export class DemoData {
+   Symbols: ISymbol[] = [
       {
          "ID": "alarm",
          "URL": "images/Alarm.svg"
@@ -20,17 +22,19 @@
          "ID": "warning",
          "URL": "images/Warning.svg"
       },
-   ],
-   "Entities": [
+   ]
+   Entities: IEntityView[] = [
       {
          "ID": "E0",
          "Name": "Entity 0",
-         "PM_TooltipText": "Entity 0"
+         "PM_TooltipText": "Entity 0",
+         "Amount": 50,
       },
       {
          "ID": "E1",
          "Name": "Entity 1",
-         "PM_TooltipText": "Entity 1"
+         "PM_TooltipText": "Entity 1",
+         "Amount": 20,
       },
       {
          "ID": "E2",
@@ -52,7 +56,8 @@
          "ID": "E4",
          "Name": "Entity 4",
          "PM_TooltipText": "Entity 4",
-         "ParentID": "E2"
+         "ParentID": "E2",
+         "Amount": 12,
       },
       {
          "ID": "E5",
@@ -132,8 +137,8 @@
          "Name": "Entity 19",
          "PM_TooltipText": "Entity 19"
       }
-   ],
-   "Resources": [
+   ]
+   Resources: IResourceView[] = [
       {
          "ID": "R0",
          "Name": "Resource 0",
@@ -157,7 +162,8 @@
             "warning",
             "mail",
             "warning"
-         ]
+         ],
+         "Amount": 26,
       },
       {
          "ID": "R1",
@@ -165,7 +171,8 @@
          "CalendarID": "23",
          "CapacityCurveID": "C0",
          "LoadCurveID": "L0",
-         "PM_CollapseState": -1
+         "PM_CollapseState": -1,
+         "Amount": 53,
       },
       {
          "ID": "R2",
@@ -232,7 +239,8 @@
          "CalendarID": "23",
          "CapacityCurveID": "C0",
          "LoadCurveID": "L0",
-         "PM_CollapseState": -1
+         "PM_CollapseState": -1,
+         "Amount": 88,
       },
       {
          "ID": "R8",
@@ -246,7 +254,7 @@
       {
          "ID": "R9",
          "Name": "Resource 9",
-         "CalendarID": null,
+         "CalendarID": "",
          "CapacityCurveID": "C0",
          "LoadCurveID": "L0",
          "PM_CollapseState": -1,
@@ -368,8 +376,8 @@
          "LoadCurveID": "L0",
          "PM_CollapseState": -1
       }
-   ],
-   "Allocations": [
+   ]
+   Allocations: IAllocationView[] = [
       {
          "ID": "0_0",
          "Name": "Allocation 0_0",
@@ -903,7 +911,7 @@
          ],
          "ResourceID": "R4",
          "ActivityID": "A43",
-         "ADVARIS_CanMove": false
+         "CanMove": false
       },
       {
          "ID": "44_0",
@@ -988,7 +996,7 @@
          ],
          "ResourceID": "R19",
          "ActivityID": "A50",
-         "ADVARIS_CanResize": false
+         "CanResize": false
       },
       {
          "ID": "51_0",
@@ -1578,8 +1586,8 @@
          "ResourceID": "R1",
          "ActivityID": "A99"
       }
-   ],
-   "Activities": [
+   ]
+   Activities: IActivityView[] = [
       {
          "ID": "A0",
          "Name": "Activity 0",
@@ -1590,9 +1598,9 @@
          "PM_Color": "deepskyblue",
          "PM_NonworkingTimeColor": "calculated",
          "PM_ProgressColor": "magenta",
-         "ADVARIS_CalendarID": "15",
-         "ADVARIS_CanMove": false,
-         "ADVARIS_CanResize": false,
+         "CalendarID": "15",
+         "CanMove": false,
+         "CanResize": false,
          "PM_Status2Visible": true,
          "PM_Status2Color": "lime",
          "PM_Status3Visible": true,
@@ -1607,8 +1615,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "16",
-         "ADVARIS_CanResize": false
+         "CalendarID": "16",
+         "CanResize": false
       },
       {
          "ID": "A2",
@@ -1619,7 +1627,7 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "17",
+         "CalendarID": "17",
          "PM_TopLeftBarSymbolID": "lock",
          "PM_TopRightBarSymbolID": "clock",
          "PM_RowSymbolIDs": [
@@ -1634,8 +1642,8 @@
          "End": "2019-02-08T00:00:00Z",
          "Progress": 31,
          "ParentID": null,
-         "ADVARIS_CalendarID": "13",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "13",
+         "ActivityType": 2
       },
       {
          "ID": "A4",
@@ -1646,8 +1654,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "7",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "7",
+         "ActivityType": 2
       },
       {
          "ID": "A5",
@@ -1656,8 +1664,8 @@
          "End": "2019-02-10T00:00:00Z",
          "Progress": 46,
          "ParentID": null,
-         "ADVARIS_CalendarID": "3",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "3",
+         "ActivityType": 0
       },
       {
          "ID": "A6",
@@ -1668,8 +1676,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "23",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "23",
+         "ActivityType": 0
       },
       {
          "ID": "A7",
@@ -1678,8 +1686,8 @@
          "End": "2019-02-12T00:00:00Z",
          "Progress": 79,
          "ParentID": null,
-         "ADVARIS_CalendarID": "0",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "0",
+         "ActivityType": 2
       },
       {
          "ID": "A8",
@@ -1688,8 +1696,8 @@
          "End": "2019-02-13T00:00:00Z",
          "Progress": 92,
          "ParentID": "A7",
-         "ADVARIS_CalendarID": "20",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "20",
+         "ActivityType": 1
       },
       {
          "ID": "A9",
@@ -1700,7 +1708,7 @@
          "ParentID": "A7",
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "8"
+         "CalendarID": "8"
       },
       {
          "ID": "A10",
@@ -1711,8 +1719,8 @@
          "ParentID": "A7",
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "23",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "23",
+         "ActivityType": 1
       },
       {
          "ID": "A11",
@@ -1723,8 +1731,8 @@
          "ParentID": "A9",
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "1",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "1",
+         "ActivityType": 1
       },
       {
          "ID": "A12",
@@ -1735,8 +1743,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "11",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "11",
+         "ActivityType": 0
       },
       {
          "ID": "A13",
@@ -1747,8 +1755,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "11",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "11",
+         "ActivityType": 0
       },
       {
          "ID": "A14",
@@ -1759,8 +1767,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "8",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "8",
+         "ActivityType": 2
       },
       {
          "ID": "A15",
@@ -1771,8 +1779,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "4",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "4",
+         "ActivityType": 1
       },
       {
          "ID": "A16",
@@ -1783,8 +1791,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "23",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "23",
+         "ActivityType": 2
       },
       {
          "ID": "A17",
@@ -1795,8 +1803,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "21",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "21",
+         "ActivityType": 2
       },
       {
          "ID": "A18",
@@ -1805,7 +1813,7 @@
          "End": "2019-02-23T00:00:00Z",
          "Progress": 56,
          "ParentID": null,
-         "ADVARIS_CalendarID": "6"
+         "CalendarID": "6"
       },
       {
          "ID": "A19",
@@ -1814,8 +1822,8 @@
          "End": "2019-02-24T00:00:00Z",
          "Progress": 36,
          "ParentID": null,
-         "ADVARIS_CalendarID": "24",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "24",
+         "ActivityType": 1
       },
       {
          "ID": "A20",
@@ -1824,8 +1832,8 @@
          "End": "2019-02-25T00:00:00Z",
          "Progress": 21,
          "ParentID": null,
-         "ADVARIS_CalendarID": "19",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "19",
+         "ActivityType": 0
       },
       {
          "ID": "A21",
@@ -1834,8 +1842,8 @@
          "End": "2019-02-26T00:00:00Z",
          "Progress": 94,
          "ParentID": null,
-         "ADVARIS_CalendarID": "11",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "11",
+         "ActivityType": 1
       },
       {
          "ID": "A22",
@@ -1846,7 +1854,7 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "11"
+         "CalendarID": "11"
       },
       {
          "ID": "A23",
@@ -1857,7 +1865,7 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "0"
+         "CalendarID": "0"
       },
       {
          "ID": "A24",
@@ -1868,7 +1876,7 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "1"
+         "CalendarID": "1"
       },
       {
          "ID": "A25",
@@ -1879,8 +1887,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "22",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "22",
+         "ActivityType": 2
       },
       {
          "ID": "A26",
@@ -1891,8 +1899,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "24",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "24",
+         "ActivityType": 2
       },
       {
          "ID": "A27",
@@ -1903,8 +1911,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "17",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "17",
+         "ActivityType": 0
       },
       {
          "ID": "A28",
@@ -1913,8 +1921,8 @@
          "End": "2019-03-05T00:00:00Z",
          "Progress": 28,
          "ParentID": null,
-         "ADVARIS_CalendarID": "13",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "13",
+         "ActivityType": 0
       },
       {
          "ID": "A29",
@@ -1925,7 +1933,7 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "25"
+         "CalendarID": "25"
       },
       {
          "ID": "A30",
@@ -1934,7 +1942,7 @@
          "End": "2019-03-07T00:00:00Z",
          "Progress": 44,
          "ParentID": null,
-         "ADVARIS_CalendarID": "15"
+         "CalendarID": "15"
       },
       {
          "ID": "A31",
@@ -1943,7 +1951,7 @@
          "End": "2019-03-08T00:00:00Z",
          "Progress": 83,
          "ParentID": null,
-         "ADVARIS_CalendarID": "14"
+         "CalendarID": "14"
       },
       {
          "ID": "A32",
@@ -1952,8 +1960,8 @@
          "End": "2019-03-09T00:00:00Z",
          "Progress": 20,
          "ParentID": null,
-         "ADVARIS_CalendarID": "8",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "8",
+         "ActivityType": 1
       },
       {
          "ID": "A33",
@@ -1962,8 +1970,8 @@
          "End": "2019-03-10T00:00:00Z",
          "Progress": 98,
          "ParentID": null,
-         "ADVARIS_CalendarID": "4",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "4",
+         "ActivityType": 2
       },
       {
          "ID": "A34",
@@ -1974,8 +1982,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "25",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "25",
+         "ActivityType": 1
       },
       {
          "ID": "A35",
@@ -1984,8 +1992,8 @@
          "End": "2019-03-12T00:00:00Z",
          "Progress": 86,
          "ParentID": null,
-         "ADVARIS_CalendarID": "19",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "19",
+         "ActivityType": 2
       },
       {
          "ID": "A36",
@@ -1996,8 +2004,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "23",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "23",
+         "ActivityType": 0
       },
       {
          "ID": "A37",
@@ -2008,8 +2016,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "19",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "19",
+         "ActivityType": 1
       },
       {
          "ID": "A38",
@@ -2018,7 +2026,7 @@
          "End": "2019-03-15T00:00:00Z",
          "Progress": 32,
          "ParentID": null,
-         "ADVARIS_CalendarID": "7"
+         "CalendarID": "7"
       },
       {
          "ID": "A39",
@@ -2027,8 +2035,8 @@
          "End": "2019-03-16T00:00:00Z",
          "Progress": 95,
          "ParentID": null,
-         "ADVARIS_CalendarID": "20",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "20",
+         "ActivityType": 0
       },
       {
          "ID": "A40",
@@ -2037,8 +2045,8 @@
          "End": "2019-03-17T00:00:00Z",
          "Progress": 30,
          "ParentID": null,
-         "ADVARIS_CalendarID": "3",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "3",
+         "ActivityType": 1
       },
       {
          "ID": "A41",
@@ -2049,8 +2057,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "10",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "10",
+         "ActivityType": 2
       },
       {
          "ID": "A42",
@@ -2061,8 +2069,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "13",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "13",
+         "ActivityType": 2
       },
       {
          "ID": "A43",
@@ -2073,7 +2081,7 @@
          "ParentID": null,
          "PM_Color": "indianred",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "11"
+         "CalendarID": "11"
       },
       {
          "ID": "A44",
@@ -2084,8 +2092,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "16",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "16",
+         "ActivityType": 1
       },
       {
          "ID": "A45",
@@ -2094,8 +2102,8 @@
          "End": "2019-03-22T00:00:00Z",
          "Progress": 65,
          "ParentID": null,
-         "ADVARIS_CalendarID": "17",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "17",
+         "ActivityType": 2
       },
       {
          "ID": "A46",
@@ -2106,8 +2114,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "3",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "3",
+         "ActivityType": 1
       },
       {
          "ID": "A47",
@@ -2118,8 +2126,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "20",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "20",
+         "ActivityType": 0
       },
       {
          "ID": "A48",
@@ -2128,8 +2136,8 @@
          "End": "2019-03-25T00:00:00Z",
          "Progress": 90,
          "ParentID": null,
-         "ADVARIS_CalendarID": "24",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "24",
+         "ActivityType": 0
       },
       {
          "ID": "A49",
@@ -2138,8 +2146,8 @@
          "End": "2019-03-26T00:00:00Z",
          "Progress": 50,
          "ParentID": null,
-         "ADVARIS_CalendarID": "6",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "6",
+         "ActivityType": 2
       },
       {
          "ID": "A50",
@@ -2150,8 +2158,8 @@
          "ParentID": null,
          "PM_Color": "indianred",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "0",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "0",
+         "ActivityType": 1
       },
       {
          "ID": "A51",
@@ -2160,7 +2168,7 @@
          "End": "2019-03-28T00:00:00Z",
          "Progress": 66,
          "ParentID": null,
-         "ADVARIS_CalendarID": "13"
+         "CalendarID": "13"
       },
       {
          "ID": "A52",
@@ -2171,7 +2179,7 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "8"
+         "CalendarID": "8"
       },
       {
          "ID": "A53",
@@ -2180,8 +2188,8 @@
          "End": "2019-03-30T00:00:00Z",
          "Progress": 5,
          "ParentID": null,
-         "ADVARIS_CalendarID": "21",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "21",
+         "ActivityType": 2
       },
       {
          "ID": "A54",
@@ -2192,7 +2200,7 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "2"
+         "CalendarID": "2"
       },
       {
          "ID": "A55",
@@ -2203,8 +2211,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "23",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "23",
+         "ActivityType": 2
       },
       {
          "ID": "A56",
@@ -2215,8 +2223,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "14",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "14",
+         "ActivityType": 0
       },
       {
          "ID": "A57",
@@ -2225,8 +2233,8 @@
          "End": "2019-04-03T00:00:00Z",
          "Progress": 61,
          "ParentID": null,
-         "ADVARIS_CalendarID": "0",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "0",
+         "ActivityType": 1
       },
       {
          "ID": "A58",
@@ -2237,8 +2245,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "9",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "9",
+         "ActivityType": 2
       },
       {
          "ID": "A59",
@@ -2249,8 +2257,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "8",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "8",
+         "ActivityType": 0
       },
       {
          "ID": "A60",
@@ -2261,7 +2269,7 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "11"
+         "CalendarID": "11"
       },
       {
          "ID": "A61",
@@ -2270,8 +2278,8 @@
          "End": "2019-04-07T00:00:00Z",
          "Progress": 43,
          "ParentID": null,
-         "ADVARIS_CalendarID": "24",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "24",
+         "ActivityType": 0
       },
       {
          "ID": "A62",
@@ -2280,8 +2288,8 @@
          "End": "2019-04-08T00:00:00Z",
          "Progress": 31,
          "ParentID": null,
-         "ADVARIS_CalendarID": "19",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "19",
+         "ActivityType": 2
       },
       {
          "ID": "A63",
@@ -2290,8 +2298,8 @@
          "End": "2019-04-09T00:00:00Z",
          "Progress": 91,
          "ParentID": null,
-         "ADVARIS_CalendarID": "5",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "5",
+         "ActivityType": 2
       },
       {
          "ID": "A64",
@@ -2302,7 +2310,7 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "0"
+         "CalendarID": "0"
       },
       {
          "ID": "A65",
@@ -2311,7 +2319,7 @@
          "End": "2019-04-11T00:00:00Z",
          "Progress": 8,
          "ParentID": null,
-         "ADVARIS_CalendarID": "17"
+         "CalendarID": "17"
       },
       {
          "ID": "A66",
@@ -2322,8 +2330,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "4",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "4",
+         "ActivityType": 1
       },
       {
          "ID": "A67",
@@ -2334,8 +2342,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "3",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "3",
+         "ActivityType": 0
       },
       {
          "ID": "A68",
@@ -2344,8 +2352,8 @@
          "End": "2019-04-14T00:00:00Z",
          "Progress": 36,
          "ParentID": null,
-         "ADVARIS_CalendarID": "5",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "5",
+         "ActivityType": 1
       },
       {
          "ID": "A69",
@@ -2354,8 +2362,8 @@
          "End": "2019-04-15T00:00:00Z",
          "Progress": 13,
          "ParentID": null,
-         "ADVARIS_CalendarID": "15",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "15",
+         "ActivityType": 2
       },
       {
          "ID": "A70",
@@ -2364,8 +2372,8 @@
          "End": "2019-04-16T00:00:00Z",
          "Progress": 58,
          "ParentID": null,
-         "ADVARIS_CalendarID": "11",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "11",
+         "ActivityType": 0
       },
       {
          "ID": "A71",
@@ -2374,8 +2382,8 @@
          "End": "2019-04-17T00:00:00Z",
          "Progress": 62,
          "ParentID": null,
-         "ADVARIS_CalendarID": "8",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "8",
+         "ActivityType": 2
       },
       {
          "ID": "A72",
@@ -2384,8 +2392,8 @@
          "End": "2019-04-18T00:00:00Z",
          "Progress": 18,
          "ParentID": null,
-         "ADVARIS_CalendarID": "9",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "9",
+         "ActivityType": 2
       },
       {
          "ID": "A73",
@@ -2394,8 +2402,8 @@
          "End": "2019-04-19T00:00:00Z",
          "Progress": 79,
          "ParentID": null,
-         "ADVARIS_CalendarID": "8",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "8",
+         "ActivityType": 0
       },
       {
          "ID": "A74",
@@ -2404,8 +2412,8 @@
          "End": "2019-04-20T00:00:00Z",
          "Progress": 31,
          "ParentID": null,
-         "ADVARIS_CalendarID": "23",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "23",
+         "ActivityType": 0
       },
       {
          "ID": "A75",
@@ -2416,8 +2424,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "0",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "0",
+         "ActivityType": 2
       },
       {
          "ID": "A76",
@@ -2428,8 +2436,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "21",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "21",
+         "ActivityType": 1
       },
       {
          "ID": "A77",
@@ -2440,8 +2448,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "21",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "21",
+         "ActivityType": 2
       },
       {
          "ID": "A78",
@@ -2452,8 +2460,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "5",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "5",
+         "ActivityType": 2
       },
       {
          "ID": "A79",
@@ -2462,7 +2470,7 @@
          "End": "2019-04-25T00:00:00Z",
          "Progress": 28,
          "ParentID": null,
-         "ADVARIS_CalendarID": "3"
+         "CalendarID": "3"
       },
       {
          "ID": "A80",
@@ -2473,8 +2481,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "7",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "7",
+         "ActivityType": 0
       },
       {
          "ID": "A81",
@@ -2485,8 +2493,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "2",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "2",
+         "ActivityType": 1
       },
       {
          "ID": "A82",
@@ -2495,8 +2503,8 @@
          "End": "2019-04-28T00:00:00Z",
          "Progress": 9,
          "ParentID": null,
-         "ADVARIS_CalendarID": "10",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "10",
+         "ActivityType": 1
       },
       {
          "ID": "A83",
@@ -2505,8 +2513,8 @@
          "End": "2019-04-29T00:00:00Z",
          "Progress": 2,
          "ParentID": null,
-         "ADVARIS_CalendarID": "24",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "24",
+         "ActivityType": 1
       },
       {
          "ID": "A84",
@@ -2517,8 +2525,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "16",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "16",
+         "ActivityType": 1
       },
       {
          "ID": "A85",
@@ -2529,8 +2537,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "14",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "14",
+         "ActivityType": 0
       },
       {
          "ID": "A86",
@@ -2539,8 +2547,8 @@
          "End": "2019-05-02T00:00:00Z",
          "Progress": 21,
          "ParentID": null,
-         "ADVARIS_CalendarID": "9",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "9",
+         "ActivityType": 0
       },
       {
          "ID": "A87",
@@ -2549,8 +2557,8 @@
          "End": "2019-05-03T00:00:00Z",
          "Progress": 42,
          "ParentID": null,
-         "ADVARIS_CalendarID": "22",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "22",
+         "ActivityType": 0
       },
       {
          "ID": "A88",
@@ -2559,8 +2567,8 @@
          "End": "2019-05-04T00:00:00Z",
          "Progress": 89,
          "ParentID": null,
-         "ADVARIS_CalendarID": "9",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "9",
+         "ActivityType": 1
       },
       {
          "ID": "A89",
@@ -2571,8 +2579,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "8",
-         "ADVARIS_ActivityType": 2
+         "CalendarID": "8",
+         "ActivityType": 2
       },
       {
          "ID": "A90",
@@ -2583,8 +2591,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "8",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "8",
+         "ActivityType": 0
       },
       {
          "ID": "A91",
@@ -2595,8 +2603,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "17",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "17",
+         "ActivityType": 0
       },
       {
          "ID": "A92",
@@ -2607,8 +2615,8 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "25",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "25",
+         "ActivityType": 1
       },
       {
          "ID": "A93",
@@ -2617,8 +2625,8 @@
          "End": "2019-05-09T00:00:00Z",
          "Progress": 9,
          "ParentID": null,
-         "ADVARIS_CalendarID": "4",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "4",
+         "ActivityType": 1
       },
       {
          "ID": "A94",
@@ -2629,7 +2637,7 @@
          "ParentID": null,
          "PM_Color": "darkblue",
          "PM_NonworkingTimeColor": "calculated",
-         "ADVARIS_CalendarID": "25"
+         "CalendarID": "25"
       },
       {
          "ID": "A95",
@@ -2640,8 +2648,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "0",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "0",
+         "ActivityType": 0
       },
       {
          "ID": "A96",
@@ -2650,8 +2658,8 @@
          "End": "2019-05-12T00:00:00Z",
          "Progress": 64,
          "ParentID": null,
-         "ADVARIS_CalendarID": "15",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "15",
+         "ActivityType": 1
       },
       {
          "ID": "A97",
@@ -2662,8 +2670,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "17",
-         "ADVARIS_ActivityType": 0
+         "CalendarID": "17",
+         "ActivityType": 0
       },
       {
          "ID": "A98",
@@ -2674,8 +2682,8 @@
          "ParentID": null,
          "PM_Color": "gold",
          "PM_NonworkingTimeColor": "gold",
-         "ADVARIS_CalendarID": "24",
-         "ADVARIS_ActivityType": 1
+         "CalendarID": "24",
+         "ActivityType": 1
       },
       {
          "ID": "A99",
@@ -2684,10 +2692,10 @@
          "End": "2019-05-15T00:00:00Z",
          "Progress": 24,
          "ParentID": null,
-         "ADVARIS_CalendarID": "17"
+         "CalendarID": "17"
       }
-   ],
-   "Curves": [
+   ]
+   Curves: ICurveView[] = [
       {
          "ID": "C0",
          "Type": 0,
@@ -2752,8 +2760,8 @@
             }
          ]
       }
-   ],
-   "Links": [
+   ]
+   Links: ILinkView[] = [
       {
          "ID": "L0",
          "Name": "Link 0",
@@ -2774,8 +2782,8 @@
          "TargetActivityID": "A3",
          "RelationType": 2
       }
-   ],
-   "Calendars": [
+   ]
+   Calendars: ICalendarView[] = [
       {
          "ID": "0",
          "Name": "Cal 0",

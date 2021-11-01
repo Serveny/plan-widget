@@ -52,13 +52,13 @@ export class DtHead {
       left = cell?.getBoundingClientRect().left
 
     if (cell != null && left != null) {
-      document.body.style.cursor = 'col-resize'
+      this._el.style.cursor = 'col-resize'
       const mmHandler = (mmEv: MouseEvent): void => {
         const newVal = mmEv.clientX - left
         if (newVal > 0) cell.style.width = `${newVal}px`
       }
       const muHandler = (): void => {
-        document.body.style.cursor = ''
+        this._el.style.cursor = ''
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
       }
