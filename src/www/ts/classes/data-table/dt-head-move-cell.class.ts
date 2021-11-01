@@ -1,19 +1,22 @@
+import { IDataTableColumn, IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
 import Hlp from '../helper.class'
 
 export class DtHeadMoveCell {
-  readonly dragCellLeft: number
-  readonly cells: HTMLElement[]
-  readonly dummyEl: HTMLElement
-  readonly dragCTxtEl: HTMLElement | null
-  readonly orderDrag: number
-  readonly dropPosis: DropPosition[]
-  readonly dropPreviewEl: HTMLElement
-  orderDrop: number
+  private readonly dragCellLeft: number
+  private readonly cells: HTMLElement[]
+  private readonly dummyEl: HTMLElement
+  private readonly dragCTxtEl: HTMLElement | null
+  private readonly orderDrag: number
+  private readonly dropPosis: DropPosition[]
+  private readonly dropPreviewEl: HTMLElement
+  private orderDrop: number
 
   constructor(
     ev: MouseEvent,
-    public readonly dragCell: HTMLElement,
-    public readonly headEl: HTMLElement,
+    private readonly dragCell: HTMLElement,
+    private readonly headEl: HTMLElement,
+    private readonly bodyEl: HTMLElement,
+    private readonly layout: IDataTableLayout | null | undefined,
   ) {
     this.cells = this.getChildrenAsc(headEl)
     this.dragCellLeft = ev.x - dragCell.offsetLeft,
@@ -30,7 +33,7 @@ export class DtHeadMoveCell {
   }
 
   private addEventListeners(): void {
-    const mmHandler = (ev: MouseEvent): void => 
+    const mmHandler = (ev: MouseEvent): void =>
       this.dragHandler(ev.x), muHandler = (): void => {
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
@@ -58,8 +61,12 @@ export class DtHeadMoveCell {
   }
 
   private dropHandler(): void {
-    this.orderCells(this.orderDrag, this.orderDrop, this.cells)
+    const moves = this.orderCells(this.orderDrag, this.orderDrop, this.cells)
     this.dragCell.style.order = this.orderDrop.toString()
+    moves.push(new Move(this.orderDrag, this.orderDrop))
+    this.fillMoves(moves)
+    this.moveBodyCols(moves)
+    this.refreshLayout(moves)
     if (this.dragCTxtEl != null) this.dragCTxtEl.style.opacity = '1'
     this.dummyEl.remove()
     this.dropPreviewEl.remove()
@@ -70,9 +77,9 @@ export class DtHeadMoveCell {
   }
 
   private posDropPreview(): void {
-    this.dropPreviewEl.style.left = 
-      `${this.orderDrop === this.orderDrag 
-        ? this.dragCell.offsetLeft 
+    this.dropPreviewEl.style.left =
+      `${this.orderDrop === this.orderDrag
+        ? this.dragCell.offsetLeft
         : this.getPreviewPxByOrder(this.orderDrop)
       }px`
   }
@@ -123,30 +130,64 @@ export class DtHeadMoveCell {
   }
 
   private orderCellsFromTo(orderStart: number, orderEnd: number,
-    additor: number, cells: HTMLElement[]): void {
+    additor: number, cells: HTMLElement[]): Move[] {
+    const moves: Move[] = []
     cells.forEach(cell => {
       const cellOrder = parseInt(cell.style.order)
-      if (cellOrder >= orderStart && cellOrder <= orderEnd)
-        cell.style.order = (cellOrder + additor).toString()
+      if (cellOrder >= orderStart && cellOrder <= orderEnd) {
+        const newOrder = cellOrder + additor
+        cell.style.order = newOrder.toString()
+        moves.push(new Move(cellOrder, newOrder))
+      }
     })
+    return moves
   }
 
   private orderCells(orderDrag: number, orderDrop: number,
-    cells: HTMLElement[]): void {
+    cells: HTMLElement[]): Move[] {
     if (orderDrag !== orderDrop) {
       const isUp = orderDrag > orderDrop,
         additor = isUp ? 1 : -1,
         start = isUp ? orderDrop : orderDrag,
         end = isUp ? orderDrag : orderDrop
-      this.orderCellsFromTo(start, end, additor, cells)
-    }
+      return this.orderCellsFromTo(start, end, additor, cells)
+    } else return []
+  }
+
+  private fillMoves(moves: Move[]): void {
+    moves.forEach(mv => {
+      mv.els = Hlp.getChildrenByOrder(this.bodyEl, 
+        '.dt-row-cell', mv.fromOrder)
+      mv.col = this.layout?.columns?.find(col =>
+        col.visibleIndex === mv.fromOrder)
+    })
+  }
+
+  private moveBodyCols(moves: Move[]): void {
+    moves.forEach(mv => mv.els.forEach(el =>
+      el.style.order = mv.toOrder.toString()))
+  }
+
+  private refreshLayout(moves: Move[]): void {
+    if (this.layout != null) moves.forEach(mv => {
+      if (mv.col != null) mv.col.visibleIndex = mv.toOrder
+    })
   }
 }
 
-export class DropPosition {
+class DropPosition {
   constructor(
-    public px: number, 
+    public px: number,
     public order: number,
-    public previewPx: number
+    public previewPx: number,
+  ) { }
+}
+
+class Move {
+  els: HTMLElement[] = []
+  col?: IDataTableColumn
+  constructor(
+    public fromOrder: number,
+    public toOrder: number,
   ) { }
 }

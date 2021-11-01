@@ -11,6 +11,9 @@ describe('testing data table head', () => {
       .dragTo(Cypress.config('viewportWidth') - 10, null)
   })
 
+  const getRowCells = (order: number): Cypress.Chainable =>
+    cy.get(`.dt-row-cell[style*="order: ${order};"]`)
+
   cols?.forEach(col => {
     describe(`testing head cell '${col.caption}'`, () => {
       if (col.visible === true) {
@@ -30,14 +33,19 @@ describe('testing data table head', () => {
               .as('headCell').invoke('outerWidth').as('oldWidth')
               .then(oldWidth => cy.get('@headCell')
                 .find('.dt-head-cell-slider').drag(100, 10).then(() =>
-                    cy.get('@headCell').invoke('outerWidth').then(newWidth =>
-                      expect((newWidth ?? 0) > (oldWidth ?? 0)).to.be.true))))
+                  cy.get('@headCell').invoke('outerWidth').then(newWidth => {
+                    expect((newWidth ?? 0) > (oldWidth ?? 0)).to.be.true
+                    getRowCells(col.visibleIndex).invoke('outerWidth')
+                      .then(newWidth => expect(
+                        (newWidth ?? 0) > (oldWidth ?? 0)).to.be.true)
+                  }))))
 
         if (visCols.length > 1)
           it('change positon/index of cell', () => {
             cy.contains('.dt-head-cell-text', col.caption ?? '')
-            .dragTo(10, null).then(el => expect(parseInt(
-              el[0].parentElement?.style.order ?? '0')).eq(1))
+              .dragTo(10, null).then(el => expect(parseInt(
+                el[0].parentElement?.style.order ?? '0')).eq(1)
+              )
           })
       } else it('head cell does not exist', () =>
         cy.contains('.dt-head-cell', col.caption ?? '')

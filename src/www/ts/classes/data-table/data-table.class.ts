@@ -15,8 +15,8 @@ export class DataTable {
   constructor(layout: IDataTableLayout | null | undefined) {
     this.el = Hlp.createDiv('data-table', 'dt-scroll-container')
     const tableEl = Hlp.createDiv('dt-table')
-    this.head = new DtHead(layout)
     this.bodyEl = Hlp.createDiv('dt-body')
+    this.head = new DtHead(layout, this.bodyEl)
 
     tableEl.append(this.head.el)
     tableEl.append(this.bodyEl)
@@ -46,7 +46,8 @@ export class DataTable {
       this.createRow(row, i)))
   }
 
-  createRow<TView extends IView>(row: TView, order: number): HTMLDivElement {
+  private createRow<TView extends IView>(row: TView, 
+    order: number): HTMLDivElement {
     const rowEl = Hlp.createDiv('dt-row'),
       rowMap = new Map<string, unknown>(Object.entries(row))
     rowEl.style.order = order.toString()

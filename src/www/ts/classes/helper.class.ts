@@ -20,4 +20,13 @@ export default class Helper {
     return elements.sort((a, b) =>
       parseInt(a.style.order) - parseInt(b.style.order))
   }
+  static getChildrenByOrder(parentEl: HTMLElement, selector: string, 
+    order: number): HTMLElement[] {
+    const els: HTMLElement[] = []
+    parentEl.querySelectorAll(selector).forEach(cellNode => {
+      const cellEl = cellNode as HTMLElement
+      if(parseInt(cellEl.style.order) === order) els.push(cellEl)
+    })
+    return els
+  }
 }

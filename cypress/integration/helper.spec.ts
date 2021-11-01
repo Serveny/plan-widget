@@ -68,4 +68,17 @@ describe('testing helper', () => {
       })
     })
   })
+  describe('testing getChildrenByOrder()', () => {
+    const parentEl = Helper.createDiv(), className = '.x', order = 5,
+      child = Helper.createDiv('x')
+    parentEl.appendChild(child)
+    it('returns empty array', () => 
+      expect(Helper.getChildrenByOrder(
+        parentEl, className, order).length).eq(0))
+    it('returns array with one element', () => {
+      child.style.order = order.toString()
+      expect(Helper.getChildrenByOrder(
+        parentEl, className, order).length).eq(1)
+    })
+  })
 })

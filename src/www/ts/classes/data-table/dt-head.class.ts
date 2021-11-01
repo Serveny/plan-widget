@@ -6,7 +6,8 @@ export class DtHead {
   private readonly _el: HTMLElement
   get el(): HTMLElement { return this._el }
 
-  constructor(layout: IDataTableLayout | null | undefined) {
+  constructor(private layout: IDataTableLayout | null | undefined, 
+    private dtBodyEl: HTMLElement) {
     this._el = Hlp.createDiv('dt-head')
     this.fill(layout)
   }
@@ -17,6 +18,7 @@ export class DtHead {
       ? (layout?.title ?? '') : ''
     cols?.filter(col => col.visible === true).forEach(col =>
       this._el.appendChild(this.createHeadCell(col)))
+    this.layout = layout
   }
 
   private createHeadCell(col: IDataTableColumn): HTMLElement {
@@ -35,7 +37,8 @@ export class DtHead {
     textEl.title = text
     textEl.addEventListener('mousedown', ev => {
       if (textEl.parentElement != null)
-        new DtHeadMoveCell(ev, textEl.parentElement, this._el)
+        new DtHeadMoveCell(ev, textEl.parentElement, 
+          this._el, this.dtBodyEl, this.layout)
     })
     return textEl
   }
@@ -49,23 +52,34 @@ export class DtHead {
 
   private resizeCell(ev: MouseEvent): void {
     const cell = (ev.target as HTMLElement).parentElement,
-      left = cell?.getBoundingClientRect().left
+      left = cell?.getBoundingClientRect().left,
+      rowCells = Hlp.getChildrenByOrder(this.dtBodyEl, 
+        '.dt-row-cell', parseInt(cell?.style.order ?? '0'))
 
     if (cell != null && left != null) {
       this._el.style.cursor = 'col-resize'
       const mmHandler = (mmEv: MouseEvent): void => {
         const newVal = mmEv.clientX - left
-        if (newVal > 0) cell.style.width = `${newVal}px`
+        if (newVal > 0) {
+          const widthStr = `${newVal}px`
+          cell.style.width = widthStr
+          rowCells.forEach(rc => rc.style.width = widthStr)
+        }
       }
       const muHandler = (): void => {
         this._el.style.cursor = ''
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
+        this.refreshLayoutColWidth(parseInt(cell.style.order), cell.style.width)
       }
       window.addEventListener('mousemove', mmHandler)
       window.addEventListener('mouseup', muHandler)
     }
   }
 
-
+  private refreshLayoutColWidth(order: number, width: string): void {
+    const col =  this.layout?.columns?.find(col => 
+      col.visibleIndex === order)
+    if (col != null) col.width = width
+  }
 }
