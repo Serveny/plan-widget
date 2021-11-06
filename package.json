@@ -5,27 +5,28 @@
     "serve": "webpack serve",
     "lint": "eslint --fix",
     "cy:run": "cypress run",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "upgrade": "ncu --upgrade && npm install"
   },
   "devDependencies": {
     "@types/node": "^16.11.6",
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-server": "^4.3.1",
-    "@typescript-eslint/eslint-plugin": "^5.2.0",
-    "@typescript-eslint/parser": "^5.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
     "@wasm-tool/wasm-pack-plugin": "1.6.0",
     "cypress": "^8.7.0",
-    "eslint": "^8.1.0",
+    "eslint": "^8.2.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "sass": "^1.43.3",
-    "sass-loader": "^12.2.0",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
     "text-encoding": "^0.7.0",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
-    "webpack": "^5.60.0",
+    "webpack": "^5.62.1",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.3.1"
+    "webpack-dev-server": "^4.4.0"
   }
 }
