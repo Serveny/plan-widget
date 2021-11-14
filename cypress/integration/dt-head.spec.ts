@@ -47,6 +47,11 @@ describe('testing data table head', () => {
                 el[0].parentElement?.style.order ?? '0')).eq(1)
               )
           })
+
+        if (col.isSortable === true && col.sortOrder != null)
+          it('has sort mark', () =>
+            cy.contains('.dt-head-cell-text', col.caption ?? '').parent()
+              .find('.dt-head-sort-mark').should('exist'))
       } else it('head cell does not exist', () =>
         cy.contains('.dt-head-cell', col.caption ?? '')
           .should('not.exist'))

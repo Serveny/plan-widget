@@ -4,6 +4,7 @@ import TestOptions from './test-data/plan-widget-options.data'
 import { DemoData } from './demo-data'
 
 document.addEventListener("DOMContentLoaded", () => {
+  const start = Date.now()
   const widget = new PlanWidget(
     document.getElementById('planWidgetContainer'), 
     TestOptions), dd = new DemoData()
@@ -11,4 +12,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // widget.addEntities(demoData.Entities);
   
   console.log('widget', widget)
+  console.log(`Time: ${Date.now() - start}ms`)
 })

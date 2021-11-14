@@ -20,6 +20,7 @@ export interface IDataTableColumn {
   dataField?: string | null | undefined;
   dataType?: DataType | null | undefined;
   width?: string | null | undefined;
+  isSortable?: boolean | null | undefined;
   sortOrder?: string | null | undefined;
   sortIndex?: number | null | undefined;
   textAlign?: HorizontalTextAlign | null | undefined;

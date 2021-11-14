@@ -28,6 +28,7 @@ export class DtHead {
       col.caption ?? `(${col.dataField})`))
     el.appendChild(this.createCellSlider())
     el.style.width = col.width == null ? 'auto' : col.width
+    el.appendChild(this.createSortMark(col.sortOrder, col.sortIndex))
     return el
   }
 
@@ -41,6 +42,33 @@ export class DtHead {
           this._el, this.dtBodyEl, this.layout)
     })
     return textEl
+  }
+
+  private createSortMark(sortOrder: string | null | undefined, 
+    sortIndex: number | null | undefined): SVGElement {
+    const el = Hlp.createSvg('svg'), 
+      pl = Hlp.createSvg('polyline'), 
+      ln = Hlp.createSvg('line'),
+      soTxt = Hlp.createSvg('text')
+    el.classList.add('dt-head-sort-mark')
+    el.setAttribute('width', '512')
+    el.setAttribute('height', '512')
+    el.setAttribute('viewBox', '0 0 512 512')
+    pl.classList.add('dt-head-sort-svg-line')
+    pl.setAttribute('points', '112 244 256 100 400 244')
+    ln.classList.add('dt-head-sort-svg-line')
+    ln.setAttribute('x1', '256')
+    ln.setAttribute('y1', '120')
+    ln.setAttribute('x2', '256')
+    ln.setAttribute('y2', '412')
+    soTxt.classList.add('dt-head-sort-svg-order-text')
+    soTxt.setAttribute('x', '400')
+    soTxt.setAttribute('y', '400')
+    if (sortIndex != null) soTxt.append(sortIndex.toString())
+    if (sortOrder === 'desc') el.setAttribute('transform', 'rotate(180 0 0)')
+    el.setAttribute('opacity', '0.6')
+    el.append(pl, ln, soTxt)
+    return el
   }
 
   private createCellSlider(): HTMLElement {

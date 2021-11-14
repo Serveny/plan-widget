@@ -1,3 +1,4 @@
+@use "sass:math"
 $tableHeadCellSliderWidth: 10px
 $tableHeadCellDropBorder: 3px solid #3ddce7
 $tableHeadHeight: 60px
@@ -64,3 +65,20 @@ $tableHeadLineHeight: $tableHeadHeight - ($tableHeadCellPadding * 2)
   height: $tableHeadHeight
   border-left: $tableHeadCellDropBorder
   z-index: 999
+
+.dt-head-sort-mark
+  position: absolute
+  top: $tableHeadHeight * 0.375
+  right: math.div($tableHeadHeight, 6)
+  height: math.div($tableHeadHeight, 4)
+  width: math.div($tableHeadHeight, 4)
+
+.dt-head-sort-svg-line
+  fill: none
+  stroke: #000
+  stroke-linecap: round
+  stroke-linejoin: round
+  stroke-width: 48px
+
+.dt-head-sort-svg-order-text
+  font-size: math.div($tableHeadHeight, 6)

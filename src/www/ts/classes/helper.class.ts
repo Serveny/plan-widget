@@ -29,4 +29,8 @@ export default class Helper {
     })
     return els
   }
+  static createSvg<K extends keyof SVGElementTagNameMap>(
+    tagName: K): SVGElementTagNameMap[K] {
+      return document.createElementNS("http://www.w3.org/2000/svg", tagName)
+  }
 }

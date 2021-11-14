@@ -13,6 +13,9 @@ const layout: IDataTableLayout = {
       width: '100px',
       textAlign: HorizontalTextAlign.Right,
       caption: 'Number',
+      isSortable: true,
+      sortIndex: 1,
+      sortOrder: 'asc'
     },
     {
       visibleIndex: 1,
@@ -23,6 +26,9 @@ const layout: IDataTableLayout = {
       width: '150px',
       textAlign: HorizontalTextAlign.Left,
       caption: 'Name',
+      isSortable: true,
+      sortIndex: 2,
+      sortOrder: 'desc'
     },
     {
       visibleIndex: 3,
@@ -32,6 +38,7 @@ const layout: IDataTableLayout = {
       dataType: DataType.String,
       textAlign: HorizontalTextAlign.Left,
       caption: 'Description',
+      isSortable: false,
     },
     {
       visibleIndex: 4,
