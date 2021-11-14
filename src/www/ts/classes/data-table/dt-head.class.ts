@@ -47,28 +47,49 @@ export class DtHead {
   private createSortMark(sortOrder: string | null | undefined, 
     sortIndex: number | null | undefined): SVGElement {
     const el = Hlp.createSvg('svg'), 
-      pl = Hlp.createSvg('polyline'), 
-      ln = Hlp.createSvg('line'),
-      soTxt = Hlp.createSvg('text')
+      pl = this.createSortMarkPolyline(), 
+      ln = this.createSortMarkLine(),
+      soTxt = this.createSortMarkIndexText(sortIndex)
+    this.setSortMarkAttributes(el, sortOrder)
+    el.append(pl, ln, soTxt)
+    return el
+  }
+
+  private setSortMarkAttributes(el: SVGElement, 
+    sortOrder: string | null | undefined): void {
     el.classList.add('dt-head-sort-mark')
     el.setAttribute('width', '512')
     el.setAttribute('height', '512')
     el.setAttribute('viewBox', '0 0 512 512')
+    el.setAttribute('opacity', '0.6')
+    if (sortOrder === 'desc') el.setAttribute('transform', 'rotate(180 0 0)')
+  }
+
+  private createSortMarkPolyline(): SVGPolylineElement {
+    const pl = Hlp.createSvg('polyline')
     pl.classList.add('dt-head-sort-svg-line')
     pl.setAttribute('points', '112 244 256 100 400 244')
+    return pl
+  }
+
+  private createSortMarkLine(): SVGLineElement {
+    const ln = Hlp.createSvg('line')
     ln.classList.add('dt-head-sort-svg-line')
     ln.setAttribute('x1', '256')
     ln.setAttribute('y1', '120')
     ln.setAttribute('x2', '256')
     ln.setAttribute('y2', '412')
-    soTxt.classList.add('dt-head-sort-svg-order-text')
-    soTxt.setAttribute('x', '400')
-    soTxt.setAttribute('y', '400')
-    if (sortIndex != null) soTxt.append(sortIndex.toString())
-    if (sortOrder === 'desc') el.setAttribute('transform', 'rotate(180 0 0)')
-    el.setAttribute('opacity', '0.6')
-    el.append(pl, ln, soTxt)
-    return el
+    return ln
+  }
+
+  private createSortMarkIndexText(
+    sortIndex: number | null | undefined): SVGTextElement {
+    const txt = Hlp.createSvg('text')
+    txt.classList.add('dt-head-sort-svg-order-text')
+    txt.setAttribute('x', '400')
+    txt.setAttribute('y', '400')
+    if (sortIndex != null) txt.append(sortIndex.toString())
+    return txt
   }
 
   private createCellSlider(): HTMLElement {
@@ -98,7 +119,8 @@ export class DtHead {
         this._el.style.cursor = ''
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
-        this.refreshLayoutColWidth(parseInt(cell.style.order), cell.style.width)
+        this.refreshLayoutColWidth(
+          parseInt(cell.style.order), cell.style.width)
       }
       window.addEventListener('mousemove', mmHandler)
       window.addEventListener('mouseup', muHandler)
