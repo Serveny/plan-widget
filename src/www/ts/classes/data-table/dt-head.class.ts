@@ -46,23 +46,21 @@ export class DtHead {
 
   private createSortMark(sortOrder: string | null | undefined, 
     sortIndex: number | null | undefined): SVGElement {
-    const el = Hlp.createSvg('svg'), 
-      pl = this.createSortMarkPolyline(), 
-      ln = this.createSortMarkLine(),
-      soTxt = this.createSortMarkIndexText(sortIndex)
-    this.setSortMarkAttributes(el, sortOrder)
-    el.append(pl, ln, soTxt)
+    const el = Hlp.createSvg('svg'), pl = this.createSortMarkPolyline()
+    this.setSortMarkAttributes(el)
+    el.append(pl, this.createSortMarkLine(), 
+      this.createSortMarkIndexText(sortIndex, sortOrder))
+    if (sortOrder === 'desc') 
+      pl.setAttribute('transform', 'rotate(180 255 260)')
     return el
   }
 
-  private setSortMarkAttributes(el: SVGElement, 
-    sortOrder: string | null | undefined): void {
+  private setSortMarkAttributes(el: SVGElement): void {
     el.classList.add('dt-head-sort-mark')
     el.setAttribute('width', '512')
     el.setAttribute('height', '512')
     el.setAttribute('viewBox', '0 0 512 512')
     el.setAttribute('opacity', '0.6')
-    if (sortOrder === 'desc') el.setAttribute('transform', 'rotate(180 0 0)')
   }
 
   private createSortMarkPolyline(): SVGPolylineElement {
@@ -82,12 +80,13 @@ export class DtHead {
     return ln
   }
 
-  private createSortMarkIndexText(
-    sortIndex: number | null | undefined): SVGTextElement {
+  private createSortMarkIndexText(sortIndex: number | null | undefined, 
+    sortOrder: string | null | undefined): SVGTextElement {
     const txt = Hlp.createSvg('text')
     txt.classList.add('dt-head-sort-svg-order-text')
-    txt.setAttribute('x', '400')
-    txt.setAttribute('y', '400')
+    txt.setAttribute('x', '330')
+    txt.setAttribute('y', sortOrder === 'desc' ? '250' : '500')
+    txt.setAttribute('textLength', '190px')
     if (sortIndex != null) txt.append(sortIndex.toString())
     return txt
   }

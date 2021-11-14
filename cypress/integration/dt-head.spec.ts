@@ -49,9 +49,17 @@ describe('testing data table head', () => {
           })
 
         if (col.isSortable === true && col.sortOrder != null)
-          it('has sort mark', () =>
+          it('has sort mark', () => {
             cy.contains('.dt-head-cell-text', col.caption ?? '').parent()
-              .find('.dt-head-sort-mark').should('exist'))
+              .find('.dt-head-sort-mark').as('sortMark').should('exist')
+            if (col.sortIndex != null)
+              cy.get('@sortMark').find('dt-head-sort-svg-order-text')
+                .should('contain.text', col.sortIndex)
+          })
+            
+          it('has sort mark', () =>
+            cy.contains('.dt-head-cell-text', col.caption ?? '')
+              .parent().find('.dt-head-sort-mark').should('exist'))
       } else it('head cell does not exist', () =>
         cy.contains('.dt-head-cell', col.caption ?? '')
           .should('not.exist'))
