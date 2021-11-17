@@ -8,8 +8,8 @@ import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interfac
 
 export class PlanWidget /*implements IPlanWidget*/ {
   private readonly gridSlider: GridSlider
-  private readonly resourceTable: DataTable
-  private readonly entityTable: DataTable
+  private readonly resourceTable: DataTable<IResourceView>
+  private readonly entityTable: DataTable<IEntityView>
   private readonly timeScaler: TimeScaler
   private readonly cache: CacheService
   

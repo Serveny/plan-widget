@@ -35,7 +35,7 @@ export class DtService {
   getBodyCellsByOrder(order: number): DtBodyCell[] {
     const cells: DtBodyCell[] = []
     this.rows.forEach(row => {
-      const cell = row.cells.find(c => c.order === order)
+      const cell = [...row.cells.values()].find(c => c.order === order)
       if(cell != null) cells.push(cell)
     })
     return cells

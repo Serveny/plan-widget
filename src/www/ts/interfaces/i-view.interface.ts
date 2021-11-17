@@ -7,6 +7,10 @@ export interface IView {
   ID: string;
 }
 
+export interface IUpdateView extends IView {
+  [x: string]: unknown;
+}
+
 export interface IResourceView extends IView {
   Name?: string;
   CalendarID?: string;

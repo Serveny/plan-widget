@@ -156,7 +156,7 @@ export class DtHeadMoveCell {
 
   private fillMoves(moves: Move[]): void {
     moves.forEach(mv => {
-      mv.cells = this.getBodyCellsByOrder(mv.fromOrder)
+      mv.cells = this.dts.getBodyCellsByOrder(mv.fromOrder)
       mv.col = this.dts.layout?.columns?.find(col =>
         col.visibleIndex === mv.fromOrder)
     })
@@ -170,15 +170,6 @@ export class DtHeadMoveCell {
     if (this.dts.layout != null) moves.forEach(mv => {
       if (mv.col != null) mv.col.visibleIndex = mv.toOrder
     })
-  }
-
-  private getBodyCellsByOrder(order: number): DtBodyCell[] {
-    const cells: DtBodyCell[] = []
-    this.dts.rows.forEach(row => {
-      const cell = row.cells.find(c => c.order === order)
-      if(cell != null) cells.push(cell)
-    })
-    return cells
   }
 }
 

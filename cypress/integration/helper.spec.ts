@@ -87,4 +87,8 @@ describe('testing helper', () => {
     it('returns svg line element', () => expect(Helper.
       createSvg('line') instanceof SVGLineElement).to.be.true)
   })
+  describe('testing objToMap()', () => {
+    it('returns svg element', () => expect(Helper
+      .objToMap({foo: 'bar'}).get('foo')).eq('bar'))
+  })
 })
