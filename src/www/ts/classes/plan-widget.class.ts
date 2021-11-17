@@ -18,8 +18,8 @@ export class PlanWidget /*implements IPlanWidget*/ {
     const startDate = options.start ?? new Date()
     this.cache = new CacheService(startDate, this.addSeconds(startDate, 20))
     this.gridSlider = new GridSlider(containerEl)
-    this.resourceTable = new DataTable(options.resourceTableOptions)
-    this.entityTable = new DataTable(options.entityTableOptions)
+    this.resourceTable = new DataTable(options.resourceTableOptions ?? {})
+    this.entityTable = new DataTable(options.entityTableOptions ?? {})
     this.timeScaler = new TimeScaler(this.cache)
 
     this.gridSlider.fieldLeft.appendChild(this.resourceTable.el)

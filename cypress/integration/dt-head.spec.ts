@@ -12,7 +12,7 @@ describe('testing data table head', () => {
   })
 
   const getRowCells = (order: number): Cypress.Chainable =>
-    cy.get(`.dt-row-cell[style*="order: ${order};"]`)
+    cy.get(`.dt-body-cell[style*="order: ${order};"]`)
 
   cols?.forEach(col => {
     describe(`testing head cell '${col.caption}'`, () => {
@@ -53,13 +53,9 @@ describe('testing data table head', () => {
             cy.contains('.dt-head-cell-text', col.caption ?? '').parent()
               .find('.dt-head-sort-mark').as('sortMark').should('exist')
             if (col.sortIndex != null)
-              cy.get('@sortMark').find('dt-head-sort-svg-order-text')
+              cy.get('@sortMark').find('.dt-head-sort-svg-order-text')
                 .should('contain.text', col.sortIndex)
           })
-            
-          it('has sort mark', () =>
-            cy.contains('.dt-head-cell-text', col.caption ?? '')
-              .parent().find('.dt-head-sort-mark').should('exist'))
       } else it('head cell does not exist', () =>
         cy.contains('.dt-head-cell', col.caption ?? '')
           .should('not.exist'))

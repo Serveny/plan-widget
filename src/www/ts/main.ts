@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('planWidgetContainer'), 
     TestOptions), dd = new DemoData()
   widget.addResources(dd.Resources)
-  // widget.addEntities(demoData.Entities);
+  //widget.addEntities(dd.Entities)
   
   console.log('widget', widget)
   console.log(`Time: ${Date.now() - start}ms`)

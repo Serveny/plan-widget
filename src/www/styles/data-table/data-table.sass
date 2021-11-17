@@ -21,6 +21,7 @@ $tableLineHeight: $tableRowHeight - ($tableCellPadding * 2)
   display: inline-flex 
   flex-direction: row
   border-bottom: $tableBorder
+  height: $tableRowHeight
 
 .dt-cell
   display: inline-block
@@ -31,8 +32,7 @@ $tableLineHeight: $tableRowHeight - ($tableCellPadding * 2)
   text-align: left
   border-right: $tableBorder
 
-.dt-row-cell
-  @extend .dt-cell
+.dt-body-cell
   height: $tableRowHeight
   line-height: $tableLineHeight
   padding: $tableCellPadding

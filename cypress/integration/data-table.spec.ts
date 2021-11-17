@@ -22,7 +22,6 @@ describe('testing data-table', () => {
   const title = 'Test Table'
   it(`has title '${title}'`, () => {
     dataTable.setTitle(title)
-    expect(dataTable.layout?.title).equal(title)
     cy.contains('.dt-head', title).should('be.visible')
   })
 
@@ -34,7 +33,7 @@ describe('testing data-table', () => {
       cy.get(`.dt-row[style*="order: ${i};"]`).should('exist')
       .then(el => TestLayout.columns?.forEach(col => {
         const colEl = el.children(
-          `.dt-row-cell[style*="order: ${col.visibleIndex};"]`)
+          `.dt-body-cell[style*="order: ${col.visibleIndex};"]`)
         expect(colEl.length).eq(col.visible ? 1 : 0)
         if (col.visible) {
           expect(colEl.css('width')).eq(col.width)

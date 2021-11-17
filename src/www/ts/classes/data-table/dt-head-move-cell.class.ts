@@ -1,5 +1,7 @@
-import { IDataTableColumn, IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
+import { IDataTableColumn } from '../../interfaces/i-data-table-layout.interface'
 import Hlp from '../helper.class'
+import { DtBodyCell } from './dt-body-cell.class'
+import { DtService } from './dt-service.class'
 
 export class DtHeadMoveCell {
   private readonly dragCellLeft: number
@@ -14,11 +16,9 @@ export class DtHeadMoveCell {
   constructor(
     ev: MouseEvent,
     private readonly dragCell: HTMLElement,
-    private readonly headEl: HTMLElement,
-    private readonly bodyEl: HTMLElement,
-    private readonly layout: IDataTableLayout | null | undefined,
+    private readonly dts: DtService
   ) {
-    this.cells = this.getChildrenAsc(headEl)
+    this.cells = this.getChildrenAsc(this.dts.head.el)
     this.dragCellLeft = ev.x - dragCell.offsetLeft,
       this.dummyEl = this.createMoveDummy(
         dragCell.textContent, dragCell.offsetWidth)
@@ -47,7 +47,7 @@ export class DtHeadMoveCell {
     if (this.dragCTxtEl != null) this.dragCTxtEl.style.opacity = '0'
     this.dummyEl.style.left = `${x - this.dragCellLeft}px`
     this.dropPreviewEl.style.left = `${x - this.dragCellLeft}px`
-    this.headEl.append(this.dummyEl, this.dropPreviewEl)
+    this.dts.head.el.append(this.dummyEl, this.dropPreviewEl)
   }
 
   private dragHandler(x: number): void {
@@ -156,22 +156,29 @@ export class DtHeadMoveCell {
 
   private fillMoves(moves: Move[]): void {
     moves.forEach(mv => {
-      mv.els = Hlp.getChildrenByOrder(this.bodyEl, 
-        '.dt-row-cell', mv.fromOrder)
-      mv.col = this.layout?.columns?.find(col =>
+      mv.cells = this.getBodyCellsByOrder(mv.fromOrder)
+      mv.col = this.dts.layout?.columns?.find(col =>
         col.visibleIndex === mv.fromOrder)
     })
   }
 
   private moveBodyCols(moves: Move[]): void {
-    moves.forEach(mv => mv.els.forEach(el =>
-      el.style.order = mv.toOrder.toString()))
+    moves.forEach(mv => mv.cells.forEach(cell => cell.order = mv.toOrder))
   }
 
   private refreshLayout(moves: Move[]): void {
-    if (this.layout != null) moves.forEach(mv => {
+    if (this.dts.layout != null) moves.forEach(mv => {
       if (mv.col != null) mv.col.visibleIndex = mv.toOrder
     })
+  }
+
+  private getBodyCellsByOrder(order: number): DtBodyCell[] {
+    const cells: DtBodyCell[] = []
+    this.dts.rows.forEach(row => {
+      const cell = row.cells.find(c => c.order === order)
+      if(cell != null) cells.push(cell)
+    })
+    return cells
   }
 }
 
@@ -184,7 +191,7 @@ class DropPosition {
 }
 
 class Move {
-  els: HTMLElement[] = []
+  cells: DtBodyCell[] = []
   col?: IDataTableColumn
   constructor(
     public fromOrder: number,

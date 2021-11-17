@@ -1,72 +1,51 @@
-import Hlp from '../helper.class'
-import { IDataTableColumn, IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
-import { DtHead } from './dt-head.class'
+import { IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
 import { IView } from '../../interfaces/i-view.interface'
-import { HorizontalTextAlign } from '../../enums/horizontal-text-align.enum'
+import Hlp from '../helper.class'
+import { DtBodyRow } from './dt-body-row.class'
+import { DtService } from './dt-service.class'
 
 export class DataTable {
-  readonly el: HTMLDivElement
-  private readonly head: DtHead
-  private readonly bodyEl: HTMLDivElement
-
-  private _layout: IDataTableLayout = {}
-  get layout(): IDataTableLayout | null { return this._layout }
+  private readonly dts: DtService
+  get el(): HTMLDivElement { return this.dts.el }
 
   constructor(layout: IDataTableLayout | null | undefined) {
-    this.el = Hlp.createDiv('data-table', 'dt-scroll-container')
-    const tableEl = Hlp.createDiv('dt-table')
-    this.bodyEl = Hlp.createDiv('dt-body')
-    this.head = new DtHead(layout, this.bodyEl)
-
-    tableEl.append(this.head.el)
-    tableEl.append(this.bodyEl)
-    this.el.append(tableEl)
-
-    if (layout != null) this.setLayout(layout)
+    this.dts = new DtService(layout ?? {})
   }
 
   appendTo(containerEl: HTMLElement): DataTable {
-    containerEl.appendChild(this.el)
+    containerEl.appendChild(this.dts.el)
     return this
   }
 
   setLayout(layout: IDataTableLayout | null | undefined): void {
-    this._layout = layout ?? {}
-    this.head.fill(layout)
+    return this.dts.setLayout(layout ?? {})
   }
 
   setTitle(title: string): void {
-    this._layout.title = title
-    if (Hlp.isArrNullOrEmpty(this._layout.columns))
-      this.head.fill(this._layout)
+    const layout = this.dts.layout
+    if (layout != null) {
+      layout.title = title
+      if (Hlp.isArrNullOrEmpty(layout.columns))
+        this.dts.head.fill(layout)
+    }
   }
 
-  addRows<TView extends IView>(rows: TView[]): void {
-    rows.forEach((row, i) => this.bodyEl.appendChild(
-      this.createRow(row, i)))
+  addRows(rows: IView[]): void {
+    rows.forEach(rowData => this.addRow(rowData))
   }
 
-  private createRow<TView extends IView>(row: TView, 
-    order: number): HTMLDivElement {
-    const rowEl = Hlp.createDiv('dt-row'),
-      rowMap = new Map<string, unknown>(Object.entries(row))
-    rowEl.style.order = order.toString()
-    this._layout.columns?.forEach(col => {
-      if (col.visible) rowEl.appendChild(
-        this.createCell(rowMap, col))
-    })
-    return rowEl
+  addRow(rowData: IView): void {
+    const dtRow = new DtBodyRow(this.dts.rows.length, rowData, this.dts.layout)
+    this.dts.rows.push(dtRow)
+    this.dts.bodyEl.appendChild(dtRow.el)
   }
 
-  private createCell(rowMap: Map<string, unknown>,
-    col: IDataTableColumn): HTMLDivElement {
-    const cell = Hlp.createDiv('dt-row-cell')
-    if (col.dataField != null)
-      cell.textContent = rowMap.get(col.dataField) as string
-    cell.style.order = col.visibleIndex.toString()
-    cell.style.width = col.width ?? 'auto'
-    if (col.textAlign != null)
-      cell.style.textAlign = HorizontalTextAlign[col.textAlign]
-    return cell
-  }
+  // updateRows(rows: IView[]): void {
+  //   rows.forEach(rowData => this.updateRow(rowData))
+  // }
+
+  // updateRow(rowData: IView): void {
+  //   const rowObj = this.rows.find(rowObj => rowObj.data.ID === rowData.ID)
+  //   if (rowObj != null) rowObj.update(rowData)
+  // }
 }
