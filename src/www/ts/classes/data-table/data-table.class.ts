@@ -8,8 +8,9 @@ export class DataTable<TView extends IView> {
   private readonly dts: DtService
   get el(): HTMLDivElement { return this.dts.el }
 
-  constructor(layout: IDataTableLayout | null | undefined) {
-    this.dts = new DtService(layout ?? {})
+  constructor(id: string, layout: IDataTableLayout | null | undefined, 
+    locale: string | null | undefined) {
+    this.dts = new DtService(id, layout ?? {}, locale ?? 'en')
   }
 
   appendTo(containerEl: HTMLElement): DataTable<TView> {
@@ -32,9 +33,10 @@ export class DataTable<TView extends IView> {
 
   addRows(rows: TView[]): void {
     rows.forEach(rowData => this.addRow(rowData))
+    this.dts.sortRowsByLayout()
   }
 
-  addRow(rowData: TView): void {
+  private addRow(rowData: TView): void {
     const dtRow = new DtBodyRow(this.dts.rows.length, rowData, this.dts.layout)
     this.dts.rows.push(dtRow)
     this.dts.bodyEl.appendChild(dtRow.el)
@@ -42,9 +44,10 @@ export class DataTable<TView extends IView> {
 
   updateRows(rows: IUpdateView[]): void {
     rows.forEach(rowData => this.updateRow(rowData))
+    this.dts.sortRowsByLayout()
   }
 
-  updateRow(rowData: IUpdateView): void {
+  private updateRow(rowData: IUpdateView): void {
     const rowObj = this.dts.rows.find(rowObj => rowObj.data.ID === rowData.ID)
     if (rowObj != null) rowObj.updateCells(rowData)
   }
@@ -53,7 +56,7 @@ export class DataTable<TView extends IView> {
     rowIds.forEach(rowId => this.removeRow(rowId))
   }
 
-  removeRow(rowId: string): void {
+  private removeRow(rowId: string): void {
     const i = this.dts.rows.findIndex(row => row.data.ID === rowId)
     this.dts.rows[i].el.remove()
     this.dts.rows.splice(i, 1)

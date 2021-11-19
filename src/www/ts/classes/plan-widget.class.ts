@@ -18,8 +18,10 @@ export class PlanWidget /*implements IPlanWidget*/ {
     const startDate = options.start ?? new Date()
     this.cache = new CacheService(startDate, this.addSeconds(startDate, 20))
     this.gridSlider = new GridSlider(containerEl)
-    this.resourceTable = new DataTable(options.resourceTableOptions ?? {})
-    this.entityTable = new DataTable(options.entityTableOptions ?? {})
+    this.resourceTable = new DataTable('plw-resource-table', 
+      options.resourceTableOptions, options.locale)
+    this.entityTable = new DataTable('plw-entity-table',
+      options.entityTableOptions, options.locale)
     this.timeScaler = new TimeScaler(this.cache)
 
     this.gridSlider.fieldLeft.appendChild(this.resourceTable.el)
@@ -29,12 +31,28 @@ export class PlanWidget /*implements IPlanWidget*/ {
     this.timeScaler.paint()
   }
 
-  addResources(resources: IResourceView[]): void {
+  addResources(resources: IResourceView[]): void { 
     this.resourceTable.addRows(resources)
   }
 
-  addEntities(resources: IEntityView[]): void {
-    this.entityTable.addRows(resources)
+  addEntities(entities: IEntityView[]): void {
+    this.entityTable.addRows(entities)
+  }
+
+  updateResources(resources: IResourceView[]): void {
+    this.resourceTable.updateRows(resources)
+  }
+
+  updateEntities(entities: IEntityView[]): void {
+    this.entityTable.updateRows(entities)
+  }
+  
+  removeResources(resourceIds: string[]): void {
+    this.resourceTable.removeRows(resourceIds)
+  }
+
+  removeEntities(entityIds: string[]): void {
+    this.entityTable.removeRows(entityIds)
   }
 
   // private addMonths(dateIn: Date, months: number): Date {
