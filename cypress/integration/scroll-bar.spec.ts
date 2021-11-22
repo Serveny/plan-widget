@@ -6,7 +6,7 @@ describe('testing scroll bar', () => {
   })
 
   it('has scroll bar elements', () => {
-    cy.get('.gs-field-middle .plw-sb-x').as('sbx').should('exist')
+    cy.get('.gs-field-middle .plw-sb-bar-x').as('sbx').should('exist')
     cy.get('@sbx').find('.plw-sb-resize-field-left').should('exist')
     cy.get('@sbx').find('.plw-sb-resize-field-right').should('exist') 
   })
