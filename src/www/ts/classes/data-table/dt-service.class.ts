@@ -15,7 +15,8 @@ export class DtService {
   private _rows: DtBodyRow[] = []
   get rows(): DtBodyRow[] { return this._rows }
 
-  constructor(id: string, private _layout: IDataTableLayout, private _locale: string) {
+  constructor(id: string, private _layout: IDataTableLayout, 
+    private _locale: string) {
     this.el = Hlp.createDiv('data-table', 'dt-scroll-container')
     this.el.classList.add(id)
     const tableEl = Hlp.createDiv('dt-table')

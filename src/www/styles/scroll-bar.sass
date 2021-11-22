@@ -1,0 +1,57 @@
+@use "sass:math"
+$scrollBarSize: 20px
+$scrollBarMargin: 5px
+$resizeFieldSize: 10px
+  
+.plw-sb-con
+  position: absolute
+
+.plw-scroll-bar
+  box-sizing: border-box
+  border: 1px solid #FFF
+  border-radius: math.div($scrollBarSize, 4)
+  display: grid
+  backdrop-filter: blur(6px)
+  background-color: rgba(255,255,255,0.05)
+
+.plw-scroll-bar:hover
+  background-color: rgba(255,255,255,0.1)
+
+.plw-sb-con-x
+  height: $scrollBarSize
+  bottom: $scrollBarMargin
+
+.plw-sb-con-y
+  width: $scrollBarSize
+  right: $scrollBarMargin
+
+.plw-sb-bar-x
+  height: $scrollBarSize
+  grid-template-columns: $resizeFieldSize auto $resizeFieldSize
+
+.plw-sb-bar-y
+  right: $scrollBarMargin
+  width: $scrollBarSize
+  grid-template-rows: $resizeFieldSize auto $resizeFieldSize
+
+.plw-sb-resize-field-x
+  cursor: ew-resize
+
+.plw-sb-resize-field-left
+  @extend .plw-sb-resize-field-x
+  grid-column: 1
+
+.plw-sb-resize-field-right
+  @extend .plw-sb-resize-field-x
+  grid-column: 3
+
+.plw-sb-resize-field-y
+  cursor: ns-resize
+
+.plw-sb-resize-field-up
+  @extend .plw-sb-resize-field-y
+  grid-row: 1
+
+.plw-sb-resize-field-down
+  @extend .plw-sb-resize-field-y
+  grid-row: 3

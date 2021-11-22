@@ -5,8 +5,8 @@ import { IResourceView } from '../../src/www/ts/interfaces/i-view.interface'
 import TestLayout from '../../src/www/ts/test-data/resource-table-layout.data'
 
 describe('testing data-table', () => {
-  const dataTable = new DataTable<IResourceView>('test-id', null, 'en'), 
-    dd = new DemoData()
+  const dataTable = new DataTable<IResourceView>('test-id', null, 'en', 
+    true, true), dd = new DemoData()
 
   before('visit test site', () => {
     cy.visit('integration-test.html')

@@ -20,6 +20,10 @@ export class TimeScaler {
     window.addEventListener('resize', () => this.paint())
   }
 
+  appendTo(containerEl: HTMLElement): void {
+    containerEl.appendChild(this.el)
+  }
+
   paint(): void {
     const rect = this.el.getBoundingClientRect()
     this.widthPx = rect.width

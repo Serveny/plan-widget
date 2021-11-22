@@ -4,7 +4,7 @@ describe('testing data table head', () => {
   const cols = TestLayout.columns,
     visCols = cols?.filter(col =>
       col.visible === true) ?? [],
-      dtC = '.plw-resource-table'
+      dtC = '.gs-field-left'
 
   before('visit test site', () => {
     cy.visit('/dist/index.html')

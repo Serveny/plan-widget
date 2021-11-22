@@ -9,6 +9,7 @@ $tableLineHeight: $tableRowHeight - ($tableCellPadding * 2)
 
 .dt-table
   min-width: 100%
+  width: fit-content
 
 .dt-body
   display: flex 
@@ -38,5 +39,6 @@ $tableLineHeight: $tableRowHeight - ($tableCellPadding * 2)
   padding: $tableCellPadding
 
 .dt-scroll-container
-  overflow: scroll
+  overflow: hidden
   height: 100%
+  position: relative

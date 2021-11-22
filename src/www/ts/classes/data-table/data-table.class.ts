@@ -1,20 +1,33 @@
 import { IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
 import { IUpdateView, IView } from '../../interfaces/i-view.interface'
 import Hlp from '../helper.class'
+import { ScrollBarX } from '../scroll-bar/scroll-bar-x.class'
+import { ScrollBarY } from '../scroll-bar/scroll-bar-y.class'
 import { DtBodyRow } from './dt-body-row.class'
 import { DtService } from './dt-service.class'
 
 export class DataTable<TView extends IView> {
   private readonly dts: DtService
   get el(): HTMLDivElement { return this.dts.el }
+  private scrollBarX: ScrollBarX | null = null
+  private scrollBarY: ScrollBarY | null = null
 
-  constructor(id: string, layout: IDataTableLayout | null | undefined, 
-    locale: string | null | undefined) {
+  constructor(id: string, layout: IDataTableLayout | null | undefined,
+    locale: string | null | undefined,
+    isScrollBarX: boolean, isScrollBarY: boolean) {
     this.dts = new DtService(id, layout ?? {}, locale ?? 'en')
+    if (isScrollBarX) this.scrollBarX = new ScrollBarX(false, 
+      isScrollBarY ? [5, 25] : [5, 5])
+    if (isScrollBarY) this.scrollBarY = new ScrollBarY(false,
+      isScrollBarX ? [65, 25] : [65, 5])
   }
 
   appendTo(containerEl: HTMLElement): DataTable<TView> {
     containerEl.appendChild(this.dts.el)
+    this.scrollBarX?.appendTo(this.dts.el)
+    this.scrollBarX?.bindBarSizeToEls(this.dts.el, this.dts.bodyEl)
+    this.scrollBarY?.appendTo(this.dts.el)
+    this.scrollBarY?.bindBarSizeToEls(this.dts.el, this.dts.bodyEl)
     return this
   }
 

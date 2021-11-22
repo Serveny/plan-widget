@@ -89,6 +89,15 @@ describe('testing helper', () => {
   })
   describe('testing objToMap()', () => {
     it('returns svg element', () => expect(Helper
-      .objToMap({foo: 'bar'}).get('foo')).eq('bar'))
+      .objToMap({ foo: 'bar' }).get('foo')).eq('bar'))
+  })
+  describe('testing clamp()', () => {
+    const min = 0, max = 100
+    it('returns 50', () => expect(Helper
+      .clamp(50, min, max)).eq(50))
+    it('returns 100', () => expect(Helper
+      .clamp(150, min, max)).eq(100))
+    it('returns 0', () => expect(Helper
+      .clamp(-50, min, max)).eq(0))
   })
 })

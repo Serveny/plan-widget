@@ -36,4 +36,7 @@ export default class Helper {
   static objToMap(obj: object): Map<string, unknown> {
     return new Map<string, unknown>(Object.entries(obj))
   }
+  static clamp(val: number, min: number, max: number): number {
+    return val > max ? max : val < min ? min : val
+  }
 }

@@ -5,13 +5,18 @@ import { CacheService } from '../services/cache.service'
 import { IEntityView, IResourceView } from '../interfaces/i-view.interface'
 import { DataTable } from './data-table/data-table.class'
 import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interface'
+import { ScrollBarX } from './scroll-bar/scroll-bar-x.class'
+import Helper from './helper.class'
+import { ScrollBarY } from './scroll-bar/scroll-bar-y.class'
 
 export class PlanWidget /*implements IPlanWidget*/ {
+  private readonly cache: CacheService
   private readonly gridSlider: GridSlider
   private readonly resourceTable: DataTable<IResourceView>
   private readonly entityTable: DataTable<IEntityView>
   private readonly timeScaler: TimeScaler
-  private readonly cache: CacheService
+  private readonly scrollBarX: ScrollBarX
+  private readonly scrollBarY: ScrollBarY
   
   constructor(containerEl: HTMLElement | null, options: IPlanWidgetOptions) {
     if (containerEl == null) throw '[PlanWidget] containerEl is null'
@@ -19,14 +24,20 @@ export class PlanWidget /*implements IPlanWidget*/ {
     this.cache = new CacheService(startDate, this.addSeconds(startDate, 20))
     this.gridSlider = new GridSlider(containerEl)
     this.resourceTable = new DataTable('plw-resource-table', 
-      options.resourceTableOptions, options.locale)
+      options.resourceTableOptions, options.locale, true, false)
     this.entityTable = new DataTable('plw-entity-table',
-      options.entityTableOptions, options.locale)
+      options.entityTableOptions, options.locale, true, true)
     this.timeScaler = new TimeScaler(this.cache)
+    this.scrollBarX = new ScrollBarX(true, [5, 25])
+    this.scrollBarY = new ScrollBarY(true, [65, 25])
 
-    this.gridSlider.fieldLeft.appendChild(this.resourceTable.el)
-    this.gridSlider.fieldMiddle.appendChild(this.timeScaler.el)
-    this.gridSlider.fieldRight.appendChild(this.entityTable.el)
+    this.resourceTable.appendTo(this.gridSlider.fieldLeft)
+    const conMiddle = Helper.createDiv('dt-scroll-container')
+    this.gridSlider.fieldMiddle.appendChild(conMiddle)
+    this.timeScaler.appendTo(conMiddle)
+    this.scrollBarX.appendTo(conMiddle)
+    this.scrollBarY.appendTo(conMiddle)
+    this.entityTable.appendTo(this.gridSlider.fieldRight)
 
     this.timeScaler.paint()
   }
