@@ -22,7 +22,7 @@ export class CacheService {
     this.focusStartDate = this.startDate
     this.focusEndDate = this.endDate
     this.focusHorizonSec = this.horizonSec
-    console.log('cache: ', startDate, endDate, this.focusHorizonSec)
+    //console.log('cache: ', startDate, endDate, this.focusHorizonSec)
   }
 
   setHorizon(start: Date, end: Date): void {

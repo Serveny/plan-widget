@@ -52,4 +52,13 @@ export class ScrollBarX extends ScrollBar {
   protected getStartPxByEv(ev: MouseEvent, mdLeftPx: number): number {
     return ev.x - this.conStartPx + mdLeftPx
   }
+
+  protected getScrollSize(): number {
+    return this.contentEl?.offsetWidth ?? 0
+  }
+
+  protected setScrollContentPos(): void {
+    if (this.scrollConEl != null) this.scrollConEl.scrollLeft = 
+      this._scrollConOnePctPx * this.barStartPct
+  }
 }

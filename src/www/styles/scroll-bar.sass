@@ -5,13 +5,17 @@ $resizeFieldSize: 10px
   
 .plw-sb-con
   position: absolute
+  z-index: 99
+  border: 1px solid rgba(200,200,200,0.2)
+  background-color: rgba(200,200,200,0.1)
+  border-radius: math.div($scrollBarSize, 4)
 
 .plw-scroll-bar
   box-sizing: border-box
   border: 1px solid #FFF
-  border-radius: math.div($scrollBarSize, 4)
   display: grid
   background-color: rgba(255,255,255,0.05)
+  border-radius: math.div($scrollBarSize, 4)
 
 .plw-scroll-bar:hover
   background-color: rgba(255,255,255,0.1)

@@ -11,6 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   widget.addResources(dd.Resources)
   widget.addEntities(dd.Entities)
   
-  console.log('widget', widget)
+  //console.log('widget', widget)
   console.log(`Time: ${Date.now() - start}ms`)
 })

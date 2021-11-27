@@ -4,6 +4,7 @@ import Hlp from '../helper.class'
 export abstract class ScrollBar {
   get start(): number { return this._barStartPct }
   get end(): number { return this._barEndPct }
+  onChangedPct?: ((startPct: number, endPct: number) => void)
 
   // Container
   protected readonly conEl = Hlp.createDiv('plw-sb-con')
@@ -15,13 +16,16 @@ export abstract class ScrollBar {
   // Bar
   protected readonly barEl = Hlp.createDiv('plw-scroll-bar')
   private _barStartPx = 0
+  protected get barStartPct(): number { return this._barStartPct }
   private _barStartPct = 0
 
   private _barEndPx = 0
+  protected get barEndPct(): number { return this._barEndPct }
   private _barEndPct = 100
 
   protected scrollConEl?: HTMLElement
   protected contentEl?: HTMLElement
+  protected _scrollConOnePctPx = 0
 
   constructor(
     protected readonly conMarginStart: number,
@@ -44,8 +48,9 @@ export abstract class ScrollBar {
     this.scrollConEl = scrollConEl
     this.contentEl = contentEl
     this.setSizes()
-    new ResizeObserver((): void => this.setSizes())
-      .observe(scrollConEl)
+    const rsObs = new ResizeObserver((): void => this.setSizes())
+    rsObs.observe(scrollConEl)
+    rsObs.observe(contentEl)
   }
 
   setBarByPct(startPct: number, endPct: number): void {
@@ -54,6 +59,7 @@ export abstract class ScrollBar {
     this._barStartPx = this._barStartPct * this._conOnePctPx
     this._barEndPx = this._barEndPct * this._conOnePctPx
     this.drawBar(this._barStartPx, this._barEndPx - this._barStartPx)
+    this.callOnChanged()
   }
 
   // =======================================================
@@ -76,6 +82,10 @@ export abstract class ScrollBar {
 
   protected abstract createResizeEls(): void
 
+  protected abstract getScrollSize(): number
+
+  protected abstract setScrollContentPos(): void
+
   // =======================================================
 
   private setDimensionByEl(el: HTMLElement): void {
@@ -91,6 +101,7 @@ export abstract class ScrollBar {
   private setSizes(): void {
     this.setDimensionByEl(this.conEl)
     this.setBarSize()
+    this._scrollConOnePctPx = this.getScrollSize() / 100
   }
 
   private setBarByPx(startPx: number, endPx: number): void {
@@ -100,13 +111,14 @@ export abstract class ScrollBar {
       this._barStartPx = startPx
       this._barEndPx = endPx
       this.drawBar(this._barStartPx, this._barEndPx - this._barStartPx)
+      this.callOnChanged()
     }
   }
 
   private addMove(mdEv: MouseEvent): void {
     const mdPosPx = this.getBarClickPosPxByEv(mdEv)
     document.body.style.userSelect = 'none'
-    document.body.style.cursor = 'grab'
+    document.body.style.cursor = 'default'
     const moveBar = (ev: MouseEvent): void => {
       const startPx = this.getStartPxByEv(ev, mdPosPx)
       this.setBarByPx(startPx, startPx + (this._barEndPx - this._barStartPx))
@@ -127,5 +139,11 @@ export abstract class ScrollBar {
   private setBarSize(): void {
     const pos = this.getContentElPosPct()
     this.setBarByPct(pos[0], pos[1])
+  }
+
+  private callOnChanged(): void {
+    this.setScrollContentPos()
+    if (this.onChangedPct != null) 
+      this.onChangedPct(this._barStartPct, this._barEndPct)
   }
 }

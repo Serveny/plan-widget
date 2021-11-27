@@ -24,9 +24,9 @@ export class DataTable<TView extends IView> {
 
   appendTo(containerEl: HTMLElement): DataTable<TView> {
     containerEl.appendChild(this.dts.el)
-    this.scrollBarX?.appendTo(this.dts.el)
+    this.scrollBarX?.appendTo(containerEl)
     this.scrollBarX?.bindBarSizeToEls(this.dts.el, this.dts.bodyEl)
-    this.scrollBarY?.appendTo(this.dts.el)
+    this.scrollBarY?.appendTo(containerEl)
     this.scrollBarY?.bindBarSizeToEls(this.dts.el, this.dts.bodyEl)
     return this
   }

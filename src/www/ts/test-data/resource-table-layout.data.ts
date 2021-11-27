@@ -32,8 +32,8 @@ const layout: IDataTableLayout = {
     },
     {
       visibleIndex: 3,
-      visible: false,
-
+      visible: true,
+      width: '600px',
       dataField: 'Desc',
       dataType: DataType.String,
       textAlign: HorizontalTextAlign.Left,
