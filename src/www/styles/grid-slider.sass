@@ -1,4 +1,4 @@
-$slider-width: 5px
+$sliderWidth: 5px
 
 .gs-container
   position: relative
@@ -17,7 +17,7 @@ $slider-width: 5px
 .gs-slider
   @extend .gs-pos
   background-color: #e0e0e0
-  width: $slider-width
+  width: $sliderWidth
   cursor: ew-resize
   z-index: 101
   user-select: none
@@ -33,7 +33,7 @@ $slider-width: 5px
 
 .gs-field-middle
   @extend .gs-field
-  left: calc(20% + #{$slider-width})
+  left: calc(20% + #{$sliderWidth})
   right: 20%
 
 .gs-slider-right
@@ -43,7 +43,4 @@ $slider-width: 5px
 .gs-field-right
   @extend .gs-field
   right: 0
-  left: calc(80% + #{$slider-width})
-
-:export
-  sliderWidth: $slider-width
+  left: calc(80% + #{$sliderWidth})

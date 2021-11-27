@@ -2,38 +2,54 @@ import { ScrollBar } from './scroll-bar.class'
 import Hlp from '../helper.class'
 
 export class ScrollBarY extends ScrollBar {
-  constructor(isResize: boolean, margin = [0, 0]) {
-    super(margin)
+  constructor(conMargin = [0,0], isEnabledZoom = false) {
+    super(conMargin[0], conMargin[1], isEnabledZoom)
     this.conEl.classList.add('plw-sb-con-y')
     this.barEl.classList.add('plw-sb-bar-y')
-    if (isResize) this.createResizeEls()
   }
 
-  private createResizeEls(): void {
+  protected createResizeEls(): void {
     const resizeFieldLeft = Hlp.createDiv('plw-sb-resize-field-up'),
       resizeFieldRight = Hlp.createDiv('plw-sb-resize-field-down')
     this.barEl.append(resizeFieldLeft, resizeFieldRight)
   }
 
-  protected setContainerPosByParent(parentEl: HTMLElement): void {
-    this.conEl.style.top = `${this.margin[0]}px`
-    this.conEl.style.bottom = `${this.margin[1]}px`
-    this.setDimension(parentEl.offsetLeft + this.margin[0],
-      parentEl.offsetHeight - this.margin[1])
+  protected getStartPxOfEl(el: HTMLElement): number {
+    return el.offsetTop - this.conMarginStart
   }
 
-  setBarPct(startPct: number, endPct: number): void {
-    this.barStartPct = Hlp.clamp(startPct, 0, 100)
-    this.barEndPct = Hlp.clamp(endPct, 0, 100)
-    this.barEl.style.marginTop = `${this.barStartPct}%`
-    this.barEl.style.height = `${this.barEndPct - this.barStartPct}%`
+  protected getEndPxOfEl(el: HTMLElement): number {
+    return el.offsetTop + el.offsetHeight - this.conMarginStart
   }
 
-  protected getContentElPosPct(
-    scrollConEl: HTMLElement, contentEl: HTMLElement): number[] {
+  protected getSizePxOfEl(el: HTMLElement): number {
+    return el.offsetHeight
+  }
+
+  protected drawContainer(): void { 
+    this.conEl.style.top = `${this.conMarginStart}px`
+    this.conEl.style.bottom = `${this.conMarginEnd}px`
+  }
+
+  protected drawBar(startPx: number, widthPx: number): void {
+    this.barEl.style.marginTop = `${startPx}px`
+    this.barEl.style.height = `${widthPx}px`
+  }
+
+  protected getContentElPosPct(): number[] {
+    if (this.contentEl == null || this.scrollConEl == null) 
+      throw new Error('Container elements are not binded')
     return [
-      contentEl.scrollTop / scrollConEl.offsetHeight, 
-      (scrollConEl.offsetHeight / contentEl.offsetHeight) * 100,
+      this.contentEl.scrollTop / this.scrollConEl.offsetHeight, 
+      (this.scrollConEl.offsetHeight / this.contentEl.offsetHeight) * 100, 
     ]
+  }
+
+  protected getBarClickPosPxByEv(ev: MouseEvent): number {
+    return this.conStartPx - ev.y
+  }
+
+  protected getStartPxByEv(ev: MouseEvent, mdLeftPx: number): number {
+    return ev.y - this.conStartPx + mdLeftPx
   }
 }

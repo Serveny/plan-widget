@@ -1,4 +1,4 @@
-import('../../../pkg').catch(console.error)
+//import('../../../pkg').catch(console.error)
 import { PlanWidget } from './classes/plan-widget.class'
 import TestOptions from './test-data/plan-widget-options.data'
 import { DemoData } from './demo-data'

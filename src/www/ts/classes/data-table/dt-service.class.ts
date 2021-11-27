@@ -6,9 +6,9 @@ import { DtBodyRow } from './dt-body-row.class'
 import { DtHead } from './dt-head.class'
 
 export class DtService {
-  readonly el: HTMLDivElement
-  readonly head: DtHead
-  readonly bodyEl: HTMLDivElement
+  readonly el = Hlp.createDiv('data-table', 'dt-scroll-container')
+  readonly head = new DtHead(this)
+  readonly bodyEl = Hlp.createDiv('dt-body')
 
   get layout(): IDataTableLayout { return this._layout }
 
@@ -17,11 +17,8 @@ export class DtService {
 
   constructor(id: string, private _layout: IDataTableLayout, 
     private _locale: string) {
-    this.el = Hlp.createDiv('data-table', 'dt-scroll-container')
     this.el.classList.add(id)
     const tableEl = Hlp.createDiv('dt-table')
-    this.bodyEl = Hlp.createDiv('dt-body')
-    this.head = new DtHead(this)
 
     tableEl.append(this.head.el)
     tableEl.append(this.bodyEl)

@@ -69,7 +69,7 @@ export class TimeScaler {
     this.ctx.stroke()
     //this.ctx.strokeRect(xStart, row.yStart, width, row.height);
     const xStartText = xStart < 0 ? 0 : xStart
-    console.log(text, xStart, xStartText)
+    //console.log(text, xStart, xStartText)
     this.ctx.fillText(text, xStartText + 3, row.yStart + row.height - 6, width)
   }
 

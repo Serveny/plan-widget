@@ -1,4 +1,6 @@
 /target
 /dist
 /pkg
+/cypress/screenshots
+/cypress/videos
 node_modules

@@ -15,8 +15,8 @@ export class PlanWidget /*implements IPlanWidget*/ {
   private readonly resourceTable: DataTable<IResourceView>
   private readonly entityTable: DataTable<IEntityView>
   private readonly timeScaler: TimeScaler
-  private readonly scrollBarX: ScrollBarX
-  private readonly scrollBarY: ScrollBarY
+  // private readonly scrollBarX: ScrollBarX
+  // private readonly scrollBarY: ScrollBarY
   
   constructor(containerEl: HTMLElement | null, options: IPlanWidgetOptions) {
     if (containerEl == null) throw '[PlanWidget] containerEl is null'
@@ -28,15 +28,15 @@ export class PlanWidget /*implements IPlanWidget*/ {
     this.entityTable = new DataTable('plw-entity-table',
       options.entityTableOptions, options.locale, true, true)
     this.timeScaler = new TimeScaler(this.cache)
-    this.scrollBarX = new ScrollBarX(true, [5, 25])
-    this.scrollBarY = new ScrollBarY(true, [65, 25])
+    // this.scrollBarX = new ScrollBarX([5, 25], true)
+    // this.scrollBarY = new ScrollBarY([65, 25], true)
 
     this.resourceTable.appendTo(this.gridSlider.fieldLeft)
     const conMiddle = Helper.createDiv('dt-scroll-container')
     this.gridSlider.fieldMiddle.appendChild(conMiddle)
     this.timeScaler.appendTo(conMiddle)
-    this.scrollBarX.appendTo(conMiddle)
-    this.scrollBarY.appendTo(conMiddle)
+    // this.scrollBarX.appendTo(conMiddle)
+    // this.scrollBarY.appendTo(conMiddle)
     this.entityTable.appendTo(this.gridSlider.fieldRight)
 
     this.timeScaler.paint()
