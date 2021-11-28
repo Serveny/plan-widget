@@ -17,9 +17,9 @@ export class DataTable<TView extends IView> {
     isScrollBarX: boolean, isScrollBarY: boolean) {
     this.dts = new DtService(id, layout ?? {}, locale ?? 'en')
     if (isScrollBarX) this.scrollBarX = new ScrollBarX(
-      isScrollBarY ? [5, 25] : [5, 5], false)
+      isScrollBarY ? [5, 28] : [5, 5], false)
     if (isScrollBarY) this.scrollBarY = new ScrollBarY(
-      isScrollBarX ? [65, 25] : [65, 5], false)
+      isScrollBarX ? [65, 28] : [65, 5], false)
   }
 
   appendTo(containerEl: HTMLElement): DataTable<TView> {

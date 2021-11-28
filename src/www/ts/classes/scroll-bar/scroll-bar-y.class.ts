@@ -8,35 +8,35 @@ export class ScrollBarY extends ScrollBar {
     this.barEl.classList.add('plw-sb-bar-y')
   }
 
-  protected createResizeEls(): void {
+  protected override createResizeEls(): void {
     const resizeFieldLeft = Hlp.createDiv('plw-sb-resize-field-up'),
       resizeFieldRight = Hlp.createDiv('plw-sb-resize-field-down')
     this.barEl.append(resizeFieldLeft, resizeFieldRight)
   }
 
-  protected getStartPxOfEl(el: HTMLElement): number {
+  protected override getStartPxOfEl(el: HTMLElement): number {
     return el.offsetTop - this.conMarginStart
   }
 
-  protected getEndPxOfEl(el: HTMLElement): number {
+  protected override getEndPxOfEl(el: HTMLElement): number {
     return el.offsetTop + el.offsetHeight - this.conMarginStart
   }
 
-  protected getSizePxOfEl(el: HTMLElement): number {
+  protected override getSizePxOfEl(el: HTMLElement): number {
     return el.offsetHeight
   }
 
-  protected drawContainer(): void { 
+  protected override drawContainer(): void { 
     this.conEl.style.top = `${this.conMarginStart}px`
     this.conEl.style.bottom = `${this.conMarginEnd}px`
   }
 
-  protected drawBar(startPx: number, widthPx: number): void {
+  protected override drawBar(startPx: number, widthPx: number): void {
     this.barEl.style.marginTop = `${startPx}px`
     this.barEl.style.height = `${widthPx}px`
   }
 
-  protected getContentElPosPct(): number[] {
+  protected override getContentElPosPct(): number[] {
     if (this.contentEl == null || this.scrollConEl == null) 
       throw new Error('Container elements are not binded')
     return [
@@ -45,19 +45,15 @@ export class ScrollBarY extends ScrollBar {
     ]
   }
 
-  protected getBarClickPosPxByEv(ev: MouseEvent): number {
-    return this.conStartPx - ev.y
+  protected override getXYByEv(ev: MouseEvent): number {
+    return ev.y
   }
 
-  protected getStartPxByEv(ev: MouseEvent, mdLeftPx: number): number {
-    return ev.y - this.conStartPx + mdLeftPx
-  }
-
-  protected getScrollSize(): number {
+  protected override getScrollSize(): number {
     return this.contentEl?.offsetHeight ?? 0
   }
 
-  protected setScrollContentPos(): void {
+  protected override setScrollContentPos(): void {
     if (this.scrollConEl != null) this.scrollConEl.scrollTop = 
       this._scrollConOnePctPx * this.barStartPct
   }
