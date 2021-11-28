@@ -128,14 +128,22 @@ export abstract class ScrollBar {
     const halfBarPx = this._barSizePx / 2, clickPx = this.moveBarClickPosPx
     if (clickPx + halfBarPx > this._conEndPx) {
       this.moveBarClickPosPx = this.moveBarClickPosPx - this._conStartPx
-      this.setBarByPx(this._conEndPx - this._barSizePx, this._conEndPx)
+      this.moveBarToConEnd()
     } else if (clickPx - halfBarPx < this._conStartPx) {
       this.moveBarClickPosPx = this.moveBarClickPosPx - this._conStartPx
-      this.setBarByPx(this._conStartPx, this._conStartPx + this._barSizePx)
+      this.moveBarToConStart()
     } else {
       this.moveBarClickPosPx = halfBarPx
       this.setBarByPx(clickPx - halfBarPx, clickPx + halfBarPx)
     } 
+  }
+
+  private moveBarToConStart(): void {
+    this.setBarByPx(this._conStartPx, this._conStartPx + this._barSizePx)
+  }
+
+  private moveBarToConEnd(): void {
+    this.setBarByPx(this._conEndPx - this._barSizePx, this._conEndPx)
   }
 
   private moveAddEventHandler(): void {
@@ -149,12 +157,11 @@ export abstract class ScrollBar {
   }
 
   private moveOnMousemove(ev: MouseEvent): void {
-    const startPx = this.getXYByEv(ev) - this.moveBarClickPosPx
-    if (startPx < this._conStartPx)
-      this.setBarByPx(this._conStartPx, this._conStartPx + this._barSizePx)
-    else if ((startPx + this._barSizePx) > this._conEndPx)
-      this.setBarByPx(this._conEndPx - this._barSizePx, this._conEndPx)
-    else this.setBarByPx(startPx, startPx + this._barSizePx)
+    const startPx = this.getXYByEv(ev) - this.moveBarClickPosPx, 
+      endPx = startPx + this._barSizePx
+    if (startPx < this._conStartPx) this.moveBarToConStart()
+    else if (endPx > this._conEndPx) this.moveBarToConEnd()
+    else this.setBarByPx(startPx, endPx)
   }
 
   private moveOnMouseup(): void {
