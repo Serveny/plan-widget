@@ -14,12 +14,12 @@ export class ScrollBarY extends ScrollBar {
     this.barEl.append(resizeFieldLeft, resizeFieldRight)
   }
 
-  protected override getStartPxOfEl(el: HTMLElement): number {
-    return el.offsetTop - this.conMarginStart
+  protected override getStartPxOfEl(rect: DOMRect): number {
+    return rect.top - this.conMarginStart
   }
 
-  protected override getEndPxOfEl(el: HTMLElement): number {
-    return el.offsetTop + el.offsetHeight - this.conMarginStart
+  protected override getEndPxOfEl(rect: DOMRect): number {
+    return rect.top + rect.height - this.conMarginStart
   }
 
   protected override getSizePxOfEl(el: HTMLElement): number {
@@ -46,11 +46,12 @@ export class ScrollBarY extends ScrollBar {
   }
 
   protected override getXYByEv(ev: MouseEvent): number {
-    return ev.y
+    return ev.pageY
   }
 
   protected override getScrollSize(): number {
-    return this.contentEl?.offsetHeight ?? 0
+    return this.contentEl == null ? 0
+      : (this.contentEl.offsetTop + this.contentEl.offsetHeight)
   }
 
   protected override setScrollContentPos(): void {
