@@ -36,13 +36,12 @@ export class ScrollBarY extends ScrollBar {
     this.barEl.style.height = `${widthPx}px`
   }
 
-  protected override getContentElPosPct(): number[] {
-    if (this.contentEl == null || this.scrollConEl == null) 
-      throw new Error('Container elements are not binded')
-    return [
-      this.contentEl.scrollTop / this.scrollConEl.offsetHeight, 
-      (this.scrollConEl.offsetHeight / this.contentEl.offsetHeight) * 100, 
-    ]
+  protected override getScrollStartPx(): number {
+    return this.scrollConEl?.scrollTop ?? 0
+  }
+
+  protected override getScrollScale(): number {
+    return (this.scrollConEl?.offsetHeight ?? 0) / (this.contentEl?.offsetHeight ?? 1)
   }
 
   protected override getXYByEv(ev: MouseEvent): number {

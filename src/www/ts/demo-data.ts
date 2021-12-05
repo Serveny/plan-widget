@@ -136,6 +136,119 @@ export class DemoData {
          "ID": "E19",
          "Name": "Entity 19",
          "PM_TooltipText": "Entity 19"
+      },
+      {
+         "ID": "E20",
+         "Name": "Entity 20",
+         "PM_TooltipText": "Entity 20",
+         "Amount": 50,
+      },
+      {
+         "ID": "E21",
+         "Name": "Entity 21",
+         "PM_TooltipText": "Entity 21",
+         "Amount": 20,
+      },
+      {
+         "ID": "E22",
+         "Name": "Entity 22",
+         "PM_TooltipText": "Entity 22",
+         "PM_RowSymbolIDs": [
+            "alarm",
+            "mail",
+            "warning"
+         ]
+      },
+      {
+         "ID": "E23",
+         "Name": "Entity 23",
+         "PM_TooltipText": "Entity 23",
+         "ParentID": "E2"
+      },
+      {
+         "ID": "E24",
+         "Name": "Entity 24",
+         "PM_TooltipText": "Entity 24",
+         "ParentID": "E2",
+         "Amount": 12,
+      },
+      {
+         "ID": "E25",
+         "Name": "Entity 25",
+         "PM_TooltipText": "Entity 25"
+      },
+      {
+         "ID": "E26",
+         "Name": "Entity 26",
+         "PM_TooltipText": "Entity 26"
+      },
+      {
+         "ID": "E27",
+         "Name": "Entity 27",
+         "PM_TooltipText": "Entity 27"
+      },
+      {
+         "ID": "E28",
+         "Name": "Entity 28",
+         "PM_TooltipText": "Entity 28"
+      },
+      {
+         "ID": "E29",
+         "Name": "Entity 29",
+         "PM_TooltipText": "Entity 29"
+      },
+      {
+         "ID": "E30",
+         "Name": "Entity 30",
+         "PM_TooltipText": "Entity 30"
+      },
+      {
+         "ID": "E31",
+         "Name": "Entity 31",
+         "PM_TooltipText": "Entity 31",
+         "ParentID": "E10"
+      },
+      {
+         "ID": "E32",
+         "Name": "Entity 32",
+         "PM_TooltipText": "Entity 32",
+         "ParentID": "E10"
+      },
+      {
+         "ID": "E33",
+         "Name": "Entity 33",
+         "PM_TooltipText": "Entity 33",
+         "ParentID": "E11"
+      },
+      {
+         "ID": "E34",
+         "Name": "Entity 34",
+         "PM_TooltipText": "Entity 34"
+      },
+      {
+         "ID": "E35",
+         "Name": "Entity 35",
+         "PM_TooltipText": "Entity 35"
+      },
+      {
+         "ID": "E36",
+         "Name": "Entity 36",
+         "PM_TooltipText": "Entity 36"
+      },
+      {
+         "ID": "E37",
+         "Name": "Entity 37",
+         "PM_TooltipText": "Entity 37"
+      },
+      {
+         "ID": "E38",
+         "Name": "Entity 38",
+         "PM_TooltipText": "Entity 38"
+      },
+      {
+         "ID": "E39",
+         "Name": "Entity 39",
+         "PM_TooltipText": "Entity 39"
       }
    ]
    Resources: IResourceView[] = [

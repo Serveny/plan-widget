@@ -81,13 +81,15 @@ export abstract class ScrollBar {
 
   protected abstract getSizePxOfEl(el: HTMLElement): number
 
-  protected abstract getContentElPosPct(): number[]
-
   protected abstract createResizeEls(): void
 
   protected abstract getScrollSize(): number
 
   protected abstract setScrollContentPos(): void
+
+  protected abstract getScrollStartPx(): number
+
+  protected abstract getScrollScale(): number
 
   // =======================================================
 
@@ -104,9 +106,10 @@ export abstract class ScrollBar {
   }
 
   private setSizes(): void {
+    console.log(this.scrollConEl?.scrollLeft)
     this.setDimensionByEl(this.conEl)
-    this.setBarSize()
     this._scrollConOnePctPx = this.getScrollSize() / 100
+    this.setBarSize()
   }
 
   private setBarByPx(startPx: number, endPx: number): void {
@@ -179,8 +182,8 @@ export abstract class ScrollBar {
   }
 
   private setBarSize(): void {
-    const pos = this.getContentElPosPct()
-    this.setBarByPct(pos[0], pos[1])
+    const startPct = this.getScrollStartPx() / this._scrollConOnePctPx
+    this.setBarByPct(startPct, (this.getScrollScale() * 100) + startPct)
   }
 
   private callOnChanged(): void {
