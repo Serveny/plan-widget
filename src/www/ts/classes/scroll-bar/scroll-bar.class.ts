@@ -106,7 +106,6 @@ export abstract class ScrollBar {
   }
 
   private setSizes(): void {
-    console.log(this.scrollConEl?.scrollLeft)
     this.setDimensionByEl(this.conEl)
     this._scrollConOnePctPx = this.getScrollSize() / 100
     this.setBarSize()
