@@ -127,7 +127,8 @@ export abstract class ScrollBar {
     this.barEl.classList.add('plw-scroll-bar-active')
     const pos = this.getXYByEv(mdEv)
     this.moveBarClickPosPx = this.getBarRelPos(pos)
-    if (pos < this._barStartPx || pos > this._barEndPx) this.moveBarToClick(pos)
+    if (pos < this._conStartPx + this._barStartPx 
+      || pos > this._conStartPx + this._barEndPx) this.moveBarToClick(pos)
     this.moveAddEventHandler()
   }
 

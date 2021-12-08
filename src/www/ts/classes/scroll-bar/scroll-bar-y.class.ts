@@ -41,7 +41,9 @@ export class ScrollBarY extends ScrollBar {
   }
 
   protected override getScrollScale(): number {
-    return (this.scrollConEl?.offsetHeight ?? 0) / (this.contentEl?.offsetHeight ?? 1)
+    if (!this.scrollConEl || !this.contentEl) throw 'scroll or content el is null'
+    return this.scrollConEl?.offsetHeight / 
+      (this.contentEl?.offsetHeight + this.contentEl.offsetTop)
   }
 
   protected override getXYByEv(ev: MouseEvent): number {
