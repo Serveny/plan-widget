@@ -41,7 +41,8 @@ export class ScrollBarY extends ScrollBar {
   }
 
   protected override getScrollScale(): number {
-    if (!this.scrollConEl || !this.contentEl) throw 'scroll or content el is null'
+    if (!this.scrollConEl || !this.contentEl) 
+      throw 'scroll or content el is null'
     return this.scrollConEl?.offsetHeight / 
       (this.contentEl?.offsetHeight + this.contentEl.offsetTop)
   }
