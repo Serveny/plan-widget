@@ -41,4 +41,12 @@ describe('testing scroll bar', () => {
       cy.get('@sb').dragTo(null, 0)
         .then(el => expect(el[0].offsetTop).eq(0))
   })
+
+  it('moves on wheel right inside x-bar container', () => {
+    cy.get('.gs-field-right .plw-sb-con-x').as('sbx').then(el => {
+      const oldLeft = el[0].offsetLeft
+      cy.get('@sbx').trigger('wheel', { deltaY: -1 }).then(afterEl => 
+        expect(afterEl[0].offsetLeft > oldLeft))
+    })
+  })
 })
