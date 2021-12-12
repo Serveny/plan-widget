@@ -59,4 +59,12 @@ export class ScrollBarX extends ScrollBar {
     if (this.scrollConEl != null) this.scrollConEl.scrollLeft =
       this._scrollConOnePctPx * this.barStartPct
   }
+
+  protected override getWheelDelta(ev: WheelEvent): number {
+    return ev.deltaX
+  }
+
+  protected override getWheelDeltaXOrY(ev: WheelEvent): number {
+    return ev.deltaX === 0 ? ev.deltaY : ev.deltaX
+  }
 }

@@ -39,7 +39,7 @@ export abstract class ScrollBar {
     this.drawContainer()
     this.conEl.addEventListener('mousedown',
       (ev: MouseEvent): void => this.addMove(ev))
-    this.conEl.addEventListener('wheel', (ev: WheelEvent) => this.onConScroll(ev))
+    this.conEl.addEventListener('wheel', ev => this.onConWheel(ev))
     this.conEl.appendChild(this.barEl)
     if (isEnabledZoom) this.createResizeEls()
   }
@@ -53,9 +53,10 @@ export abstract class ScrollBar {
     this.scrollConEl = scrollConEl
     this.contentEl = contentEl
     this.setSizes()
+    this.scrollConEl.addEventListener('wheel', ev => this.onScrollConWheel(ev))
     const rsObs = new ResizeObserver((): void => this.setSizes())
-    rsObs.observe(scrollConEl)
-    rsObs.observe(contentEl)
+    rsObs.observe(this.scrollConEl)
+    rsObs.observe(this.contentEl)
   }
 
   setBarByPct(startPct: number, endPct: number): void {
@@ -91,6 +92,10 @@ export abstract class ScrollBar {
   protected abstract getScrollStartPx(): number
 
   protected abstract getScrollScale(): number
+
+  protected abstract getWheelDelta(ev: WheelEvent): number
+
+  protected abstract getWheelDeltaXOrY(ev: WheelEvent): number
 
   // =======================================================
 
@@ -193,12 +198,27 @@ export abstract class ScrollBar {
       this.onChangedPct(this._barStartPct, this._barEndPct)
   }
 
-  private onConScroll(ev: WheelEvent): void {
-    const additor = ev.deltaY > 0 ? 5 : -5,
-      newStart = this._barStartPct + additor,
+  private onConWheel(ev: WheelEvent): void {
+    const delta = this.getWheelDeltaXOrY(ev), 
+      additor = delta > 0 ? 5 : -5,
+      newStart = this._barStartPct + additor, 
       newEnd = this._barEndPct + additor
     if (newStart < 0) this.moveBarToConStart()
     else if (newEnd > 100) this.moveBarToConEnd()
     else this.setBarByPct(newStart, newEnd)
+  }
+
+  private onWheel(delta: number): void {
+    const additor = delta > 0 ? 5 : -5,
+      newStart = this._barStartPct + additor, 
+      newEnd = this._barEndPct + additor
+    if (newStart < 0) this.moveBarToConStart()
+    else if (newEnd > 100) this.moveBarToConEnd()
+    else this.setBarByPct(newStart, newEnd)
+  }
+
+  private onScrollConWheel(ev: WheelEvent): void {
+    const delta = this.getWheelDelta(ev)
+    if (delta !== 0) this.onWheel(delta)
   }
 }
