@@ -65,6 +65,6 @@ export class ScrollBarX extends ScrollBar {
   }
 
   protected override getWheelDeltaXOrY(ev: WheelEvent): number {
-    return ev.deltaX === 0 ? ev.deltaY : ev.deltaX
+    return ev.deltaX == null || ev.deltaX === 0 ? ev.deltaY : ev.deltaX
   }
 }

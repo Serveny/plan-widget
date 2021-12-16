@@ -203,6 +203,7 @@ export abstract class ScrollBar {
       additor = delta > 0 ? 5 : -5,
       newStart = this._barStartPct + additor, 
       newEnd = this._barEndPct + additor
+    console.log('onConWheel', ev, delta)
     if (newStart < 0) this.moveBarToConStart()
     else if (newEnd > 100) this.moveBarToConEnd()
     else this.setBarByPct(newStart, newEnd)
@@ -212,6 +213,7 @@ export abstract class ScrollBar {
     const additor = delta > 0 ? 5 : -5,
       newStart = this._barStartPct + additor, 
       newEnd = this._barEndPct + additor
+    console.log(delta, newStart, newEnd)
     if (newStart < 0) this.moveBarToConStart()
     else if (newEnd > 100) this.moveBarToConEnd()
     else this.setBarByPct(newStart, newEnd)
@@ -219,6 +221,7 @@ export abstract class ScrollBar {
 
   private onScrollConWheel(ev: WheelEvent): void {
     const delta = this.getWheelDelta(ev)
+    console.log('onScrollConWheel', ev, delta)
     if (delta !== 0) this.onWheel(delta)
   }
 }
