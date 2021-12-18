@@ -61,7 +61,8 @@ export class DtHeadMoveCell {
   }
 
   private dropHandler(): void {
-    const moves = this.orderCells(this.orderDrag, this.orderDrop, this.cells)
+    const moves = this.orderCells(
+      this.orderDrag, this.orderDrop, this.cells)
     this.dragCell.style.order = this.orderDrop.toString()
     moves.push(new Move(this.orderDrag, this.orderDrop))
     this.fillMoves(moves)
@@ -163,7 +164,8 @@ export class DtHeadMoveCell {
   }
 
   private moveBodyCols(moves: Move[]): void {
-    moves.forEach(mv => mv.cells.forEach(cell => cell.order = mv.toOrder))
+    moves.forEach(mv => mv.cells.forEach(
+      cell => cell.order = mv.toOrder))
   }
 
   private refreshLayout(moves: Move[]): void {

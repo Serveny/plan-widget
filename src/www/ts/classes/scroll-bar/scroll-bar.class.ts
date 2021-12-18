@@ -37,8 +37,7 @@ export abstract class ScrollBar {
     isEnabledZoom: boolean
   ) {
     this.drawContainer()
-    this.conEl.addEventListener('mousedown',
-      (ev: MouseEvent): void => this.addMove(ev))
+    this.conEl.addEventListener('mousedown', ev => this.addMove(ev))
     this.conEl.addEventListener('wheel', ev => this.onConWheel(ev))
     this.conEl.appendChild(this.barEl)
     if (isEnabledZoom) this.createResizeEls()
@@ -49,11 +48,13 @@ export abstract class ScrollBar {
     parentEl.appendChild(this.conEl)
   }
 
-  bindBarSizeToEls(scrollConEl: HTMLElement, contentEl: HTMLElement): void {
+  bindBarSizeToEls(scrollConEl: HTMLElement, 
+    contentEl: HTMLElement): void {
     this.scrollConEl = scrollConEl
     this.contentEl = contentEl
     this.setSizes()
-    this.scrollConEl.addEventListener('wheel', ev => this.onScrollConWheel(ev))
+    this.scrollConEl.addEventListener('wheel', 
+      ev => this.onScrollConWheel(ev))
     const rsObs = new ResizeObserver((): void => this.setSizes())
     rsObs.observe(this.scrollConEl)
     rsObs.observe(this.contentEl)
@@ -101,7 +102,8 @@ export abstract class ScrollBar {
 
   private setDimensionByEl(el: HTMLElement): void {
     const rect = el.getBoundingClientRect()
-    this.setDimension(this.getStartPxOfEl(rect), this.getEndPxOfEl(rect))
+    this.setDimension(
+      this.getStartPxOfEl(rect), this.getEndPxOfEl(rect))
   }
 
   private setDimension(conStartPx: number, conEndPx: number): void {
@@ -133,8 +135,7 @@ export abstract class ScrollBar {
     this.barEl.classList.add('plw-scroll-bar-active')
     const pos = this.getXYByEv(mdEv)
     this.moveBarClickPosPx = this.getBarRelPos(pos)
-    if (pos < this._conStartPx + this._barStartPx
-      || pos > this._conStartPx + this._barEndPx) this.moveBarToClick(pos)
+    if (mdEv.target !== this.barEl) this.moveBarToClick(pos)
     this.moveAddEventHandler()
   }
 
@@ -153,9 +154,11 @@ export abstract class ScrollBar {
   }
 
   private moveBarToClick(clickPx: number): void {
-    const halfBarPx = this._barSizePx / 2, conRelPx = clickPx - this._conStartPx
+    const halfBarPx = this._barSizePx / 2, 
+      conRelPx = clickPx - this._conStartPx
     if (clickPx + halfBarPx > this._conEndPx) this.moveBarToConEnd()
-    else if (clickPx - halfBarPx < this._conStartPx) this.moveBarToConStart()
+    else if (clickPx - halfBarPx < this._conStartPx) 
+      this.moveBarToConStart()
     else this.setBarByPx(conRelPx - halfBarPx, conRelPx + halfBarPx)
     this.moveBarClickPosPx = this.getBarRelPos(clickPx)
   }
@@ -165,7 +168,8 @@ export abstract class ScrollBar {
   }
 
   private moveBarToConEnd(): void {
-    this.setBarByPx(this._conSizePx - this._barSizePx, this._conSizePx)
+    this.setBarByPx(this._conSizePx - this._barSizePx, 
+      this._conSizePx)
   }
 
   private moveOnMousemove(ev: MouseEvent): void {
@@ -173,7 +177,8 @@ export abstract class ScrollBar {
       endPx = startPx + this._barSizePx
     if (startPx < this._conStartPx) this.moveBarToConStart()
     else if (endPx > this._conEndPx) this.moveBarToConEnd()
-    else this.setBarByPx(startPx - this._conStartPx, endPx - this._conStartPx)
+    else this.setBarByPx(startPx - this._conStartPx, 
+      endPx - this._conStartPx)
   }
 
   private moveOnMouseup(): void {
@@ -189,7 +194,8 @@ export abstract class ScrollBar {
 
   private setBarSize(): void {
     const startPct = this.getScrollStartPx() / this._scrollConOnePctPx
-    this.setBarByPct(startPct, (this.getScrollScale() * 100) + startPct)
+    this.setBarByPct(
+      startPct, (this.getScrollScale() * 100) + startPct)
   }
 
   private callOnChanged(): void {

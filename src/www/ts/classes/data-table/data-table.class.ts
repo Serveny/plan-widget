@@ -9,6 +9,7 @@ import { DtService } from './dt-service.class'
 export class DataTable<TView extends IView> {
   private readonly dts: DtService
   get el(): HTMLDivElement { return this.dts.el }
+  get bodyEl(): HTMLDivElement { return this.dts.bodyEl }
   private scrollBarX: ScrollBarX | null = null
   private scrollBarY: ScrollBarY | null = null
 
@@ -50,7 +51,8 @@ export class DataTable<TView extends IView> {
   }
 
   private addRow(rowData: TView): void {
-    const dtRow = new DtBodyRow(this.dts.rows.length, rowData, this.dts.layout)
+    const dtRow = new DtBodyRow(
+      this.dts.rows.length, rowData, this.dts.layout)
     this.dts.rows.push(dtRow)
     this.dts.bodyEl.appendChild(dtRow.el)
   }
@@ -61,7 +63,8 @@ export class DataTable<TView extends IView> {
   }
 
   private updateRow(rowData: IUpdateView): void {
-    const rowObj = this.dts.rows.find(rowObj => rowObj.data.ID === rowData.ID)
+    const rowObj = this.dts.rows.find(rowObj => 
+      rowObj.data.ID === rowData.ID)
     if (rowObj != null) rowObj.updateCells(rowData)
   }
 

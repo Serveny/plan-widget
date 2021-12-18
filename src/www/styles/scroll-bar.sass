@@ -1,21 +1,24 @@
 @use "sass:math"
 $scrollBarSize: 20px
 $scrollBarMargin: 5px
-$resizeFieldSize: 10px
+$scrollBarBorder: 1px solid rgba(255,255,255,0.8)
+$scrollBarResizeBorder: 1px solid rgba(255,255,255,0.6)
+$scrollBarBorderRadius: math.div($scrollBarSize, 4)
+$resizeFieldSize: 5px
   
 .plw-sb-con
   position: absolute
   z-index: 99
   border: 1px solid rgba(200,200,200,0.2)
   background-color: rgba(200,200,200,0.1)
-  border-radius: math.div($scrollBarSize, 4)
+  border-radius: $scrollBarBorderRadius
 
 .plw-scroll-bar
   box-sizing: border-box
-  border: 1px solid rgba(255,255,255,0.8)
+  border: $scrollBarBorder
   display: grid
   background-color: rgba(255,255,255,0.05)
-  border-radius: math.div($scrollBarSize, 4)
+  border-radius: $scrollBarBorderRadius
 
 .plw-scroll-bar:hover
   background-color: rgba(255,255,255,0.1)
@@ -41,24 +44,33 @@ $resizeFieldSize: 10px
   width: $scrollBarSize
   grid-template-rows: $resizeFieldSize auto $resizeFieldSize
 
+.plw-sb-resize-field
+  border-radius: $scrollBarBorderRadius
+
 .plw-sb-resize-field-x
+  @extend .plw-sb-resize-field
   cursor: ew-resize
 
 .plw-sb-resize-field-left
   @extend .plw-sb-resize-field-x
   grid-column: 1
+  border-right: $scrollBarResizeBorder
 
 .plw-sb-resize-field-right
   @extend .plw-sb-resize-field-x
   grid-column: 3
+  border-left: $scrollBarResizeBorder
 
 .plw-sb-resize-field-y
+  @extend .plw-sb-resize-field
   cursor: ns-resize
 
 .plw-sb-resize-field-up
   @extend .plw-sb-resize-field-y
   grid-row: 1
+  border-bottom: $scrollBarResizeBorder
 
 .plw-sb-resize-field-down
   @extend .plw-sb-resize-field-y
   grid-row: 3
+  border-top: $scrollBarResizeBorder

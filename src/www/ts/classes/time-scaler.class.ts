@@ -62,7 +62,8 @@ export class TimeScaler {
     } while (currentTime < endTime)
   }
 
-  private drawBlock(row: TimeScalerRow, xStart: number, width: number, text: string): void {
+  private drawBlock(row: TimeScalerRow, xStart: number, 
+    width: number, text: string): void {
     this.ctx.beginPath()
     this.ctx.moveTo(xStart, row.yStart)
     this.ctx.lineTo(xStart, row.yStart + row.height)
@@ -70,17 +71,21 @@ export class TimeScaler {
     //this.ctx.strokeRect(xStart, row.yStart, width, row.height);
     const xStartText = xStart < 0 ? 0 : xStart
     //console.log(text, xStart, xStartText)
-    this.ctx.fillText(text, xStartText + 3, row.yStart + row.height - 6, width)
+    this.ctx.fillText(text, xStartText + 3, 
+      row.yStart + row.height - 6, width)
   }
 
-  private getRowsToDraw(row1Scale: TimeScale, row2Scale?: TimeScale, row3Scale?: TimeScale): TimeScalerRow[] {
+  private getRowsToDraw(row1Scale: TimeScale, row2Scale?: TimeScale, 
+    row3Scale?: TimeScale): TimeScalerRow[] {
     const heightRow = row3Scale == null 
       ? row2Scale == null ? this.heightPx 
       : this.heightPx / 2 : this.heightPx / 3
     const rows: TimeScalerRow[] = []
     rows.push(new TimeScalerRow(0, heightRow, row1Scale))
-    if (row2Scale != null) rows.push(new TimeScalerRow(heightRow, heightRow, row2Scale))
-    if (row3Scale != null) rows.push(new TimeScalerRow(heightRow * 2, heightRow, row3Scale))
+    if (row2Scale != null) rows.push(
+      new TimeScalerRow(heightRow, heightRow, row2Scale))
+    if (row3Scale != null) rows.push(
+      new TimeScalerRow(heightRow * 2, heightRow, row3Scale))
     return rows
   }
 
@@ -88,35 +93,58 @@ export class TimeScaler {
     const durationSec = this.cache.focusHorizonSec
     const maxVisibleRowItems = this.maxVisibleRowItems
 
-    return durationSec <= TimeScale.seconds ? this.getRowsToDraw(TimeScale.days, TimeScale.seconds) :
-      durationSec / TimeScale.twelfthMinutes <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.twelfthMinutes) :
-      durationSec / TimeScale.sixthMinutes <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.sixthMinutes) :
-      durationSec / TimeScale.fourthMinutes <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.fourthMinutes) :
-      durationSec / TimeScale.halfMinutes <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.halfMinutes) :
-      durationSec / TimeScale.minutes <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.minutes) :
-      durationSec / TimeScale.twelfthHours <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.twelfthHours) :
-      durationSec / TimeScale.sixthHours <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.sixthHours) :
-      durationSec / TimeScale.fourthHours <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.fourthHours) :
-      durationSec / TimeScale.halfHours <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.halfHours) :
-      durationSec / TimeScale.hours <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.hours) :
-      durationSec / TimeScale.twelfthDays <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.twelfthDays) :
-      durationSec / TimeScale.eighthDays <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.eighthDays) :
-      durationSec / TimeScale.fourthDays <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.fourthDays) :
-      durationSec / TimeScale.halfDays <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.days, TimeScale.halfDays) :
-      durationSec / TimeScale.days <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.months, TimeScale.weeks, TimeScale.hours) :
-      durationSec / TimeScale.weeks <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.months, TimeScale.weeks) :
-      durationSec / TimeScale.months <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.years, TimeScale.months) :
-      durationSec / TimeScale.quarters <= maxVisibleRowItems ? this.getRowsToDraw(TimeScale.years, TimeScale.quarters) :
-      this.getRowsToDraw(TimeScale.years)
+    return durationSec <= TimeScale.seconds 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.seconds) 
+      : durationSec / TimeScale.twelfthMinutes <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.twelfthMinutes) 
+      : durationSec / TimeScale.sixthMinutes <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.sixthMinutes) 
+      : durationSec / TimeScale.fourthMinutes <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.fourthMinutes) 
+      : durationSec / TimeScale.halfMinutes <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.halfMinutes) 
+      : durationSec / TimeScale.minutes <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.minutes) 
+      : durationSec / TimeScale.twelfthHours <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.twelfthHours) 
+      : durationSec / TimeScale.sixthHours <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.sixthHours) 
+      : durationSec / TimeScale.fourthHours <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.fourthHours) 
+      : durationSec / TimeScale.halfHours <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.halfHours) 
+      : durationSec / TimeScale.hours <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.hours) 
+      : durationSec / TimeScale.twelfthDays <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.twelfthDays) 
+      : durationSec / TimeScale.eighthDays <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.eighthDays) 
+      : durationSec / TimeScale.fourthDays <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.fourthDays) 
+      : durationSec / TimeScale.halfDays <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.days, TimeScale.halfDays) 
+      : durationSec / TimeScale.days <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.months, 
+        TimeScale.weeks, TimeScale.hours) 
+      : durationSec / TimeScale.weeks <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.months, TimeScale.weeks) 
+      : durationSec / TimeScale.months <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.years, TimeScale.months) 
+      : durationSec / TimeScale.quarters <= maxVisibleRowItems 
+      ? this.getRowsToDraw(TimeScale.years, TimeScale.quarters) 
+      : this.getRowsToDraw(TimeScale.years)
   }
 
   private getText(date: Date, scale: TimeScale): string {
     switch (scale) {
       case TimeScale.years: return date.getFullYear().toString()
-      case TimeScale.quarters: return `Q ${Math.trunc((date.getMonth() / 3) + 1)}`
-      case TimeScale.months: return this.cache.dateMonthFormat.format(date)
+      case TimeScale.quarters: 
+        return `Q ${Math.trunc((date.getMonth() / 3) + 1)}`
+      case TimeScale.months: 
+        return this.cache.dateMonthFormat.format(date)
       case TimeScale.weeks:
-      case TimeScale.days: return this.cache.dateDayFormat.format(date)
+      case TimeScale.days: 
+        return this.cache.dateDayFormat.format(date)
       case TimeScale.halfDays:
       case TimeScale.fourthDays:
       case TimeScale.eighthDays:
@@ -131,7 +159,8 @@ export class TimeScaler {
       case TimeScale.fourthMinutes:
       case TimeScale.sixthMinutes:
       case TimeScale.twelfthMinutes:
-      case TimeScale.seconds: return this.cache.dateHourMinSecFormat.format(date)
+      case TimeScale.seconds: 
+        return this.cache.dateHourMinSecFormat.format(date)
       default: throw Error('createText: Unknown Scale')
     }
   }

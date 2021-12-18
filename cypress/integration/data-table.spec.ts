@@ -5,8 +5,8 @@ import { IResourceView } from '../../src/www/ts/interfaces/i-view.interface'
 import TestLayout from '../../src/www/ts/test-data/resource-table-layout.data'
 
 describe('testing data-table', () => {
-  const dataTable = new DataTable<IResourceView>('test-id', null, 'en', 
-    true, true), dd = new DemoData()
+  const dataTable = new DataTable<IResourceView>('test-id', null,
+    'en', true, true), dd = new DemoData()
 
   before('visit test site', () => {
     cy.visit('integration-test.html')
@@ -31,19 +31,19 @@ describe('testing data-table', () => {
     const rows = dd.Resources
     dataTable.setLayout(TestLayout)
     dataTable.addRows(rows)
-    rows.forEach((_, i) => 
+    rows.forEach((_, i) =>
       cy.get(`.dt-row[style*="order: ${i};"]`).should('exist')
-      .then(el => TestLayout.columns?.forEach(col => {
-        const colEl = el.children(
-          `.dt-body-cell[style*="order: ${col.visibleIndex};"]`)
-        expect(colEl.length).eq(col.visible ? 1 : 0)
-        if (col.visible) {
-          expect(colEl.css('width')).eq(col.width)
-          expect(colEl.css('text-align')).eq(col.textAlign != null 
-            ? HorizontalTextAlign[col.textAlign].toLowerCase() 
-            : undefined) 
-        } 
-      })))
+        .then(el => TestLayout.columns?.forEach(col => {
+          const colEl = el.children(
+            `.dt-body-cell[style*="order: ${col.visibleIndex};"]`)
+          expect(colEl.length).eq(col.visible ? 1 : 0)
+          if (col.visible) {
+            expect(colEl.css('width')).eq(col.width)
+            expect(colEl.css('text-align')).eq(col.textAlign != null
+              ? HorizontalTextAlign[col.textAlign].toLowerCase()
+              : undefined)
+          }
+        })))
   })
 
   const newName = 'New Resource 6'

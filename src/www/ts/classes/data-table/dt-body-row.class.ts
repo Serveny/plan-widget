@@ -33,7 +33,8 @@ export class DtBodyRow {
     })
   }
 
-  private addCell(rowMap: Map<string, unknown>, col: IDataTableColumn): void {
+  private addCell(rowMap: Map<string, unknown>, 
+    col: IDataTableColumn): void {
     if (col.dataField != null) {
       const text = rowMap.get(col.dataField) as string,
       cell = new DtBodyCell(text, col)

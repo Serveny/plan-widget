@@ -41,7 +41,8 @@ export class ScrollBarX extends ScrollBar {
   }
 
   protected override getScrollScale(): number {
-    if (!this.scrollConEl || !this.contentEl) throw 'scroll or content el is null'
+    if (!this.scrollConEl || !this.contentEl)
+      throw 'scroll or content el is null'
     return this.scrollConEl?.offsetWidth / 
       (this.contentEl?.offsetWidth + this.contentEl.offsetLeft)
   }
@@ -65,6 +66,7 @@ export class ScrollBarX extends ScrollBar {
   }
 
   protected override getWheelDeltaXOrY(ev: WheelEvent): number {
-    return ev.deltaX == null || ev.deltaX === 0 ? ev.deltaY : ev.deltaX
+    return ev.deltaX == null || ev.deltaX === 0 
+      ? ev.deltaY : ev.deltaX
   }
 }

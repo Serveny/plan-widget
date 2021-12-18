@@ -2,7 +2,7 @@ import { ScrollBar } from './scroll-bar.class'
 import Hlp from '../helper.class'
 
 export class ScrollBarY extends ScrollBar {
-  constructor(conMargin = [0,0], isEnabledZoom = false) {
+  constructor(conMargin = [0, 0], isEnabledZoom = false) {
     super(conMargin[0], conMargin[1], isEnabledZoom)
     this.conEl.classList.add('plw-sb-con-y')
     this.barEl.classList.add('plw-sb-bar-y')
@@ -26,7 +26,7 @@ export class ScrollBarY extends ScrollBar {
     return el.offsetHeight
   }
 
-  protected override drawContainer(): void { 
+  protected override drawContainer(): void {
     this.conEl.style.top = `${this.conMarginStart}px`
     this.conEl.style.bottom = `${this.conMarginEnd}px`
   }
@@ -41,9 +41,9 @@ export class ScrollBarY extends ScrollBar {
   }
 
   protected override getScrollScale(): number {
-    if (!this.scrollConEl || !this.contentEl) 
+    if (!this.scrollConEl || !this.contentEl)
       throw 'scroll or content el is null'
-    return this.scrollConEl?.offsetHeight / 
+    return this.scrollConEl?.offsetHeight /
       (this.contentEl?.offsetHeight + this.contentEl.offsetTop)
   }
 
@@ -57,7 +57,7 @@ export class ScrollBarY extends ScrollBar {
   }
 
   protected override setScrollContentPos(): void {
-    if (this.scrollConEl != null) this.scrollConEl.scrollTop = 
+    if (this.scrollConEl != null) this.scrollConEl.scrollTop =
       this._scrollConOnePctPx * this.barStartPct
   }
 
@@ -66,6 +66,7 @@ export class ScrollBarY extends ScrollBar {
   }
 
   protected override getWheelDeltaXOrY(ev: WheelEvent): number {
-    return ev.deltaY == null || ev.deltaY === 0 ? ev.deltaX : ev.deltaY
+    return ev.deltaY == null || ev.deltaY === 0
+      ? ev.deltaX : ev.deltaY
   }
 }

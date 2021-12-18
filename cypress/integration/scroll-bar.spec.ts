@@ -8,8 +8,6 @@ describe('testing scroll bar', () => {
   it('has scroll bar elements', () => {
     cy.get('.gs-field-right .plw-sb-bar-x').as('sbx').should('exist')
     cy.get('.gs-field-right .plw-sb-bar-y').as('sby').should('exist')
-    // cy.get('@sbx').find('.plw-sb-resize-field-left').should('exist')
-    // cy.get('@sbx').find('.plw-sb-resize-field-right').should('exist')
   })
 
   it('x has end positon of 100%', () => {
@@ -54,22 +52,25 @@ describe('testing scroll bar', () => {
       cy.get('.gs-field-right .plw-sb-con-y').as('sbcy'),
     getSC = (): Cypress.Chainable<JQuery<HTMLElement>> =>
       cy.get('.gs-field-right .dt-scroll-container').as('sc'),
-    checkBarX = (delta: { deltaY?: number; deltaX?: number; }, barOffsetType: string,
-      comparer: string): Cypress.Chainable =>
+    checkBarX = (delta: { deltaY?: number; deltaX?: number; },
+      barOffsetType: string, comparer: string): Cypress.Chainable =>
       getXCon().find('.plw-scroll-bar').then(barEl => {
         const old = parseInt(barEl.css(barOffsetType))
         cy.get('@sbcx').trigger('wheel', delta).then(() =>
-          cy.wrap(parseInt(barEl.css(barOffsetType))).should(comparer, old))
+          cy.wrap(parseInt(barEl.css(barOffsetType)))
+            .should(comparer, old))
       }),
-    checkBarY = (delta: { deltaY?: number; deltaX?: number; }, barOffsetType: string,
-      comparer: string): Cypress.Chainable =>
+    checkBarY = (delta: { deltaY?: number; deltaX?: number; },
+      barOffsetType: string, comparer: string): Cypress.Chainable =>
       getYCon().find('.plw-scroll-bar').then(barEl => {
         const old = parseInt(barEl.css(barOffsetType))
         cy.get('@sbcy').trigger('wheel', delta).then(() =>
-          cy.wrap(parseInt(barEl.css(barOffsetType))).should(comparer, old))
+          cy.wrap(parseInt(barEl.css(barOffsetType)))
+            .should(comparer, old))
       }),
-    checkScrollCon = (delta: { deltaY?: number; deltaX?: number; }, isTop: boolean,
-      comparer: string): Cypress.Chainable => getSC().then(el => {
+    checkScrollCon = (delta: { deltaY?: number; deltaX?: number; },
+      isTop: boolean, comparer: string): Cypress.Chainable =>
+      getSC().then(el => {
         const old = isTop ? el[0].scrollTop : el[0].scrollLeft
         cy.get('@sc').trigger('wheel', delta)
           .invoke(isTop ? 'scrollTop' : 'scrollLeft')

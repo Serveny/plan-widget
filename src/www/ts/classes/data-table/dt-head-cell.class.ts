@@ -5,14 +5,16 @@ import { DtHeadMoveCell } from './dt-head-move-cell.class'
 import { DtService } from './dt-service.class'
 
 export class DtHeadCell extends DtCell {
-  constructor(col: IDataTableColumn, private readonly dts: DtService) {
+  constructor(col: IDataTableColumn, 
+    private readonly dts: DtService) {
     super(col)
     this.el.classList.add('dt-head-cell')
     this.el.appendChild(this.createTextEl(
       col.caption ?? `(${col.dataField})`))
     this.el.appendChild(this.createCellSlider())
     this.el.style.width = col.width == null ? 'auto' : col.width
-    this.el.appendChild(this.createSortMark(col.sortOrder, col.sortIndex))
+    this.el.appendChild(
+      this.createSortMark(col.sortOrder, col.sortIndex))
   }
 
   private createTextEl(text: string): HTMLElement {
@@ -27,7 +29,8 @@ export class DtHeadCell extends DtCell {
 
   private createSortMark(sortOrder: string | null | undefined, 
     sortIndex: number | null | undefined): SVGElement {
-    const el = Hlp.createSvg('svg'), pl = this.createSortMarkPolyline()
+    const el = Hlp.createSvg('svg'), 
+      pl = this.createSortMarkPolyline()
     this.setSortMarkAttributes(el)
     el.append(pl, this.createSortMarkLine(), 
       this.createSortMarkIndexText(sortIndex, sortOrder))
@@ -61,7 +64,8 @@ export class DtHeadCell extends DtCell {
     return ln
   }
 
-  private createSortMarkIndexText(sortIndex: number | null | undefined, 
+  private createSortMarkIndexText(
+    sortIndex: number | null | undefined, 
     sortOrder: string | null | undefined): SVGTextElement {
     const txt = Hlp.createSvg('text')
     txt.classList.add('dt-head-sort-svg-order-text')

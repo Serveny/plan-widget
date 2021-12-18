@@ -4,7 +4,7 @@ describe('testing data table head', () => {
   const cols = TestLayout.columns,
     visCols = cols?.filter(col =>
       col.visible === true) ?? [],
-      dtC = '.gs-field-left'
+    dtC = '.gs-field-left'
 
   before('visit test site', () => {
     cy.visit('/dist/index.html')
@@ -34,29 +34,33 @@ describe('testing data table head', () => {
               .as('headCell').invoke('outerWidth').as('oldWidth')
               .then(oldWidth => cy.get('@headCell')
                 .find('.dt-head-cell-slider').drag(100, 10).then(() =>
-                  cy.get('@headCell').invoke('outerWidth').then(newWidth => {
-                    expect((newWidth ?? 0) > (oldWidth ?? 0)).to.be.true
-                    getRowCells(col.visibleIndex).invoke('outerWidth')
-                      .then(newWidth => expect(
-                        (newWidth ?? 0) > (oldWidth ?? 0)).to.be.true)
-                  }))))
+                  cy.get('@headCell').invoke('outerWidth')
+                    .then(newWidth => {
+                      expect((newWidth ?? 0) > (oldWidth ?? 0))
+                        .to.be.true
+                      getRowCells(col.visibleIndex)
+                        .invoke('outerWidth').then(newWidth => expect(
+                          (newWidth ?? 0) > (oldWidth ?? 0))
+                          .to.be.true)
+                    }))))
 
         if (visCols.length > 1)
           it('change positon/index of cell', () => {
-            cy.contains(`${dtC} .dt-head-cell-text`, col.caption ?? '')
-              .dragTo(10, null).then(el => expect(parseInt(
-                el[0].parentElement?.style.order ?? '0')).eq(1)
+            cy.contains(`${dtC} .dt-head-cell-text`,
+              col.caption ?? '').dragTo(10, null).then(el =>
+                expect(parseInt(
+                  el[0].parentElement?.style.order ?? '0')).eq(1)
               )
           })
 
-        if (col.sortOrder != null)
-          it('has sort mark', () => {
-            cy.contains(`${dtC} .dt-head-cell-text`, col.caption ?? '').parent()
-              .find(`.dt-head-sort-mark`).as('sortMark').should('exist')
-            if (col.sortIndex != null)
-              cy.get('@sortMark').find('.dt-head-sort-svg-order-text')
-                .should('contain.text', col.sortIndex)
-          })
+        if (col.sortOrder != null) it('has sort mark', () => {
+          cy.contains(`${dtC} .dt-head-cell-text`, col.caption ?? '')
+            .parent().find(`.dt-head-sort-mark`).as('sortMark')
+            .should('exist')
+          if (col.sortIndex != null)
+            cy.get('@sortMark').find('.dt-head-sort-svg-order-text')
+              .should('contain.text', col.sortIndex)
+        })
       } else it('head cell does not exist', () =>
         cy.contains(`${dtC} .dt-head-cell`, col.caption ?? '')
           .should('not.exist'))

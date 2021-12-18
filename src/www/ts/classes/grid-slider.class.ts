@@ -1,64 +1,68 @@
 export class GridSlider {
-  readonly fieldLeft: HTMLDivElement
-  readonly fieldMiddle: HTMLDivElement
-  readonly fieldRight: HTMLDivElement
+  readonly fieldL: HTMLDivElement
+  readonly fieldM: HTMLDivElement
+  readonly fieldR: HTMLDivElement
 
-  private readonly sliderContainer: HTMLDivElement
-  private readonly sliderLeft: HTMLDivElement
-  private readonly sliderRight: HTMLDivElement
+  private readonly sliderCon: HTMLDivElement
+  private readonly sliderL: HTMLDivElement
+  private readonly sliderR: HTMLDivElement
   
-  private readonly sliderWidthPx = 5
+  // slider width in px
+  private readonly sliderPx = 5
   private minPx = 0
   private maxPx = 0
   
-  private sliderLeftPx = 0
-  private sliderRightPx = 0
+  private sliderLPx = 0
+  private sliderRPx = 0
 
   constructor(containerEl: HTMLElement) {
-    this.sliderContainer = document.createElement('div')
-    this.sliderContainer.classList.add('gs-container')
+    this.sliderCon = document.createElement('div')
+    this.sliderCon.classList.add('gs-container')
 
-    this.fieldLeft = document.createElement('div')
-    this.fieldLeft.classList.add('gs-field-left')
+    this.fieldL = document.createElement('div')
+    this.fieldL.classList.add('gs-field-left')
   
-    this.sliderLeft = document.createElement('div')
-    this.sliderLeft.classList.add('gs-slider-left')
-    this.sliderLeft.addEventListener('mousedown', () => 
-      this.registerSlide(ev => this.sliderLeftOnMouseMove(ev.pageX)))
+    this.sliderL = document.createElement('div')
+    this.sliderL.classList.add('gs-slider-left')
+    this.sliderL.addEventListener('mousedown', () => 
+      this.registerSlide(ev => 
+        this.sliderLeftOnMouseMove(ev.pageX)))
     
-    this.fieldMiddle = document.createElement('div')
-    this.fieldMiddle.classList.add('gs-field-middle')
+    this.fieldM = document.createElement('div')
+    this.fieldM.classList.add('gs-field-middle')
 
-    this.sliderRight = document.createElement('div')
-    this.sliderRight.classList.add('gs-slider-right')
+    this.sliderR = document.createElement('div')
+    this.sliderR.classList.add('gs-slider-right')
     
-    this.sliderRight.addEventListener('mousedown', () => 
-      this.registerSlide(ev => this.sliderRightOnMouseMove(ev.pageX)))
+    this.sliderR.addEventListener('mousedown', () => 
+      this.registerSlide(ev => 
+        this.sliderRightOnMouseMove(ev.pageX)))
 
-    this.fieldRight = document.createElement('div')
-    this.fieldRight.classList.add('gs-field-right')
+    this.fieldR = document.createElement('div')
+    this.fieldR.classList.add('gs-field-right')
 
-    this.sliderContainer.appendChild(this.fieldLeft)
-    this.sliderContainer.appendChild(this.sliderLeft)
-    this.sliderContainer.appendChild(this.fieldMiddle)
-    this.sliderContainer.appendChild(this.sliderRight)
-    this.sliderContainer.appendChild(this.fieldRight)
+    this.sliderCon.appendChild(this.fieldL)
+    this.sliderCon.appendChild(this.sliderL)
+    this.sliderCon.appendChild(this.fieldM)
+    this.sliderCon.appendChild(this.sliderR)
+    this.sliderCon.appendChild(this.fieldR)
 
-    containerEl.appendChild(this.sliderContainer)
+    containerEl.appendChild(this.sliderCon)
 
-    this.sliderLeftPx = this.sliderLeft.getBoundingClientRect().left
-    this.sliderRightPx = this.sliderRight.getBoundingClientRect().left
-    const rect = this.sliderContainer.getBoundingClientRect()
+    this.sliderLPx = this.sliderL.getBoundingClientRect().left
+    this.sliderRPx = this.sliderR.getBoundingClientRect().left
+    const rect = this.sliderCon.getBoundingClientRect()
     this.minPx = rect.left
     this.maxPx = rect.right
     
-    window.addEventListener('resize', () => this.onResize())
+    new ResizeObserver((): void => this.onResize())
+      .observe(this.sliderCon)
   }
 
   private registerSlide(moveHandler: (ev: MouseEvent) => void): void {
-    this.sliderContainer.style.cursor = 'ew-resize'
+    this.sliderCon.style.cursor = 'ew-resize'
     const upHandler = (): void => {
-      this.sliderContainer.style.cursor = 'auto'
+      this.sliderCon.style.cursor = 'auto'
       window.removeEventListener('mousemove', moveHandler)
       window.removeEventListener('mouseup', upHandler)
     }
@@ -67,47 +71,47 @@ export class GridSlider {
   }
 
   private sliderLeftOnMouseMove(pageX: number): void {
-    const pXl = pageX - this.minPx, pXr = pXl + this.sliderWidthPx
-    if (pXl >= this.minPx && pXr <= (this.maxPx - this.sliderWidthPx)) {
+    const pXl = pageX - this.minPx, pXr = pXl + this.sliderPx
+    if (pXl >= this.minPx && pXr <= (this.maxPx - this.sliderPx)) {
       this.moveSliderLeftTo(pXl, pXr)
-      if (this.sliderLeftPx >= this.sliderRightPx) this.moveSliderRightTo(
-        pXl + this.sliderWidthPx, pXr + this.sliderWidthPx)
+      if (this.sliderLPx >= this.sliderRPx) this.moveSliderRightTo(
+          pXl + this.sliderPx, pXr + this.sliderPx)
     }
   }
 
   private sliderRightOnMouseMove(pageX: number): void {
-    const pXl = pageX - this.minPx, pXr = pXl + this.sliderWidthPx
-    if ((pXl >= this.minPx + this.sliderWidthPx) && pXr <= this.maxPx) {
+    const pXl = pageX - this.minPx, pXr = pXl + this.sliderPx
+    if ((pXl >= this.minPx + this.sliderPx) && pXr <= this.maxPx) {
       this.moveSliderRightTo(pXl, pXr)
-      if (this.sliderRightPx <= this.sliderLeftPx) this.moveSliderLeftTo(
-        pXl - this.sliderWidthPx, pXr - this.sliderWidthPx)
+      if (this.sliderRPx <= this.sliderLPx) this.moveSliderLeftTo(
+        pXl - this.sliderPx, pXr - this.sliderPx)
     }
   }
 
   private moveSliderLeftTo(pXl: number, pXr: number): void {
-    this.sliderLeftPx = pXl
-    this.fieldLeft.style.width = this.sliderLeft.style.left = `${pXl}px`
-    this.fieldMiddle.style.left = `${pXr}px`
+    this.sliderLPx = pXl
+    this.fieldL.style.width = this.sliderL.style.left = `${pXl}px`
+    this.fieldM.style.left = `${pXr}px`
   }
 
   private moveSliderRightTo(pXl: number, pXr: number): void {
-    this.sliderRightPx = pXl
-    this.fieldMiddle.style.right = `${(this.maxPx - pXl)}px`
-    this.sliderRight.style.left = `${pXl}px`
-    this.fieldRight.style.left = `${pXr}px`
+    this.sliderRPx = pXl
+    this.fieldM.style.right = `${(this.maxPx - pXl)}px`
+    this.sliderR.style.left = `${pXl}px`
+    this.fieldR.style.left = `${pXr}px`
   }
 
   private onResize(): void {
     const widthContainer = this.maxPx - this.minPx,
-      sliderLeftScale = this.sliderLeftPx / widthContainer,
-      sliderRightScale = this.sliderRightPx / widthContainer,
-      rect = this.sliderContainer.getBoundingClientRect()
+      sliderLScale = this.sliderLPx / widthContainer,
+      sliderRScale = this.sliderRPx / widthContainer,
+      rect = this.sliderCon.getBoundingClientRect()
     this.minPx = rect.left
     this.maxPx = rect.right
-    const newWidthContainer = this.maxPx - this.minPx
+    const newWidthCon = this.maxPx - this.minPx
     this.sliderLeftOnMouseMove(this.minPx 
-      + (newWidthContainer * sliderLeftScale))
+      + (newWidthCon * sliderLScale))
     this.sliderRightOnMouseMove(this.minPx
-      + (newWidthContainer * sliderRightScale))
+      + (newWidthCon * sliderRScale))
   }
 }
