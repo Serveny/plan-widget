@@ -12,6 +12,9 @@ export class DtHeadMoveCell {
   private readonly dropPosis: DropPosition[]
   private readonly dropPreviewEl: HTMLElement
   private orderDrop: number
+  private conLeft: number
+  private lastWidth?: number
+  private lastOrder?: number
 
   constructor(
     ev: MouseEvent,
@@ -25,6 +28,7 @@ export class DtHeadMoveCell {
     this.dragCTxtEl = dragCell.querySelector(
       '.dt-head-cell-text') as HTMLElement | null
     this.orderDrag = parseInt(dragCell.style.order)
+    this.conLeft = this.dts.head.el.getBoundingClientRect().left
     this.dropPosis = this.getDropPosis().reverse()
     this.dropPreviewEl = Hlp.createDiv('dt-head-drop-preview')
     this.orderDrop = this.orderDrag
@@ -110,24 +114,25 @@ export class DtHeadMoveCell {
   }
 
   private getDropPosis(): DropPosition[] {
-    let lastWidth: number | undefined, lastOrder: number | undefined
-    const posis = this.cells.map(cell => {
-      const order = parseInt(cell.style.order)
-      const dp = new DropPosition(
-        cell.offsetLeft - (lastWidth ?? 0) / 2,
-        order > this.orderDrag ? lastOrder ?? 0 : order,
-        cell.offsetLeft)
-      lastWidth = cell.offsetWidth
-      lastOrder = order
-      return dp
-    })
-    const lastCell = this.cells[this.cells.length - 1]
+    const posis = this.cells.map(cell => this.getDropPos(cell)),
+      lastCell = this.cells[this.cells.length - 1]
     posis.push(new DropPosition(
-      lastCell.offsetLeft + (lastCell.offsetWidth / 2),
-      lastOrder ?? 0,
+      this.conLeft + lastCell.offsetLeft + (lastCell.offsetWidth / 2),
+      this.lastOrder ?? 0,
       lastCell.offsetLeft + lastCell.offsetWidth
     ))
     return posis
+  }
+
+  private getDropPos(cell: HTMLElement): DropPosition {
+    const order = parseInt(cell.style.order)
+    const dp = new DropPosition(
+      this.conLeft + cell.offsetLeft - (this.lastWidth ?? 0) / 2,
+      order > this.orderDrag ? this.lastOrder ?? 0 : order,
+      cell.offsetLeft)
+    this.lastWidth = cell.offsetWidth
+    this.lastOrder = order
+    return dp
   }
 
   private orderCellsFromTo(orderStart: number, orderEnd: number,
@@ -177,8 +182,10 @@ export class DtHeadMoveCell {
 
 class DropPosition {
   constructor(
+    // pagePx
     public px: number,
     public order: number,
+    // leftPx relative to container element
     public previewPx: number,
   ) { }
 }

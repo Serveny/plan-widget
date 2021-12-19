@@ -8,12 +8,6 @@ export class ScrollBarX extends ScrollBar {
     this.barEl.classList.add('plw-sb-bar-x')
   }
 
-  protected override createResizeEls(): void {
-    const resizeFieldLeft = Hlp.createDiv('plw-sb-resize-field-left'),
-      resizeFieldRight = Hlp.createDiv('plw-sb-resize-field-right')
-    this.barEl.append(resizeFieldLeft, resizeFieldRight)
-  }
-
   protected override getStartPxOfEl(rect: DOMRect): number {
     return rect.left - this.conMarginStart
   }

@@ -1,4 +1,4 @@
-import { TimeScale } from '../enums/time-scale.enum'
+import { TimeScale } from '../../enums/time-scale.enum'
 
 export class TimeScalerRow {
   yStart: number

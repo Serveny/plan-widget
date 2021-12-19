@@ -9,8 +9,8 @@ $resizeFieldSize: 5px
 .plw-sb-con
   position: absolute
   z-index: 99
-  border: 1px solid rgba(200,200,200,0.2)
-  background-color: rgba(200,200,200,0.1)
+  border: 1px solid rgb(86, 86, 87, 0.9)
+  background-color: rgb(59, 60, 62, 0.9)
   border-radius: $scrollBarBorderRadius
 
 .plw-scroll-bar
@@ -39,6 +39,12 @@ $resizeFieldSize: 5px
   height: $scrollBarSize
   grid-template-columns: $resizeFieldSize auto $resizeFieldSize
 
+.plw-sb-bar-x > .plw-sb-resize-field
+  cursor: e-resize
+
+.plw-sb-bar-y > .plw-sb-resize-field
+  cursor: n-resize
+
 .plw-sb-bar-y
   min-height: 10px
   width: $scrollBarSize
@@ -46,31 +52,13 @@ $resizeFieldSize: 5px
 
 .plw-sb-resize-field
   border-radius: $scrollBarBorderRadius
+  background: rgba(255,255,255,0.2)
 
-.plw-sb-resize-field-x
+.plw-sb-resize-field-start
   @extend .plw-sb-resize-field
-  cursor: ew-resize
-
-.plw-sb-resize-field-left
-  @extend .plw-sb-resize-field-x
   grid-column: 1
-  border-right: $scrollBarResizeBorder
 
-.plw-sb-resize-field-right
-  @extend .plw-sb-resize-field-x
-  grid-column: 3
-  border-left: $scrollBarResizeBorder
-
-.plw-sb-resize-field-y
+.plw-sb-resize-field-end
   @extend .plw-sb-resize-field
-  cursor: ns-resize
-
-.plw-sb-resize-field-up
-  @extend .plw-sb-resize-field-y
-  grid-row: 1
-  border-bottom: $scrollBarResizeBorder
-
-.plw-sb-resize-field-down
-  @extend .plw-sb-resize-field-y
-  grid-row: 3
-  border-top: $scrollBarResizeBorder
+  grid-column: 3
+  

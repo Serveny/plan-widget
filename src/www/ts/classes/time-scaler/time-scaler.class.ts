@@ -1,5 +1,5 @@
-import { TimeScale } from '../enums/time-scale.enum'
-import { CacheService } from '../services/cache.service'
+import { TimeScale } from '../../enums/time-scale.enum'
+import { CacheService } from '../../services/cache.service'
 import { TimeScalerRow } from './time-scaler-row.class'
 
 export class TimeScaler {
@@ -17,7 +17,7 @@ export class TimeScaler {
     const ctx = this.el.getContext('2d')
     if (ctx == null) throw '[TimeScale] No canvas context'
     this.ctx = ctx
-    window.addEventListener('resize', () => this.paint())
+    new ResizeObserver((): void => this.paint()).observe(this.el)
   }
 
   appendTo(containerEl: HTMLElement): void {

@@ -84,8 +84,6 @@ export abstract class ScrollBar {
 
   protected abstract getSizePxOfEl(el: HTMLElement): number
 
-  protected abstract createResizeEls(): void
-
   protected abstract getScrollSize(): number
 
   protected abstract setScrollContentPos(): void
@@ -226,5 +224,12 @@ export abstract class ScrollBar {
   private onScrollConWheel(ev: WheelEvent): void {
     const delta = this.getWheelDelta(ev)
     if (delta !== 0) this.onWheel(delta)
+  }
+
+  private createResizeEls(): HTMLElement[] {
+    const resizeFields = [Hlp.createDiv('plw-sb-resize-field-start'), 
+      Hlp.createDiv('plw-sb-resize-field-end')]
+    this.barEl.append(resizeFields[0], resizeFields[1])
+    return resizeFields
   }
 }

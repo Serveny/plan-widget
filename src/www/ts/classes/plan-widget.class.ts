@@ -1,6 +1,6 @@
 import { GridSlider } from './grid-slider.class'
 //import { IPlanWidget } from '../interfaces/i-plan-widget.interface';
-import { TimeScaler } from './time-scaler.class'
+import { TimeScaler } from './time-scaler/time-scaler.class'
 import { CacheService } from '../services/cache.service'
 import { IEntityView, IResourceView } from '../interfaces/i-view.interface'
 import { DataTable } from './data-table/data-table.class'
