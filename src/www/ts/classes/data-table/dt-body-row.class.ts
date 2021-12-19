@@ -20,10 +20,13 @@ export class DtBodyRow {
   }
 
   updateCells(rowData: IUpdateView): void {
-    Object.entries(rowData).forEach(df => {
-      const cell = this.cells.get(df[0])
-      if(cell != null && df[1] != null) cell.text = df[1] as string
-    })
+    Object.entries(rowData).forEach(df => this.updateCell(df))
+  }
+
+  private updateCell(dataField: [string, unknown]): void {
+    const cell = this.cells.get(dataField[0])
+    if (cell != null && dataField[1] != null)
+      cell.text = dataField[1] as string
   }
 
   private addCells(): void {
@@ -33,11 +36,11 @@ export class DtBodyRow {
     })
   }
 
-  private addCell(rowMap: Map<string, unknown>, 
+  private addCell(rowMap: Map<string, unknown>,
     col: IDataTableColumn): void {
     if (col.dataField != null) {
       const text = rowMap.get(col.dataField) as string,
-      cell = new DtBodyCell(text, col)
+        cell = new DtBodyCell(text, col)
       this.cells.set(col.dataField, cell)
       this.el.appendChild(cell.el)
     }

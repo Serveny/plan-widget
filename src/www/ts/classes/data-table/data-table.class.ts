@@ -1,10 +1,10 @@
 import { IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
 import { IUpdateView, IView } from '../../interfaces/i-view.interface'
-import Hlp from '../helper.class'
 import { ScrollBarX } from '../scroll-bar/scroll-bar-x.class'
 import { ScrollBarY } from '../scroll-bar/scroll-bar-y.class'
 import { DtBodyRow } from './dt-body-row.class'
 import { DtService } from './dt-service.class'
+import Hlp from '../helper.class'
 
 export class DataTable<TView extends IView> {
   private readonly dts: DtService
@@ -26,9 +26,9 @@ export class DataTable<TView extends IView> {
   appendTo(containerEl: HTMLElement): DataTable<TView> {
     containerEl.appendChild(this.dts.el)
     this.scrollBarX?.appendTo(containerEl)
-    this.scrollBarX?.bindBarSizeToEls(this.dts.el, this.dts.bodyEl)
+      .bindBarSizeToScrollEls(this.dts.el, this.dts.bodyEl)
     this.scrollBarY?.appendTo(containerEl)
-    this.scrollBarY?.bindBarSizeToEls(this.dts.el, this.dts.bodyEl)
+      .bindBarSizeToScrollEls(this.dts.el, this.dts.bodyEl)
     return this
   }
 

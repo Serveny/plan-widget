@@ -1,5 +1,4 @@
 import { ScrollBar } from './scroll-bar.class'
-import Hlp from '../helper.class'
 
 export class ScrollBarX extends ScrollBar {
   constructor(conMargin = [0, 0], isEnabledZoom = false) {

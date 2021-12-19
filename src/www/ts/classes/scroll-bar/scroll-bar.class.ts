@@ -43,21 +43,30 @@ export abstract class ScrollBar {
     if (isEnabledZoom) this.createResizeEls()
   }
 
-  appendTo(parentEl: HTMLElement): void {
-    this.setDimensionByEl(parentEl)
+  appendTo(parentEl: HTMLElement): ScrollBar {
     parentEl.appendChild(this.conEl)
+    this.setDimensionByEl(this.conEl)
+    this.setBarByPct(0, 100)
+    return this    
   }
 
-  bindBarSizeToEls(scrollConEl: HTMLElement, 
-    contentEl: HTMLElement): void {
+  addResizeObserver(): ScrollBar {
+    new ResizeObserver((): void => this.repaint()).observe(this.conEl)
+    return this
+  }
+
+  bindBarSizeToScrollEls(scrollConEl: HTMLElement, 
+    contentEl: HTMLElement): ScrollBar {
     this.scrollConEl = scrollConEl
     this.contentEl = contentEl
-    this.setSizes()
+    this.setSizesByScrollCon()
     this.scrollConEl.addEventListener('wheel', 
       ev => this.onScrollConWheel(ev))
-    const rsObs = new ResizeObserver((): void => this.setSizes())
+    const rsObs = new ResizeObserver((): void => 
+      this.setSizesByScrollCon())
     rsObs.observe(this.scrollConEl)
     rsObs.observe(this.contentEl)
+    return this
   }
 
   setBarByPct(startPct: number, endPct: number): void {
@@ -111,10 +120,15 @@ export abstract class ScrollBar {
     this._conOnePctPx = this._conSizePx / 100
   }
 
-  private setSizes(): void {
+  private repaint(): void {
+    this.setDimensionByEl(this.conEl)
+    this.setBarByPct(this._barStartPct, this._barEndPct)
+  }
+
+  private setSizesByScrollCon(): void {
     this.setDimensionByEl(this.conEl)
     this._scrollConOnePctPx = this.getScrollSize() / 100
-    this.setBarSize()
+    this.setBarSizeByScrollCon()
   }
 
   private setBarByPx(startPx: number, endPx: number): void {
@@ -190,7 +204,7 @@ export abstract class ScrollBar {
     return px / this._conOnePctPx
   }
 
-  private setBarSize(): void {
+  private setBarSizeByScrollCon(): void {
     const startPct = this.getScrollStartPx() / this._scrollConOnePctPx
     this.setBarByPct(
       startPct, (this.getScrollScale() * 100) + startPct)

@@ -37,12 +37,12 @@ export class PlanWidget /*implements IPlanWidget*/ {
     const conMiddle = Helper.createDiv('dt-scroll-container')
     this.gridSlider.fieldM.appendChild(conMiddle)
     this.timeScaler.appendTo(conMiddle)
-    this.scrollBarX.appendTo(conMiddle)
-    this.scrollBarY.appendTo(conMiddle)
+    this.scrollBarX.appendTo(conMiddle).addResizeObserver()
+    this.scrollBarY.appendTo(conMiddle).bindBarSizeToScrollEls(
+      this.resourceTable.el, this.resourceTable.bodyEl)
     this.entityTable.appendTo(this.gridSlider.fieldR)
 
-    this.scrollBarY.bindBarSizeToEls(
-      this.resourceTable.el, this.resourceTable.bodyEl)
+    
     this.timeScaler.paint()
   }
 
