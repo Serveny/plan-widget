@@ -21,6 +21,7 @@ export class DtHeadMoveCell {
     private readonly dragCell: HTMLElement,
     private readonly dts: DtService
   ) {
+    ev.preventDefault()
     this.cells = this.getChildrenAsc(this.dts.head.el)
     this.dragCellLeft = ev.x - dragCell.offsetLeft,
       this.dummyEl = this.createMoveDummy(

@@ -8,6 +8,7 @@ import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interfac
 import { ScrollBarX } from './scroll-bar/scroll-bar-x.class'
 import Helper from './helper.class'
 import { ScrollBarY } from './scroll-bar/scroll-bar-y.class'
+import { EndlessScroller } from './endless-scroller/endless-scroller.class'
 
 export class PlanWidget /*implements IPlanWidget*/ {
   private readonly cache: CacheService
@@ -40,8 +41,9 @@ export class PlanWidget /*implements IPlanWidget*/ {
     this.scrollBarX.appendTo(conMiddle).addResizeObserver()
     this.scrollBarY.appendTo(conMiddle).bindBarSizeToScrollEls(
       this.resourceTable.el, this.resourceTable.bodyEl)
+    new EndlessScroller().appendTo(conMiddle)
     this.entityTable.appendTo(this.gridSlider.fieldR)
-
+    
     
     this.timeScaler.paint()
   }

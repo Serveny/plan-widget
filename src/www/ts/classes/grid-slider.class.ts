@@ -24,9 +24,8 @@ export class GridSlider {
   
     this.sliderL = document.createElement('div')
     this.sliderL.classList.add('gs-slider-left')
-    this.sliderL.addEventListener('mousedown', () => 
-      this.registerSlide(ev => 
-        this.sliderLeftOnMouseMove(ev.pageX)))
+    this.sliderL.addEventListener('mousedown', mdEv => 
+      this.registerSlide(mdEv, ev => this.moveSliderL(ev.pageX)))
     
     this.fieldM = document.createElement('div')
     this.fieldM.classList.add('gs-field-middle')
@@ -34,9 +33,8 @@ export class GridSlider {
     this.sliderR = document.createElement('div')
     this.sliderR.classList.add('gs-slider-right')
     
-    this.sliderR.addEventListener('mousedown', () => 
-      this.registerSlide(ev => 
-        this.sliderRightOnMouseMove(ev.pageX)))
+    this.sliderR.addEventListener('mousedown', mdEv => 
+      this.registerSlide(mdEv, ev => this.moveSliderR(ev.pageX)))
 
     this.fieldR = document.createElement('div')
     this.fieldR.classList.add('gs-field-right')
@@ -59,7 +57,9 @@ export class GridSlider {
       .observe(this.sliderCon)
   }
 
-  private registerSlide(moveHandler: (ev: MouseEvent) => void): void {
+  private registerSlide(mdEv: MouseEvent, 
+    moveHandler: (ev: MouseEvent) => void): void {
+    mdEv.preventDefault()
     this.sliderCon.style.cursor = 'ew-resize'
     const upHandler = (): void => {
       this.sliderCon.style.cursor = 'auto'
@@ -70,7 +70,7 @@ export class GridSlider {
     window.addEventListener('mouseup', upHandler)
   }
 
-  private sliderLeftOnMouseMove(pageX: number): void {
+  private moveSliderL(pageX: number): void {
     const pXl = pageX - this.minPx, pXr = pXl + this.sliderPx
     if (pXl >= this.minPx && pXr <= (this.maxPx - this.sliderPx)) {
       this.moveSliderLeftTo(pXl, pXr)
@@ -79,7 +79,7 @@ export class GridSlider {
     }
   }
 
-  private sliderRightOnMouseMove(pageX: number): void {
+  private moveSliderR(pageX: number): void {
     const pXl = pageX - this.minPx, pXr = pXl + this.sliderPx
     if ((pXl >= this.minPx + this.sliderPx) && pXr <= this.maxPx) {
       this.moveSliderRightTo(pXl, pXr)
@@ -109,9 +109,7 @@ export class GridSlider {
     this.minPx = rect.left
     this.maxPx = rect.right
     const newWidthCon = this.maxPx - this.minPx
-    this.sliderLeftOnMouseMove(this.minPx 
-      + (newWidthCon * sliderLScale))
-    this.sliderRightOnMouseMove(this.minPx
-      + (newWidthCon * sliderRScale))
+    this.moveSliderL(this.minPx + (newWidthCon * sliderLScale))
+    this.moveSliderR(this.minPx + (newWidthCon * sliderRScale))
   }
 }

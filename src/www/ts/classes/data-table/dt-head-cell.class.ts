@@ -84,6 +84,7 @@ export class DtHeadCell extends DtCell {
   }
 
   private resizeCell(ev: MouseEvent): void {
+    ev.preventDefault()
     const cell = (ev.target as HTMLElement).parentElement,
       left = cell?.getBoundingClientRect().left,
       rowCells = this.dts.getBodyCellsByOrder(
