@@ -2,6 +2,7 @@
   overflow: hidden
   position: relative
   height: 20px
+  cursor: grab
 
 .plw-es-cell
   position: absolute
@@ -12,4 +13,10 @@
   padding: 0
   margin: 0
   box-sizing: border-box
-  
+  overflow: hidden
+  text-overflow: clip
+
+
+
+.plw-es-cell:hover, .plw-es-cell-active
+  background: #acacac
