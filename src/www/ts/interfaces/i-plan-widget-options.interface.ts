@@ -8,7 +8,8 @@ export interface IPlanWidgetOptions {
   end?: Date | null | undefined;
   workDate?: Date | null | undefined;
   nonWorkingTimeVisible?: boolean | null | undefined;
-  resourceTableOptions?: IPlanWidgetDataTableLayout | null | undefined;
+  resourceTableOptions?: 
+    IPlanWidgetDataTableLayout | null | undefined;
   entityTableOptions?: IPlanWidgetDataTableLayout | null | undefined;
 
   // Colors

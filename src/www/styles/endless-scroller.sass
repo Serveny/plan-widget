@@ -3,20 +3,20 @@
   position: relative
   height: 20px
   cursor: grab
+  border-top: $endlessScrollerBorder
+  box-sizing: border-box
 
 .plw-es-cell
   position: absolute
   top: 0
   bottom: 0
-  border: solid 1px #fff
-  border-right: none
+  border-left: $endlessScrollerBorder
   padding: 0
   margin: 0
   box-sizing: border-box
   overflow: hidden
   text-overflow: clip
-
-
+  white-space: nowrap
 
 .plw-es-cell:hover, .plw-es-cell-active
   background: #acacac

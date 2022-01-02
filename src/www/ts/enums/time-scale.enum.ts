@@ -20,4 +20,5 @@ export enum TimeScale {
     sixthMinutes = 10,
     twelfthMinutes = 5,
     seconds = 1,
-  };
+    none = 0,
+  }

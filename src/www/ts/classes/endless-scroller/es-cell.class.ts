@@ -1,7 +1,7 @@
 import Hlp from '../helper.class'
 
 export class EsCell {
-  private static i = 0
+  readonly el = Hlp.createDiv('plw-es-cell')
   private _posPx = 0
   get posPx(): number { return this._posPx }
   set posPx(posPx: number) {
@@ -11,9 +11,8 @@ export class EsCell {
   set widthPx(widthPx: number) {
     this.el.style.width = `${widthPx}px`
   }
-  el = Hlp.createDiv('plw-es-cell')
+  set text(text: string) { this.el.textContent = text }
   constructor(posPx: number, widthPx: number) {
-    this.el.textContent = `${EsCell.i++}`
     this.posPx = posPx
     this.widthPx = widthPx
   }
@@ -30,5 +29,9 @@ export class EsCell {
     this.posPx = newPoxPx
     this.widthPx = newWidthPx
     return newPoxPx + newWidthPx
+  }
+
+  setTextPos(leftPx: number): void {
+    this.el.style.paddingLeft = `${leftPx}px`
   }
 }

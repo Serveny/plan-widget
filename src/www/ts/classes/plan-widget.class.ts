@@ -1,14 +1,13 @@
 import { GridSlider } from './grid-slider.class'
 //import { IPlanWidget } from '../interfaces/i-plan-widget.interface';
 import { TimeScaler } from './time-scaler/time-scaler.class'
-import { CacheService } from '../services/cache.service'
+import { CacheService } from './services/cache.service'
 import { IEntityView, IResourceView } from '../interfaces/i-view.interface'
 import { DataTable } from './data-table/data-table.class'
 import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interface'
 import { ScrollBarX } from './scroll-bar/scroll-bar-x.class'
 import Helper from './helper.class'
 import { ScrollBarY } from './scroll-bar/scroll-bar-y.class'
-import { EndlessScroller } from './endless-scroller/endless-scroller.class'
 
 export class PlanWidget /*implements IPlanWidget*/ {
   private readonly cache: CacheService
@@ -24,7 +23,7 @@ export class PlanWidget /*implements IPlanWidget*/ {
     if (containerEl == null) throw '[PlanWidget] containerEl is null'
     const startDate = options.start ?? new Date()
     this.cache = new CacheService(startDate, 
-      this.addSeconds(startDate, 20))
+      options.end ?? new Date())
     this.gridSlider = new GridSlider(containerEl)
     this.resourceTable = new DataTable('plw-resource-table', 
       options.resourceTableOptions, options.locale, true, false)
@@ -41,11 +40,7 @@ export class PlanWidget /*implements IPlanWidget*/ {
     this.scrollBarX.appendTo(conMiddle).addResizeObserver()
     this.scrollBarY.appendTo(conMiddle).bindBarSizeToScrollEls(
       this.resourceTable.el, this.resourceTable.bodyEl)
-    new EndlessScroller().appendTo(conMiddle)
     this.entityTable.appendTo(this.gridSlider.fieldR)
-    
-    
-    this.timeScaler.paint()
   }
 
   addResources(resources: IResourceView[]): void { 
@@ -70,21 +65,5 @@ export class PlanWidget /*implements IPlanWidget*/ {
 
   removeEntities(entityIds: string[]): void {
     this.entityTable.removeRows(entityIds)
-  }
-
-  // private addMonths(dateIn: Date, months: number): Date {
-  //   const d = dateIn.getDate();
-  //   const dateOut = new Date();
-  //   dateOut.setMonth(dateIn.getMonth() + +months);
-  //   if (dateIn.getDate() != d) dateOut.setDate(0);
-  //   return dateOut;
-  // }
-
-  private addSeconds(dateIn: Date, months: number): Date {
-    const d = dateIn.getDate()
-    const dateOut = new Date()
-    dateOut.setSeconds(dateIn.getSeconds() + +months)
-    if (dateIn.getDate() != d) dateOut.setDate(0)
-    return dateOut
   }
 }
