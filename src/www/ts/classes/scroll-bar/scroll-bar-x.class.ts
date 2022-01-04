@@ -62,4 +62,8 @@ export class ScrollBarX extends ScrollBar {
     return ev.deltaX == null || ev.deltaX === 0 
       ? ev.deltaY : ev.deltaX
   }
+
+  protected override getResizeCursor(): string {
+      return 'e-resize'
+  }
 }

@@ -22,6 +22,8 @@ describe('testing endless scroller', () => {
     cy.get('body').then((bodyEl: JQuery<HTMLBodyElement>) => {
       endlessScroller1.appendTo(bodyEl[0])
       endlessScroller2.appendTo(bodyEl[0])
+      endlessScroller1.paint()
+      endlessScroller2.paint()
     })
   })
 

@@ -52,6 +52,12 @@ describe('testing scroll bar', () => {
       cy.get('.gs-field-right .plw-sb-con-y').as('sbcy'),
     getSC = (): Cypress.Chainable<JQuery<HTMLElement>> =>
       cy.get('.gs-field-right .dt-scroll-container').as('sc'),
+    getMiddleBarX = (): Cypress.Chainable<JQuery<HTMLElement>> =>
+      cy.get('.gs-field-middle .plw-sb-bar-x').as('mbx'),
+    getResizeStartX = (): Cypress.Chainable<JQuery<HTMLElement>> =>
+      cy.get('.gs-field-middle .plw-sb-resize-field-start').as('rxs'),
+    getResizeEndX = (): Cypress.Chainable<JQuery<HTMLElement>> =>
+      cy.get('.gs-field-middle .plw-sb-resize-field-end').as('rxe'),
     checkBarX = (delta: { deltaY?: number; deltaX?: number; },
       barOffsetType: string, comparer: string): Cypress.Chainable =>
       getXCon().find('.plw-scroll-bar').then(barEl => {
@@ -75,6 +81,20 @@ describe('testing scroll bar', () => {
         cy.get('@sc').trigger('wheel', delta)
           .invoke(isTop ? 'scrollTop' : 'scrollLeft')
           .should(comparer, old)
+      }),
+    checkResizeStartX = (deltaX: number): Cypress.Chainable =>
+      getMiddleBarX().then(bar => {
+        const oldLeft = bar[0].offsetLeft
+        getResizeStartX().drag(deltaX, 0).then(() =>
+          cy.wrap(bar[0].offsetLeft)
+            .should(deltaX > 0 ? 'be.gt' : 'be.lt', oldLeft))
+      }),
+    checkResizeEndX = (deltaX: number): Cypress.Chainable =>
+      getMiddleBarX().then(bar => {
+        const oldWidth = bar[0].offsetWidth
+        getResizeEndX().drag(deltaX, 0).then(() =>
+          cy.wrap(bar[0].offsetWidth)
+            .should(deltaX > 0 ? 'be.gt' : 'be.lt', oldWidth))
       })
   describe('x-bar: testing mouse wheel handlers', () => {
     it('moves right on wheel down inside x-bar container', () =>
@@ -108,5 +128,13 @@ describe('testing scroll bar', () => {
       checkScrollCon(wheel.down, true, 'be.gt'))
     it('moves up on wheel up inside scroll container', () =>
       checkScrollCon(wheel.up, true, 'be.lt'))
+  })
+
+  describe('x-bar: testing resize bar start', () => {
+    it('moves right', () => checkResizeStartX(100))
+  })
+
+  describe('x-bar: testing resize bar end', () => {
+    it('moves left', () => checkResizeEndX(-100))
   })
 })

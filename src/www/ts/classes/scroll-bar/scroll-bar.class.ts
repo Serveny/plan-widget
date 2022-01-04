@@ -31,6 +31,9 @@ export abstract class ScrollBar {
 
   private moveBarClickPosPx = 0
 
+  private barResizeStart?: HTMLDivElement
+  private barResizeEnd?: HTMLDivElement
+
   constructor(
     protected readonly conMarginStart: number,
     protected readonly conMarginEnd: number,
@@ -105,6 +108,8 @@ export abstract class ScrollBar {
 
   protected abstract getWheelDeltaXOrY(ev: WheelEvent): number
 
+  protected abstract getResizeCursor(): string
+
   // =======================================================
 
   private setDimensionByEl(el: HTMLElement): void {
@@ -143,24 +148,33 @@ export abstract class ScrollBar {
 
   private addMove(mdEv: MouseEvent): void {
     document.body.style.userSelect = 'none'
-    document.body.style.cursor = 'default'
+    let cursor = this.getResizeCursor()
     this.barEl.classList.add('plw-scroll-bar-active')
     const pos = this.getXYByEv(mdEv)
     this.moveBarClickPosPx = this.getBarRelPos(pos)
-    if (mdEv.target !== this.barEl) this.moveBarToClick(pos)
-    this.moveAddEventHandler()
+    if (mdEv.target === this.barResizeStart)
+      this.moveAddEventHandler(ev => this.moveBarStart(ev))
+    else if (mdEv.target === this.barResizeEnd)
+      this.moveAddEventHandler(ev => this.moveBarEnd(ev))
+    else {
+      if (mdEv.target === this.conEl) this.moveBarToClick(pos)
+      this.moveAddEventHandler(ev => this.moveBar(ev))
+      cursor = 'default'
+    }
+    document.body.style.cursor = cursor
   }
 
   private getBarRelPos(pos: number): number {
     return pos - this._conStartPx - this._barStartPx
   }
 
-  private moveAddEventHandler(): void {
+  private moveAddEventHandler(
+    mmHandler: (ev: MouseEvent) => void): void {
     const onMu = (): void => {
       window.removeEventListener('mousemove', onMm)
       window.removeEventListener('mouseup', onMu)
       this.moveOnMouseup()
-    }, onMm = (ev: MouseEvent): void => this.moveOnMousemove(ev)
+    }, onMm = (ev: MouseEvent): void => mmHandler(ev)
     window.addEventListener('mousemove', onMm)
     window.addEventListener('mouseup', onMu)
   }
@@ -184,13 +198,30 @@ export abstract class ScrollBar {
       this._conSizePx)
   }
 
-  private moveOnMousemove(ev: MouseEvent): void {
+  private moveBar(ev: MouseEvent): void {
     const startPx = this.getXYByEv(ev) - this.moveBarClickPosPx,
       endPx = startPx + this._barSizePx
     if (startPx < this._conStartPx) this.moveBarToConStart()
     else if (endPx > this._conEndPx) this.moveBarToConEnd()
     else this.setBarByPx(startPx - this._conStartPx, 
       endPx - this._conStartPx)
+  }
+
+  private moveBarStart(ev: MouseEvent): void {
+    const startPx = this.getXYByEv(ev) - this._conStartPx
+    if (startPx <= 0) this.setBarByPx(0, this._barEndPx)
+    else if (startPx >= this._barEndPx - 10)
+      this.setBarByPx(this._barEndPx - 10, this._barEndPx)
+    else this.setBarByPx(startPx, this._barEndPx)
+  }
+
+  private moveBarEnd(ev: MouseEvent): void {
+    const endPx = this.getXYByEv(ev) - this._conStartPx
+    if (endPx >= this._conSizePx) 
+      this.setBarByPx(this._barStartPx, this._conSizePx)
+    else if (endPx <= this._barStartPx + 10)
+      this.setBarByPx(this._barStartPx, this._barStartPx + 10)
+    else this.setBarByPx(this._barStartPx, endPx)
   }
 
   private moveOnMouseup(): void {
@@ -240,10 +271,9 @@ export abstract class ScrollBar {
     if (delta !== 0) this.onWheel(delta)
   }
 
-  private createResizeEls(): HTMLElement[] {
-    const resizeFields = [Hlp.createDiv('plw-sb-resize-field-start'), 
-      Hlp.createDiv('plw-sb-resize-field-end')]
-    this.barEl.append(resizeFields[0], resizeFields[1])
-    return resizeFields
+  private createResizeEls(): void {
+    this.barResizeStart = Hlp.createDiv('plw-sb-resize-field-start'), 
+    this.barResizeEnd = Hlp.createDiv('plw-sb-resize-field-end')
+    this.barEl.append(this.barResizeStart, this.barResizeEnd)
   }
 }
