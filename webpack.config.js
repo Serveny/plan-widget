@@ -11,7 +11,11 @@ module.exports = {
   module: {
     rules: [{
       test: /\.ts$/,
-      use: 'ts-loader',
+      loader: 'esbuild-loader',
+      options: {
+        loader: 'ts',
+        target: 'ESNext',
+      },
       include: [
         path.resolve(__dirname, 'src/www/ts'),
       ],
@@ -23,18 +27,18 @@ module.exports = {
     }, {
       test: /\.s[ac]ss$/i,
       use: [{
-          loader: 'file-loader',
-          options: {
-            name: 'styles.min.css'
-          },
+        loader: 'file-loader',
+        options: {
+          name: 'styles.min.css'
         },
+      },
         'sass-loader',
       ],
       include: [
         path.resolve(__dirname, 'src/www/styles'),
       ],
     },
-  ],
+    ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],

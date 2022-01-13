@@ -9,24 +9,25 @@
     "upgrade": "ncu --upgrade && npm install"
   },
   "devDependencies": {
-    "@types/node": "17.0.6",
+    "@types/node": "17.0.8",
     "@types/webpack": "5.28.0",
-    "@types/webpack-dev-server": "4.5.1",
-    "@typescript-eslint/eslint-plugin": "5.8.1",
-    "@typescript-eslint/parser": "5.8.1",
+    "@types/webpack-dev-server": "4.7.1",
+    "@typescript-eslint/eslint-plugin": "5.9.1",
+    "@typescript-eslint/parser": "5.9.1",
     "@wasm-tool/wasm-pack-plugin": "1.6.0",
-    "cypress": "9.2.0",
+    "cypress": "9.2.1",
+    "esbuild-loader": "2.18.0",
     "eslint": "8.6.0",
     "file-loader": "6.2.0",
     "html-webpack-plugin": "5.5.0",
-    "sass": "1.45.2",
+    "sass": "1.48.0",
     "sass-loader": "12.4.0",
     "text-encoding": "0.7.0",
     "ts-loader": "9.2.6",
     "ts-node": "10.4.0",
     "typescript": "4.5.4",
-    "webpack": "5.65.0",
+    "webpack": "5.66.0",
     "webpack-cli": "4.9.1",
-    "webpack-dev-server": "4.7.2"
+    "webpack-dev-server": "4.7.3"
   }
 }
