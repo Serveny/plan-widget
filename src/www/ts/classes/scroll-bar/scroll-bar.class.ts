@@ -28,6 +28,7 @@ export abstract class ScrollBar {
   protected scrollConEl?: HTMLElement
   protected contentEl?: HTMLElement
   protected _scrollConOnePctPx = 0
+  private _scrollScale = 0
 
   private moveBarClickPosPx = 0
 
@@ -132,7 +133,9 @@ export abstract class ScrollBar {
 
   private setSizesByScrollCon(): void {
     this.setDimensionByEl(this.conEl)
+    
     this._scrollConOnePctPx = this.getScrollSize() / 100
+     
     this.setBarSizeByScrollCon()
   }
 
@@ -237,8 +240,8 @@ export abstract class ScrollBar {
 
   private setBarSizeByScrollCon(): void {
     const startPct = this.getScrollStartPx() / this._scrollConOnePctPx
-    this.setBarByPct(
-      startPct, (this.getScrollScale() * 100) + startPct)
+    this._scrollScale = this.getScrollScale()
+    this.setBarByPct(startPct, (this._scrollScale * 100) + startPct)
   }
 
   private callOnChanged(): void {
@@ -248,26 +251,24 @@ export abstract class ScrollBar {
   }
 
   private onConWheel(ev: WheelEvent): void {
-    const delta = this.getWheelDeltaXOrY(ev), 
-      additor = delta > 0 ? 5 : -5,
-      newStart = this._barStartPct + additor, 
-      newEnd = this._barEndPct + additor
+    const delta = this.getWheelDeltaXOrY(ev),
+      newStart = this._barStartPx + delta, 
+      newEnd = this._barEndPx + delta
     if (newStart < 0) this.moveBarToConStart()
-    else if (newEnd > 100) this.moveBarToConEnd()
-    else this.setBarByPct(newStart, newEnd)
+    else if (newEnd > this._conSizePx) this.moveBarToConEnd()
+    else this.setBarByPx(newStart, newEnd)
   }
 
   private onWheel(delta: number): void {
-    const additor = delta > 0 ? 5 : -5,
-      newStart = this._barStartPct + additor, 
-      newEnd = this._barEndPct + additor
+    const newStart = this._barStartPx + delta, 
+      newEnd = this._barEndPx + delta
     if (newStart < 0) this.moveBarToConStart()
-    else if (newEnd > 100) this.moveBarToConEnd()
-    else this.setBarByPct(newStart, newEnd)
+    else if (newEnd > this._conSizePx) this.moveBarToConEnd()
+    else this.setBarByPx(newStart, newEnd)
   }
 
   private onScrollConWheel(ev: WheelEvent): void {
-    const delta = this.getWheelDelta(ev)
+    const delta = this.getWheelDelta(ev) * this._scrollScale
     if (delta !== 0) this.onWheel(delta)
   }
 
