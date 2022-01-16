@@ -100,4 +100,41 @@ describe('testing helper', () => {
     it('returns 0', () => expect(Helper
       .clamp(-50, min, max)).eq(0))
   })
+  describe('testing dateToPct()', () => {
+    const startDate = new Date(2010, 0, 1),
+      endDate = new Date(2020, 0, 1)
+    it('returns 0', () => expect(Helper
+      .dateToPct(startDate, startDate, endDate)).eq(0))
+    it('returns 50', () => expect(Helper
+      .dateToPct(new Date(2015, 0, 1), startDate, endDate)).eq(50))
+    it('returns 100', () => expect(Helper
+      .dateToPct(endDate, startDate, endDate)).eq(100))
+    it('returns -50', () => expect(Helper
+      .dateToPct(new Date(2005, 0, 1), startDate, endDate)).eq(-50))
+  })
+  describe('testing pctToDate()', () => {
+    const startDate = new Date(2010, 0, 1),
+      endDate = new Date(2020, 0, 1)
+    it('returns date 01.01.2010', () => expect(Helper
+      .pctToDate(0, startDate, endDate).getTime())
+      .eq(startDate.getTime()))
+    it('returns date 01.01.2015', () => expect(Helper
+      .pctToDate(50, startDate, endDate).getTime())
+      .eq(new Date(2015, 0, 1).getTime()))
+    it('returns date 01.01.2020', () => expect(Helper
+      .pctToDate(100, startDate, endDate).getTime())
+      .eq(endDate.getTime()))
+    it('returns date 01.01.2050', () => expect(Helper
+      .pctToDate(-50, startDate, endDate).getTime())
+      .eq(new Date(2005, 0, 1).getTime()))
+  })
+  describe('testing addSecs()', () => {
+    const dt = new Date(2010, 0, 1)
+    it('returns date 10 seconds in future', () => expect(Helper
+      .addSecs(dt, 10).getTime())
+      .eq(dt.getTime() + 10000))
+    it('returns date 10 seconds in past', () => expect(Helper
+      .addSecs(dt, -10).getTime())
+      .eq(dt.getTime() - 10000))
+  })
 })

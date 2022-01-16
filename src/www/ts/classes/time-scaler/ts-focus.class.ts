@@ -56,6 +56,7 @@ export class TsRowsFocus {
   }
 
   getRowScales(durationSec: number): TsRowScales {
+    durationSec /= 4
     return this.rowScales.find(rs => rs.duration < durationSec)
       ?? this.rowScales[this.rowScales.length - 1]
   }

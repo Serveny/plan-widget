@@ -1,29 +1,52 @@
 import { TimeScale } from '../../enums/time-scale.enum'
-import { EndlessScroller } from '../endless-scroller/endless-scroller.class'
 import { ITimeScalerCache } from '../../interfaces/i-time-scaler-cache.interface'
+import Hlp from '../helper.class'
+import DtHlp from '../date-helper.class'
 
-export class TsRow extends EndlessScroller {
-  private _isVisible = true
-  private scale: TimeScale = TimeScale.none
-
-  constructor(private cache: ITimeScalerCache) {
-    super()
-    this.getCellText = this.getCellTextRow
+export class TsRow {
+  private el = Hlp.createDiv('plw-endless-scroller')
+  private cellCon = Hlp.createDiv('plw-es-cell-con')
+  private cells: HTMLDivElement[] = []
+  private cellWidth = 0
+  set heightPx(heightPx: number) {
+    this.el.style.height = `${heightPx}px`
+    this.el.style.lineHeight = `${heightPx}px`
   }
 
-  zoomByScale(x: number, scale: TimeScale | undefined,
-    rowHeightPx?: number): void {
-    if (scale == null) this.hide()
-    else {
-      this.show()
-      if (rowHeightPx) this.heightPx = rowHeightPx
-      this.zoom(x, this.getBlockWidth(scale,
-        this.cache.focusHorizonSec))
-      if (this.scale !== scale) {
-        console.log('retextAllCells', TimeScale[scale])
-        this.scale = scale
-        this.retextAllCells()
-      }
+  private _isVisible = true
+  private _scale: TimeScale = TimeScale.none
+  private _scaleMS = 0
+
+  constructor(private cache: ITimeScalerCache) {
+    this.el.appendChild(this.cellCon)
+  }
+
+  // zoomByScale(x: number, scale: TimeScale | undefined,
+  //   rowHeightPx?: number): void {
+  //   if (scale == null) this.hide()
+  //   else {
+  //     this.show()
+  //     if (rowHeightPx) this.heightPx = rowHeightPx
+  //     this.zoom(x, this.getBlockWidth(scale,
+  //       this.cache.focusHorizonSec))
+  //     if (this.scale !== scale) {
+  //       console.log('retextAllCells', TimeScale[scale])
+  //       this.scale = scale
+  //       this.retextAllCells()
+  //     }
+  //   }
+  // }
+
+  appendTo(parentEl: HTMLElement): TsRow {
+    parentEl.appendChild(this.el)
+    return this
+  }
+
+  repaint(): void {
+    this.removeAllCells()
+    if (this._isVisible) {
+      this.fillCellCon()
+      this.paint()
     }
   }
 
@@ -41,27 +64,63 @@ export class TsRow extends EndlessScroller {
     }
   }
 
-  private getBlockWidth(scale: TimeScale,
-    focusHorizonSec: number): number {
-    return this.el.offsetWidth / (focusHorizonSec / scale)
+  paint(): void {
+    if (this._isVisible) {
+      this.retextCells()
+      this.moveCellCon()
+    }
   }
 
-  private getCellTextRow(cellIndex: number): string {
-    // TODO: Makes no sense, only for testing
-    const date = new Date(this.cache.focusStartDate.getTime()
-      + (this.scale * cellIndex * 1000))
-    //console.log('getCellText', date, '|', TimeScale[this.scale], '|', cellIndex)
-    return this.getCellDateText(date, this.scale)
+  setScaleAndHeight(scale: TimeScale | undefined,
+    heightPx: number): void {
+    if (!scale) this.hide()
+    else {
+      this.show()
+      this._scale = scale
+      this._scaleMS = scale * 1000
+      this.cellWidth = this.getCellWidth(scale)
+      this.heightPx = heightPx
+      //console.log('setScale', this._scale, this.cellWidth)
+    }
   }
 
-  private getCellDateText(date: Date, scale: TimeScale): string {
-    switch (scale) {
-      case TimeScale.years: return date.getFullYear().toString()
+  private fillCellCon(): void {
+    const widthStr = `${this.cellWidth}px`,
+      cellCount = Math.ceil(this.el.offsetWidth / this.cellWidth) + 1
+    this.cellCon.style.left = `0px`
+    this.cellCon.style.width = `${cellCount * this.cellWidth}px`
+    for (let i = 0; i < cellCount; i++) this.addNewCell(widthStr)
+  }
+
+  private removeAllCells(): void {
+    this.cells.forEach(cell => cell.remove())
+    this.cells = []
+  }
+
+  private addNewCell(cellWidthStr: string): HTMLDivElement {
+    const cell = Hlp.createDiv('plw-es-cell')
+    cell.style.width = cellWidthStr
+    this.cells.push(cell)
+    this.cellCon.appendChild(cell)
+    return cell
+  }
+
+  private getCellWidth(scale: TimeScale): number {
+    return this.el.offsetWidth
+      / (this.cache.focusHorizonSec / scale)
+  }
+
+  private getCellDateText(date: Date): string {
+    switch (this._scale) {
+      case TimeScale.years: 
+        console.log('Text Year', date, date.getFullYear())
+        return date.getFullYear().toString()
       case TimeScale.quarters:
-        return `Q ${Math.trunc((date.getMonth() / 3) + 1)}`
+        return `Q ${Math.ceil((date.getMonth() + 1) / 3)}`
       case TimeScale.months:
         return this.cache.dateMonthFormat.format(date)
       case TimeScale.weeks:
+        return `W ${date.getUTCDay()}`
       case TimeScale.days:
         return this.cache.dateDayFormat.format(date)
       case TimeScale.halfDays:
@@ -86,14 +145,25 @@ export class TsRow extends EndlessScroller {
     }
   }
 
-  // private retextAllCells(): void {
-  //   console.log(this.cells)
-  //   this.cells.forEach((cell, i) => {
-  //     console.log('ÄÄÄ', TimeScale[this.scale], this.getCellText)
-  //     if (this.getCellText)  {
-  //       console.log('gct:', this.getCellText(i))
-  //       cell.text = this.getCellText(i)
-  //     }
-  //   })
-  // }
+  private retextCells(): void {
+    let timeMS = this.getDrawStartTimeMS()
+    console.log('sdfa', this.cache.focusStartDate, new Date(timeMS))
+    this.cells.forEach(cell => {
+      cell.textContent = this.getCellDateText(new Date(timeMS))
+      timeMS += this._scaleMS
+    })
+  }
+
+  private getDrawStartTimeMS(): number {
+    return this.cache.focusStartDate.getTime() - (
+      this.cache.focusStartDate.getTime() % this._scaleMS)
+  }
+
+  private moveCellCon(): void {
+    const leftPx = this.cellWidth *
+      ((this.cache.focusStartDate.getTime() % this._scaleMS)
+        / this._scaleMS)
+    this.cells[0].style.paddingLeft = `${leftPx}px`
+    this.cellCon.style.left = `${-leftPx}px`
+  }
 }

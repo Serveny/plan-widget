@@ -6,17 +6,24 @@
   border-top: $endlessScrollerBorder
   box-sizing: border-box
 
-.plw-es-cell
+.plw-es-cell-con
   position: absolute
   top: 0
   bottom: 0
+  margin: 0
+  overflow: hidden
+  white-space: nowrap
+
+.plw-es-cell
+  display: inline-block
   border-left: $endlessScrollerBorder
-  padding: 0
+  padding-left: 2px
   margin: 0
   box-sizing: border-box
   overflow: hidden
   text-overflow: clip
   white-space: nowrap
+  height: 100%
 
 .plw-es-cell:hover, .plw-es-cell-active
   background: #acacac

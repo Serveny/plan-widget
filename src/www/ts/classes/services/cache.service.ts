@@ -1,3 +1,5 @@
+import Hlp from './../helper.class'
+
 export class CacheService {
   lang = navigator.language
   dateMonthFormat = new Intl.DateTimeFormat(this.lang,
@@ -31,14 +33,20 @@ export class CacheService {
   setHorizon(start: Date, end: Date): void {
     this.startDate = start
     this.endDate = end
-    this.horizonSec =
+    this.horizonSec = 
       (this.endDate.getTime() - this.startDate.getTime()) / 1000
   }
 
-  setFocus(start: Date, end: Date): void {
+  setFocusByDate(start: Date, end: Date): void {
     this.focusStartDate = start
     this.focusEndDate = end
-    this.focusHorizonSec = (this.focusEndDate.getTime()
+    this.focusHorizonSec = (this.focusEndDate.getTime() 
       - this.focusStartDate.getTime()) / 1000
+  }
+
+  setFocusByPct(startPct: number, endPct: number): void {
+    this.setFocusByDate(
+      Hlp.pctToDate(startPct, this.startDate, this.endDate),
+      Hlp.pctToDate(endPct, this.startDate, this.endDate))
   }
 }

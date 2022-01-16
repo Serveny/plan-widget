@@ -1,8 +1,6 @@
 describe('testing scroll bar', () => {
   before('visit test site', () => {
     cy.visit('/dist/index.html')
-    // cy.get('.gs-slider-left')
-    //   .dragTo(Cypress.config('viewportWidth') - 5, null)
   })
 
   it('has scroll bar elements', () => {
