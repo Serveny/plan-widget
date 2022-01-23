@@ -2,6 +2,7 @@ import { TimeScale } from '../../enums/time-scale.enum'
 import { ITimeScalerCache } from '../../interfaces/i-time-scaler-cache.interface'
 import Hlp from '../helper.class'
 import DtHlp from '../date-helper.class'
+//import * as wasm from '../../../../../pkg/plan_widget_bg.wasm'
 
 export class TsRow {
   private el = Hlp.createDiv('plw-endless-scroller')
@@ -19,6 +20,9 @@ export class TsRow {
 
   constructor(private cache: ITimeScalerCache) {
     this.el.appendChild(this.cellCon)
+    // setTimeout(() => console.log(wasm.each_year_of_interval(
+    //   ~~(new Date().getTime() / 1000), 
+    //   ~~(new Date().getTime() / 1000))), 3000)
   }
 
   // zoomByScale(x: number, scale: TimeScale | undefined,
@@ -113,7 +117,6 @@ export class TsRow {
   private getCellDateText(date: Date): string {
     switch (this._scale) {
       case TimeScale.years: 
-        console.log('Text Year', date, date.getFullYear())
         return date.getFullYear().toString()
       case TimeScale.quarters:
         return `Q ${Math.ceil((date.getMonth() + 1) / 3)}`
@@ -146,17 +149,20 @@ export class TsRow {
   }
 
   private retextCells(): void {
-    let timeMS = this.getDrawStartTimeMS()
-    console.log('sdfa', this.cache.focusStartDate, new Date(timeMS))
+    let date = this.ceilDate(this.cache.startDate)
+    console.log('sdfa', this.cache.focusStartDate, date)
     this.cells.forEach(cell => {
-      cell.textContent = this.getCellDateText(new Date(timeMS))
-      timeMS += this._scaleMS
+      cell.textContent = this.getCellDateText(date)
+      date = this.next(date)
     })
   }
 
-  private getDrawStartTimeMS(): number {
-    return this.cache.focusStartDate.getTime() - (
-      this.cache.focusStartDate.getTime() % this._scaleMS)
+  private ceilDate(date: Date): Date {
+    return DtHlp.ceilByScale(date, this._scale)
+  }
+
+  private next(date: Date): Date {
+    return DtHlp.nextByScale(date, this._scale)
   }
 
   private moveCellCon(): void {
