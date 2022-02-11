@@ -3,7 +3,7 @@ import { EsCell } from './es-cell.class'
 
 export class EndlessScroller {
   readonly el = Hlp.createDiv('plw-endless-scroller')
-  set heightPx(heightPx: number) { 
+  set heightPx(heightPx: number) {
     this.el.style.height = `${heightPx}px`
   }
   private elLeft = 0
@@ -11,7 +11,9 @@ export class EndlessScroller {
   protected cells: EsCell[] = []
 
   private _extendElCount = 1
-  protected get extendElCount(): number { return this._extendElCount }
+  protected get extendElCount(): number {
+    return this._extendElCount
+  }
   private extendStartPx = 0
   private extendEndPx = 0
   //private clickPosPx = 0
@@ -59,7 +61,8 @@ export class EndlessScroller {
   // }
 
   zoom(x: number, newCellWidth: number): void {
-    const relX = x - this.elLeft,  midCell = this.findMidCell(relX)
+    const relX = x - this.elLeft,
+      midCell = this.findMidCell(relX)
     if (midCell != null) this.zoomByMidCell(midCell, newCellWidth)
     this.setFirstFocusCellTextPos()
   }
@@ -115,23 +118,33 @@ export class EndlessScroller {
 
   private adjustCellCount(diffCount: number): void {
     if (diffCount >= 2) this.addCellsStartEnd(diffCount)
-    else if (diffCount < -2 && this.cells.length + diffCount
-      >= this._extendElCount * 2.9)
+    else if (
+      diffCount < -2 &&
+      this.cells.length + diffCount >= this._extendElCount * 2.9
+    )
       this.removeCellsStartEnd(-diffCount)
     this.extendIfNeeded()
   }
 
-  private posByMidCell(midCell: EsCell, 
-    oldWidth: number, newWidth: number): void {
-    let newPos = midCell.posPx - ((newWidth - oldWidth) / 2)
-      - (this.cells.indexOf(midCell) * newWidth)
-    this.cells.forEach(cell =>
-      newPos = cell.setPosAndWidth(newPos, newWidth))
+  private posByMidCell(
+    midCell: EsCell,
+    oldWidth: number,
+    newWidth: number
+  ): void {
+    let newPos =
+      midCell.posPx -
+      (newWidth - oldWidth) / 2 -
+      this.cells.indexOf(midCell) * newWidth
+    this.cells.forEach(
+      cell => (newPos = cell.setPosAndWidth(newPos, newWidth))
+    )
   }
 
   private getCellDiffCount(cellWidth: number): number {
-    return -Math.ceil((this.cells.length * cellWidth
-      - this.el.offsetWidth * 3) / cellWidth)
+    return -Math.ceil(
+      (this.cells.length * cellWidth - this.el.offsetWidth * 3) /
+        cellWidth
+    )
   }
 
   private addCellsStartEnd(diffCount: number): void {
@@ -158,8 +171,10 @@ export class EndlessScroller {
   }
 
   private findMidCell(relX: number): EsCell | undefined {
-    return this.cells.find(cell => relX > cell.posPx
-      && relX < cell.posPx + this.widthCellPx)
+    return this.cells.find(
+      cell =>
+        relX > cell.posPx && relX < cell.posPx + this.widthCellPx
+    )
   }
 
   private setProps(conWidthPx: number, cellWidthPx?: number): void {
@@ -185,8 +200,10 @@ export class EndlessScroller {
   }
 
   private appendCells(count: number): void {
-    for (let i = 0; i < count; i++) this.lastCell = this.addCell(
-      (this.lastCell?.posPx ?? 0) + this.widthCellPx)
+    for (let i = 0; i < count; i++)
+      this.lastCell = this.addCell(
+        (this.lastCell?.posPx ?? 0) + this.widthCellPx
+      )
   }
 
   private removeCells(count: number): void {
@@ -197,8 +214,10 @@ export class EndlessScroller {
   }
 
   private prependCells(count: number): void {
-    for (let i = 0; i < count; i++) this.firstCell = this.addCell(
-      (this.firstCell?.posPx ?? 0) - this.widthCellPx)
+    for (let i = 0; i < count; i++)
+      this.firstCell = this.addCell(
+        (this.firstCell?.posPx ?? 0) - this.widthCellPx
+      )
   }
 
   private addCellsFromTo(startPx: number, endPx: number): void {
@@ -242,9 +261,12 @@ export class EndlessScroller {
 
   private extendStart(): void {
     if (this.firstCell && this.lastCell) {
-      for (let i = this.cells.length - this._extendElCount - 1;
-        i < this.cells.length; i++) this.firstCell =
-          this.placeCellToStart(this.cells[i])
+      for (
+        let i = this.cells.length - this._extendElCount - 1;
+        i < this.cells.length;
+        i++
+      )
+        this.firstCell = this.placeCellToStart(this.cells[i])
       this.sortCells()
       this.lastCell = this.cells[this.cells.length - 1]
       this.setCellsText(0, this._extendElCount)
@@ -257,8 +279,10 @@ export class EndlessScroller {
         this.lastCell = this.placeCellToEnd(this.cells[i])
       this.sortCells()
       this.firstCell = this.cells[0]
-      this.setCellsText(this.cells.length 
-        - this._extendElCount, this.cells.length)
+      this.setCellsText(
+        this.cells.length - this._extendElCount,
+        this.cells.length
+      )
     }
   }
 
@@ -278,20 +302,23 @@ export class EndlessScroller {
 
   private setCellsText(startI: number, count: number): void {
     if (this.getCellText)
-      for(let i = startI; i < count; i++) 
+      for (let i = startI; i < count; i++)
         this.cells[i].text = this.getCellText(i)
   }
 
   private getFirstFocusCell(): EsCell | undefined {
-    return this.cells.find(cell => 
-      cell.posPx <= 0 && cell.posPx + this.widthCellPx > 0)
+    return this.cells.find(
+      cell => cell.posPx <= 0 && cell.posPx + this.widthCellPx > 0
+    )
   }
 
   private setFirstFocusCellTextPos(): void {
     if (this.firstFocusCell) {
       this.firstFocusCell.setTextPos(0)
-      if (this.firstFocusCell?.posPx > 0 
-        || this.firstFocusCell?.posPx + this.widthCellPx <= 0)
+      if (
+        this.firstFocusCell?.posPx > 0 ||
+        this.firstFocusCell?.posPx + this.widthCellPx <= 0
+      )
         this.firstFocusCell = this.getFirstFocusCell()
     } else this.firstFocusCell = this.getFirstFocusCell()
     this.firstFocusCell?.setTextPos(-this.firstFocusCell.posPx)

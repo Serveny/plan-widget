@@ -15,7 +15,7 @@ const layout: IDataTableLayout = {
       caption: 'Number',
       isSortable: true,
       sortIndex: 1,
-      sortOrder: 'asc'
+      sortOrder: 'asc',
     },
     {
       visibleIndex: 1,
@@ -28,7 +28,7 @@ const layout: IDataTableLayout = {
       caption: 'Name',
       isSortable: true,
       sortIndex: 2,
-      sortOrder: 'desc'
+      sortOrder: 'desc',
     },
     {
       visibleIndex: 3,
@@ -49,8 +49,8 @@ const layout: IDataTableLayout = {
       width: '80px',
       textAlign: HorizontalTextAlign.Right,
       caption: 'Amount of Things',
-    }
-  ]
+    },
+  ],
 }
 
 export default layout

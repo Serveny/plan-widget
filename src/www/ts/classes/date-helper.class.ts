@@ -30,7 +30,8 @@ export default class DateHelper {
         return new Date(date.setSeconds(0))
       case TimeScale.none:
         throw Error('ceilByScale: Unknown Scale')
-      default: throw Error('ceilByScale: Unknown Scale')
+      default:
+        throw Error('ceilByScale: Unknown Scale')
     }
   }
 
@@ -40,8 +41,10 @@ export default class DateHelper {
 
   static ceilToQuarter(date: Date): Date {
     console.log('---', Math.ceil((date.getMonth() + 1) / 3) * 3)
-    return new Date(date.getFullYear(), 
-      Math.ceil((date.getMonth() + 1) / 3) * 3)
+    return new Date(
+      date.getFullYear(),
+      Math.ceil((date.getMonth() + 1) / 3) * 3
+    )
   }
 
   static nextByScale(date: Date, scale: TimeScale): Date {
@@ -73,7 +76,8 @@ export default class DateHelper {
         return new Date(date.setSeconds(0))
       case TimeScale.none:
         throw Error('nextByScale: Unknown Scale')
-      default: throw Error('nextByScale: Unknown Scale')
+      default:
+        throw Error('nextByScale: Unknown Scale')
     }
   }
 
@@ -84,8 +88,9 @@ export default class DateHelper {
   static nextQuarter(date: Date): Date {
     return date.getMonth() >= 9
       ? new Date(date.getFullYear() + 1, 0, 0)
-      : new Date(date.setMonth(
-          Math.ceil((date.getMonth() + 1) / 3) * 3))
+      : new Date(
+          date.setMonth(Math.ceil((date.getMonth() + 1) / 3) * 3)
+        )
   }
 
   static nextMonth(date: Date): Date {

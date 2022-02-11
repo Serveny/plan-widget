@@ -8,26 +8,42 @@ import Hlp from '../helper.class'
 
 export class DataTable<TView extends IView> {
   private readonly dts: DtService
-  get el(): HTMLDivElement { return this.dts.el }
-  get bodyEl(): HTMLDivElement { return this.dts.bodyEl }
+  get el(): HTMLDivElement {
+    return this.dts.el
+  }
+  get bodyEl(): HTMLDivElement {
+    return this.dts.bodyEl
+  }
   private scrollBarX: ScrollBarX | null = null
   private scrollBarY: ScrollBarY | null = null
 
-  constructor(id: string, layout: IDataTableLayout | null | undefined,
+  constructor(
+    id: string,
+    layout: IDataTableLayout | null | undefined,
     locale: string | null | undefined,
-    isScrollBarX: boolean, isScrollBarY: boolean) {
+    isScrollBarX: boolean,
+    isScrollBarY: boolean
+  ) {
     this.dts = new DtService(id, layout ?? {}, locale ?? 'en')
-    if (isScrollBarX) this.scrollBarX = new ScrollBarX(
-      isScrollBarY ? [5, 28] : [5, 5], false)
-    if (isScrollBarY) this.scrollBarY = new ScrollBarY(
-      isScrollBarX ? [65, 28] : [65, 5], false)
+    if (isScrollBarX)
+      this.scrollBarX = new ScrollBarX(
+        isScrollBarY ? [5, 28] : [5, 5],
+        false
+      )
+    if (isScrollBarY)
+      this.scrollBarY = new ScrollBarY(
+        isScrollBarX ? [65, 28] : [65, 5],
+        false
+      )
   }
 
   appendTo(containerEl: HTMLElement): DataTable<TView> {
     containerEl.appendChild(this.dts.el)
-    this.scrollBarX?.appendTo(containerEl)
+    this.scrollBarX
+      ?.appendTo(containerEl)
       .bindBarSizeToScrollEls(this.dts.el, this.dts.bodyEl)
-    this.scrollBarY?.appendTo(containerEl)
+    this.scrollBarY
+      ?.appendTo(containerEl)
       .bindBarSizeToScrollEls(this.dts.el, this.dts.bodyEl)
     return this
   }
@@ -52,7 +68,10 @@ export class DataTable<TView extends IView> {
 
   private addRow(rowData: TView): void {
     const dtRow = new DtBodyRow(
-      this.dts.rows.length, rowData, this.dts.layout)
+      this.dts.rows.length,
+      rowData,
+      this.dts.layout
+    )
     this.dts.rows.push(dtRow)
     this.dts.bodyEl.appendChild(dtRow.el)
   }
@@ -63,8 +82,9 @@ export class DataTable<TView extends IView> {
   }
 
   private updateRow(rowData: IUpdateView): void {
-    const rowObj = this.dts.rows.find(rowObj => 
-      rowObj.data.ID === rowData.ID)
+    const rowObj = this.dts.rows.find(
+      rowObj => rowObj.data.ID === rowData.ID
+    )
     if (rowObj != null) rowObj.updateCells(rowData)
   }
 

@@ -5,7 +5,8 @@ export default class Helper {
     return el
   }
   static isArrNullOrEmpty(
-    arr: unknown[] | null | undefined): boolean {
+    arr: unknown[] | null | undefined
+  ): boolean {
     return arr == null || arr.length <= 0
   }
   static isStrNullOrEmpty(str: string | null | undefined): boolean {
@@ -18,11 +19,15 @@ export default class Helper {
     return elArr
   }
   static orderByOrderAsc(elements: HTMLElement[]): HTMLElement[] {
-    return elements.sort((a, b) =>
-      parseInt(a.style.order) - parseInt(b.style.order))
+    return elements.sort(
+      (a, b) => parseInt(a.style.order) - parseInt(b.style.order)
+    )
   }
-  static getChildrenByOrder(parentEl: HTMLElement, selector: string,
-    order: number): HTMLElement[] {
+  static getChildrenByOrder(
+    parentEl: HTMLElement,
+    selector: string,
+    order: number
+  ): HTMLElement[] {
     const els: HTMLElement[] = []
     parentEl.querySelectorAll(selector).forEach(cellNode => {
       const cellEl = cellNode as HTMLElement
@@ -31,9 +36,12 @@ export default class Helper {
     return els
   }
   static createSvg<K extends keyof SVGElementTagNameMap>(
-    tagName: K): SVGElementTagNameMap[K] {
+    tagName: K
+  ): SVGElementTagNameMap[K] {
     return document.createElementNS(
-      'http://www.w3.org/2000/svg', tagName)
+      'http://www.w3.org/2000/svg',
+      tagName
+    )
   }
   static objToMap(obj: object): Map<string, unknown> {
     return new Map<string, unknown>(Object.entries(obj))
@@ -42,14 +50,21 @@ export default class Helper {
     return val > max ? max : val < min ? min : val
   }
   static dateToPct(dt: Date, pct0Dt: Date, pct100Dt: Date): number {
-    return ((pct0Dt.getTime() - dt.getTime())
-      / (pct100Dt.getTime() - pct0Dt.getTime())) * -100
+    return (
+      ((pct0Dt.getTime() - dt.getTime()) /
+        (pct100Dt.getTime() - pct0Dt.getTime())) *
+      -100
+    )
   }
   static pctToDate(pct: number, pct0Dt: Date, pct100Dt: Date): Date {
-    return new Date(Math.round((pct0Dt.getTime() 
-      + ((pct100Dt.getTime() - pct0Dt.getTime()) / 100) * pct)))
+    return new Date(
+      Math.round(
+        pct0Dt.getTime() +
+          ((pct100Dt.getTime() - pct0Dt.getTime()) / 100) * pct
+      )
+    )
   }
   static addSecs(dt: Date, secsToAdd: number): Date {
-    return new Date(dt.getTime() + (secsToAdd * 1000))
+    return new Date(dt.getTime() + secsToAdd * 1000)
   }
 }

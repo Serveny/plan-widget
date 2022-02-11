@@ -1,10 +1,10 @@
-import { IEntityView, IResourceView} from './i-view.interface'
+import { IEntityView, IResourceView } from './i-view.interface'
 
 export interface IPlanWidget {
   // fitTimeAreaIntoView: () => void;
   // scrollToDate: (date: Date) => void;
   // removeEntities: (entities: IEntityView[] | string[]) => void;
-  addEntities: (entities: IEntityView[]) => void;
+  addEntities: (entities: IEntityView[]) => void
   // render: () => void;
   // option: (option: string, value: any) => void;
   // updateAllocations: (allocations: IAllocationView[]) => void;
@@ -15,7 +15,7 @@ export interface IPlanWidget {
   // addLinks: (links: ILinkView[]) => void;
   // removeAll: () => void;
   // addSymbols: (symbols: ISymbol[]) => void;
-  addResources: (resources: IResourceView[]) => void;
+  addResources: (resources: IResourceView[]) => void
   // removeResources: (resources: IResourceView[] | string[]) => void;
   // removeCalendars: (calendars: ICalendarView[] | string[]) => void;
   // addCalendars: (calendars: ICalendarView[]) => void;

@@ -11,39 +11,55 @@ describe('testing scroll bar', () => {
   it('x has end positon of 100%', () => {
     cy.get('.gs-field-right .plw-sb-bar-x').as('sb')
     cy.get('.gs-field-right .plw-sb-con-x').then(conEl =>
-      cy.get('@sb').dragTo(conEl[0].getBoundingClientRect().left
-        + conEl[0].offsetWidth, null)
-        .then(bar => expect(bar[0].offsetLeft + bar[0].offsetWidth)
-          .eq(conEl[0].offsetWidth)))
+      cy
+        .get('@sb')
+        .dragTo(
+          conEl[0].getBoundingClientRect().left +
+            conEl[0].offsetWidth,
+          null
+        )
+        .then(bar =>
+          expect(bar[0].offsetLeft + bar[0].offsetWidth).eq(
+            conEl[0].offsetWidth
+          )
+        )
+    )
   })
 
   it('x has end positon of 0%', () => {
     cy.get('.gs-field-right .plw-sb-bar-x').as('sb')
-    cy.get('@sb').dragTo(0, null)
+    cy.get('@sb')
+      .dragTo(0, null)
       .then(el => expect(el[0].offsetLeft).eq(0))
   })
 
   it('y has end positon of 100%', () => {
     cy.get('.gs-field-right .plw-sb-bar-y').as('sb')
     cy.get('.gs-field-right .plw-sb-con-y').then(conEl =>
-      cy.get('@sb').dragTo(
-        null, conEl[0].offsetTop + conEl[0].offsetHeight)
-        .then(el => expect(el[0].offsetTop
-          + el[0].offsetHeight).eq(conEl[0].offsetHeight)))
+      cy
+        .get('@sb')
+        .dragTo(null, conEl[0].offsetTop + conEl[0].offsetHeight)
+        .then(el =>
+          expect(el[0].offsetTop + el[0].offsetHeight).eq(
+            conEl[0].offsetHeight
+          )
+        )
+    )
   })
 
   it('y has end positon of 0%', () => {
     cy.get('.gs-field-right .plw-sb-bar-y').as('sb')
-    cy.get('@sb').dragTo(null, 0)
+    cy.get('@sb')
+      .dragTo(null, 0)
       .then(el => expect(el[0].offsetTop).eq(0))
   })
 
   const wheel = {
-    down: { deltaY: 1 },
-    up: { deltaY: -1 },
-    left: { deltaX: -1 },
-    right: { deltaX: 1 },
-  },
+      down: { deltaY: 1 },
+      up: { deltaY: -1 },
+      left: { deltaX: -1 },
+      right: { deltaX: 1 },
+    },
     getXCon = (): Cypress.Chainable<JQuery<HTMLElement>> =>
       cy.get('.gs-field-right .plw-sb-con-x').as('sbcx'),
     getYCon = (): Cypress.Chainable<JQuery<HTMLElement>> =>
@@ -56,43 +72,73 @@ describe('testing scroll bar', () => {
       cy.get('.gs-field-middle .plw-sb-resize-field-start').as('rxs'),
     getResizeEndX = (): Cypress.Chainable<JQuery<HTMLElement>> =>
       cy.get('.gs-field-middle .plw-sb-resize-field-end').as('rxe'),
-    checkBarX = (delta: { deltaY?: number; deltaX?: number; },
-      barOffsetType: string, comparer: string): Cypress.Chainable =>
-      getXCon().find('.plw-scroll-bar').then(barEl => {
-        const old = parseInt(barEl.css(barOffsetType))
-        cy.get('@sbcx').trigger('wheel', delta).then(() =>
-          cy.wrap(parseInt(barEl.css(barOffsetType)))
-            .should(comparer, old))
-      }),
-    checkBarY = (delta: { deltaY?: number; deltaX?: number; },
-      barOffsetType: string, comparer: string): Cypress.Chainable =>
-      getYCon().find('.plw-scroll-bar').then(barEl => {
-        const old = parseInt(barEl.css(barOffsetType))
-        cy.get('@sbcy').trigger('wheel', delta).then(() =>
-          cy.wrap(parseInt(barEl.css(barOffsetType)))
-            .should(comparer, old))
-      }),
-    checkScrollCon = (delta: { deltaY?: number; deltaX?: number; },
-      isTop: boolean, comparer: string): Cypress.Chainable =>
+    checkBarX = (
+      delta: { deltaY?: number; deltaX?: number },
+      barOffsetType: string,
+      comparer: string
+    ): Cypress.Chainable =>
+      getXCon()
+        .find('.plw-scroll-bar')
+        .then(barEl => {
+          const old = parseInt(barEl.css(barOffsetType))
+          cy.get('@sbcx')
+            .trigger('wheel', delta)
+            .then(() =>
+              cy
+                .wrap(parseInt(barEl.css(barOffsetType)))
+                .should(comparer, old)
+            )
+        }),
+    checkBarY = (
+      delta: { deltaY?: number; deltaX?: number },
+      barOffsetType: string,
+      comparer: string
+    ): Cypress.Chainable =>
+      getYCon()
+        .find('.plw-scroll-bar')
+        .then(barEl => {
+          const old = parseInt(barEl.css(barOffsetType))
+          cy.get('@sbcy')
+            .trigger('wheel', delta)
+            .then(() =>
+              cy
+                .wrap(parseInt(barEl.css(barOffsetType)))
+                .should(comparer, old)
+            )
+        }),
+    checkScrollCon = (
+      delta: { deltaY?: number; deltaX?: number },
+      isTop: boolean,
+      comparer: string
+    ): Cypress.Chainable =>
       getSC().then(el => {
         const old = isTop ? el[0].scrollTop : el[0].scrollLeft
-        cy.get('@sc').trigger('wheel', delta)
+        cy.get('@sc')
+          .trigger('wheel', delta)
           .invoke(isTop ? 'scrollTop' : 'scrollLeft')
           .should(comparer, old)
       }),
     checkResizeStartX = (deltaX: number): Cypress.Chainable =>
       getMiddleBarX().then(bar => {
         const oldLeft = bar[0].offsetLeft
-        getResizeStartX().drag(deltaX, 0).then(() =>
-          cy.wrap(bar[0].offsetLeft)
-            .should(deltaX > 0 ? 'be.gt' : 'be.lt', oldLeft))
+        getResizeStartX()
+          .drag(deltaX, 0)
+          .then(() =>
+            cy
+              .wrap(bar[0].offsetLeft)
+              .should(deltaX > 0 ? 'be.gt' : 'be.lt', oldLeft)
+          )
       }),
     checkResizeEndX = (deltaX: number): Cypress.Chainable =>
       getMiddleBarX().then(bar => {
         const oldWidth = bar[0].offsetWidth
-        getResizeEndX().drag(deltaX, 0).then(() =>
-          cy.wrap(bar[0].offsetWidth)
-            .should(deltaX > 0 ? 'be.gt' : 'be.lt', oldWidth))
+        getResizeEndX()
+          .drag(deltaX, 0)
+          .then(() =>
+            cy
+              .wrap(bar[0].offsetWidth)
+              .should(deltaX > 0 ? 'be.gt' : 'be.lt', oldWidth)
+          )
       })
   describe('x-bar: testing mouse wheel handlers', () => {
     it('moves right on wheel down inside x-bar container', () =>

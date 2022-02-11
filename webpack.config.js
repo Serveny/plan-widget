@@ -1,44 +1,36 @@
 const path = require('path'),
- webpack = require('webpack'),
- HtmlWebpackPlugin = require('html-webpack-plugin'),
- WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin'),
- { CleanWebpackPlugin } = require('clean-webpack-plugin')
+  webpack = require('webpack'),
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
+  WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin'),
+  { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-  entry: [
-    './src/www/ts/main.ts',
-    './src/www/styles/main.sass'
-  ],
+  entry: ['./src/www/ts/main.ts', './src/www/styles/main.sass'],
   module: {
-    rules: [{
-      test: /\.ts$/,
-      loader: 'esbuild-loader',
-      options: {
-        loader: 'ts',
-        target: 'ESNext',
-      },
-      include: [
-        path.resolve(__dirname, 'src/www/ts'),
-      ],
-      exclude: [
-        /node_modules/,
-        /cypress/,
-        /old/,
-      ],
-    }, {
-      test: /\.s[ac]ss$/i,
-      use: [{
-        loader: 'file-loader',
+    rules: [
+      {
+        test: /\.ts$/,
+        loader: 'esbuild-loader',
         options: {
-          name: 'styles.min.css'
+          loader: 'ts',
+          target: 'ESNext',
         },
+        include: [path.resolve(__dirname, 'src/www/ts')],
+        exclude: [/node_modules/, /cypress/, /old/],
       },
-        'sass-loader',
-      ],
-      include: [
-        path.resolve(__dirname, 'src/www/styles'),
-      ],
-    },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'styles.min.css',
+            },
+          },
+          'sass-loader',
+        ],
+        include: [path.resolve(__dirname, 'src/www/styles')],
+      },
     ],
   },
   resolve: {
@@ -55,7 +47,7 @@ module.exports = {
     }),
     new WasmPackPlugin({
       crateDirectory: path.resolve(__dirname, 'src/rust'),
-      outName: 'plan_widget_wasm'
+      outName: 'plan_widget_wasm',
     }),
     // Have this example work in Edge which doesn't ship `TextEncoder` or
     // `TextDecoder` at this time.
@@ -72,4 +64,4 @@ module.exports = {
     ignored: '**/node_modules',
     poll: 1000, // Check for changes every second
   },
-};
+}

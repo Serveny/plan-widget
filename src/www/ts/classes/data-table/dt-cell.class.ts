@@ -5,7 +5,9 @@ export abstract class DtCell {
   readonly el = Hlp.createDiv('dt-cell')
   readonly dataField: string | null | undefined
   private _order: number
-  get order(): number { return this._order }
+  get order(): number {
+    return this._order
+  }
   set order(value: number) {
     this._order = value
     this.el.style.order = value.toString()

@@ -1,16 +1,15 @@
 import { IPlanWidgetDataTableLayout } from './i-data-table-layout.interface'
 
 export interface IPlanWidgetOptions {
-  locale?: string | null | undefined;
-  
-  selection?: SelectionMode | null | undefined;
-  start?: Date | null | undefined;
-  end?: Date | null | undefined;
-  workDate?: Date | null | undefined;
-  nonWorkingTimeVisible?: boolean | null | undefined;
-  resourceTableOptions?: 
-    IPlanWidgetDataTableLayout | null | undefined;
-  entityTableOptions?: IPlanWidgetDataTableLayout | null | undefined;
+  locale?: string | null | undefined
+
+  selection?: SelectionMode | null | undefined
+  start?: Date | null | undefined
+  end?: Date | null | undefined
+  workDate?: Date | null | undefined
+  nonWorkingTimeVisible?: boolean | null | undefined
+  resourceTableOptions?: IPlanWidgetDataTableLayout | null | undefined
+  entityTableOptions?: IPlanWidgetDataTableLayout | null | undefined
 
   // Colors
   // pm_timescaleBackgroundColor?: string | null | undefined;

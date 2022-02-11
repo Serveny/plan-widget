@@ -23,11 +23,14 @@ export class DtHeadMoveCell {
   ) {
     ev.preventDefault()
     this.cells = this.getChildrenAsc(this.dts.head.el)
-    this.dragCellLeft = ev.x - dragCell.offsetLeft,
-      this.dummyEl = this.createMoveDummy(
-        dragCell.textContent, dragCell.offsetWidth)
+    ;(this.dragCellLeft = ev.x - dragCell.offsetLeft),
+      (this.dummyEl = this.createMoveDummy(
+        dragCell.textContent,
+        dragCell.offsetWidth
+      ))
     this.dragCTxtEl = dragCell.querySelector(
-      '.dt-head-cell-text') as HTMLElement | null
+      '.dt-head-cell-text'
+    ) as HTMLElement | null
     this.orderDrag = parseInt(dragCell.style.order)
     this.conLeft = this.dts.head.el.getBoundingClientRect().left
     this.dropPosis = this.getDropPosis().reverse()
@@ -39,7 +42,8 @@ export class DtHeadMoveCell {
 
   private addEventListeners(): void {
     const mmHandler = (ev: MouseEvent): void =>
-      this.dragHandler(ev.x), muHandler = (): void => {
+        this.dragHandler(ev.x),
+      muHandler = (): void => {
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
         this.dropHandler()
@@ -67,7 +71,10 @@ export class DtHeadMoveCell {
 
   private dropHandler(): void {
     const moves = this.orderCells(
-      this.orderDrag, this.orderDrop, this.cells)
+      this.orderDrag,
+      this.orderDrop,
+      this.cells
+    )
     this.dragCell.style.order = this.orderDrop.toString()
     moves.push(new Move(this.orderDrag, this.orderDrop))
     this.fillMoves(moves)
@@ -83,11 +90,11 @@ export class DtHeadMoveCell {
   }
 
   private posDropPreview(): void {
-    this.dropPreviewEl.style.left =
-      `${this.orderDrop === this.orderDrag
+    this.dropPreviewEl.style.left = `${
+      this.orderDrop === this.orderDrag
         ? this.dragCell.offsetLeft
         : this.getPreviewPxByOrder(this.orderDrop)
-      }px`
+    }px`
   }
 
   private getDropOrderByPx(x: number): number | undefined {
@@ -99,14 +106,18 @@ export class DtHeadMoveCell {
   }
 
   private getChildrenAsc(el: HTMLElement): HTMLElement[] {
-    return Hlp.orderByOrderAsc(
-      Hlp.getAsHtmlElementArr(el.children))
+    return Hlp.orderByOrderAsc(Hlp.getAsHtmlElementArr(el.children))
   }
 
   private createMoveDummy(
-    text: string | null, width: number): HTMLElement {
+    text: string | null,
+    width: number
+  ): HTMLElement {
     const dummy = Hlp.createDiv(
-      'dt-cell', 'dt-head-cell', 'dt-drag-el'),
+        'dt-cell',
+        'dt-head-cell',
+        'dt-drag-el'
+      ),
       textEl = Hlp.createDiv('dt-head-cell-text')
     textEl.textContent = text
     dummy.style.width = `${width}px`
@@ -117,11 +128,13 @@ export class DtHeadMoveCell {
   private getDropPosis(): DropPosition[] {
     const posis = this.cells.map(cell => this.getDropPos(cell)),
       lastCell = this.cells[this.cells.length - 1]
-    posis.push(new DropPosition(
-      this.conLeft + lastCell.offsetLeft + (lastCell.offsetWidth / 2),
-      this.lastOrder ?? 0,
-      lastCell.offsetLeft + lastCell.offsetWidth
-    ))
+    posis.push(
+      new DropPosition(
+        this.conLeft + lastCell.offsetLeft + lastCell.offsetWidth / 2,
+        this.lastOrder ?? 0,
+        lastCell.offsetLeft + lastCell.offsetWidth
+      )
+    )
     return posis
   }
 
@@ -130,14 +143,19 @@ export class DtHeadMoveCell {
     const dp = new DropPosition(
       this.conLeft + cell.offsetLeft - (this.lastWidth ?? 0) / 2,
       order > this.orderDrag ? this.lastOrder ?? 0 : order,
-      cell.offsetLeft)
+      cell.offsetLeft
+    )
     this.lastWidth = cell.offsetWidth
     this.lastOrder = order
     return dp
   }
 
-  private orderCellsFromTo(orderStart: number, orderEnd: number,
-    additor: number, cells: HTMLElement[]): Move[] {
+  private orderCellsFromTo(
+    orderStart: number,
+    orderEnd: number,
+    additor: number,
+    cells: HTMLElement[]
+  ): Move[] {
     const moves: Move[] = []
     cells.forEach(cell => {
       const cellOrder = parseInt(cell.style.order)
@@ -150,8 +168,11 @@ export class DtHeadMoveCell {
     return moves
   }
 
-  private orderCells(orderDrag: number, orderDrop: number,
-    cells: HTMLElement[]): Move[] {
+  private orderCells(
+    orderDrag: number,
+    orderDrop: number,
+    cells: HTMLElement[]
+  ): Move[] {
     if (orderDrag !== orderDrop) {
       const isUp = orderDrag > orderDrop,
         additor = isUp ? 1 : -1,
@@ -164,20 +185,23 @@ export class DtHeadMoveCell {
   private fillMoves(moves: Move[]): void {
     moves.forEach(mv => {
       mv.cells = this.dts.getBodyCellsByOrder(mv.fromOrder)
-      mv.col = this.dts.layout?.columns?.find(col =>
-        col.visibleIndex === mv.fromOrder)
+      mv.col = this.dts.layout?.columns?.find(
+        col => col.visibleIndex === mv.fromOrder
+      )
     })
   }
 
   private moveBodyCols(moves: Move[]): void {
-    moves.forEach(mv => mv.cells.forEach(
-      cell => cell.order = mv.toOrder))
+    moves.forEach(mv =>
+      mv.cells.forEach(cell => (cell.order = mv.toOrder))
+    )
   }
 
   private refreshLayout(moves: Move[]): void {
-    if (this.dts.layout != null) moves.forEach(mv => {
-      if (mv.col != null) mv.col.visibleIndex = mv.toOrder
-    })
+    if (this.dts.layout != null)
+      moves.forEach(mv => {
+        if (mv.col != null) mv.col.visibleIndex = mv.toOrder
+      })
   }
 }
 
@@ -187,15 +211,12 @@ class DropPosition {
     public px: number,
     public order: number,
     // leftPx relative to container element
-    public previewPx: number,
-  ) { }
+    public previewPx: number
+  ) {}
 }
 
 class Move {
   cells: DtBodyCell[] = []
   col?: IDataTableColumn
-  constructor(
-    public fromOrder: number,
-    public toOrder: number,
-  ) { }
+  constructor(public fromOrder: number, public toOrder: number) {}
 }

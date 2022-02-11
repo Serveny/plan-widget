@@ -1,4 +1,7 @@
-import { IDataTableColumn, IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
+import {
+  IDataTableColumn,
+  IDataTableLayout,
+} from '../../interfaces/i-data-table-layout.interface'
 import { IUpdateView } from '../../interfaces/i-view.interface'
 import Hlp from '../helper.class'
 import { DtBodyCell } from './dt-body-cell.class'
@@ -10,13 +13,20 @@ export class DtService {
   readonly head = new DtHead(this)
   readonly bodyEl = Hlp.createDiv('dt-body')
 
-  get layout(): IDataTableLayout { return this._layout }
+  get layout(): IDataTableLayout {
+    return this._layout
+  }
 
   private _rows: DtBodyRow[] = []
-  get rows(): DtBodyRow[] { return this._rows }
+  get rows(): DtBodyRow[] {
+    return this._rows
+  }
 
-  constructor(id: string, private _layout: IDataTableLayout,
-    private _locale: string) {
+  constructor(
+    id: string,
+    private _layout: IDataTableLayout,
+    private _locale: string
+  ) {
     this.el.classList.add(id)
     const tableEl = Hlp.createDiv('dt-table')
 
@@ -42,41 +52,56 @@ export class DtService {
   }
 
   private getRowCellByOrder(
-    row: DtBodyRow, order: number): DtBodyCell | null | undefined {
+    row: DtBodyRow,
+    order: number
+  ): DtBodyCell | null | undefined {
     return [...row.cells.values()].find(c => c.order === order)
   }
 
   sortRowsByLayout(): void {
-    const sortInfo = this._layout?.columns?.filter(col =>
-      col.sortOrder != null)
+    const sortInfo = this._layout?.columns?.filter(
+      col => col.sortOrder != null
+    )
     if (sortInfo != null) this.sortRows(sortInfo)
   }
 
   private sortRows(sortInfo: IDataTableColumn[]): void {
     sortInfo.sort((a, b) => this.compareSortIndex(a, b))
     const collator = this.getCollator()
-    sortInfo.forEach(col => this._rows.sort((a, b) => 
-      this.compareRowsByCol(a, b, col, collator)))
-    this._rows.forEach((row, i) => row.order = i)
+    sortInfo.forEach(col =>
+      this._rows.sort((a, b) =>
+        this.compareRowsByCol(a, b, col, collator)
+      )
+    )
+    this._rows.forEach((row, i) => (row.order = i))
   }
 
   private getCollator(): Intl.Collator {
     return new Intl.Collator(this._locale, {
-      numeric: true, sensitivity: 'base',
+      numeric: true,
+      sensitivity: 'base',
     })
   }
 
   private compareSortIndex(
-    a: IDataTableColumn, b: IDataTableColumn): number {
+    a: IDataTableColumn,
+    b: IDataTableColumn
+  ): number {
     return a.sortIndex != null && b.sortIndex != null
-      ? a.sortIndex + b.sortIndex : 0
+      ? a.sortIndex + b.sortIndex
+      : 0
   }
 
-  private compareRowsByCol(a: DtBodyRow, b: DtBodyRow, 
-    col: IDataTableColumn, collator: Intl.Collator): number {
+  private compareRowsByCol(
+    a: DtBodyRow,
+    b: DtBodyRow,
+    col: IDataTableColumn,
+    collator: Intl.Collator
+  ): number {
     const aDt = (a.data as IUpdateView)[col.dataField ?? ''] as string
     const bDt = (b.data as IUpdateView)[col.dataField ?? ''] as string
-    return col.sortOrder === 'desc'? collator.compare(bDt, aDt)
+    return col.sortOrder === 'desc'
+      ? collator.compare(bDt, aDt)
       : collator.compare(aDt, bDt)
   }
 }

@@ -1,4 +1,7 @@
-import { IDataTableColumn, IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
+import {
+  IDataTableColumn,
+  IDataTableLayout,
+} from '../../interfaces/i-data-table-layout.interface'
 import { IUpdateView, IView } from '../../interfaces/i-view.interface'
 import Hlp from '../helper.class'
 import { DtBodyCell } from './dt-body-cell.class'
@@ -6,15 +9,22 @@ import { DtBodyCell } from './dt-body-cell.class'
 export class DtBodyRow {
   readonly el = Hlp.createDiv('dt-row')
   readonly cells = new Map<string, DtBodyCell>()
-  get order(): number { return this._order }
+  get order(): number {
+    return this._order
+  }
   set order(value: number) {
     this._order = value
     this.el.style.order = value.toString()
   }
-  get data(): IView { return this._data }
+  get data(): IView {
+    return this._data
+  }
 
-  constructor(private _order: number, private _data: IView,
-    private _layout: IDataTableLayout | null | undefined) {
+  constructor(
+    private _order: number,
+    private _data: IView,
+    private _layout: IDataTableLayout | null | undefined
+  ) {
     this.el.style.order = this._order.toString()
     this.addCells()
   }
@@ -36,8 +46,10 @@ export class DtBodyRow {
     })
   }
 
-  private addCell(rowMap: Map<string, unknown>,
-    col: IDataTableColumn): void {
+  private addCell(
+    rowMap: Map<string, unknown>,
+    col: IDataTableColumn
+  ): void {
     if (col.dataField != null) {
       const text = rowMap.get(col.dataField) as string,
         cell = new DtBodyCell(text, col)

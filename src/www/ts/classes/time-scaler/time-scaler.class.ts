@@ -11,7 +11,7 @@ export class TimeScaler {
   private secondPx = 0
   private oldFocusSec = 0
 
-  onChangedDate?: ((start: Date, end: Date) => void)
+  onChangedDate?: (start: Date, end: Date) => void
 
   constructor(private cache: ITimeScalerCache) {
     this.el = Hlp.createDiv('plw-time-scaler')
@@ -32,12 +32,12 @@ export class TimeScaler {
   paint(): void {
     this.secondPx = this.cache.focusHorizonSec / this.el.offsetWidth
     this.setRowScales()
-    if (~~this.oldFocusSec === ~~this.cache.focusHorizonSec) 
+    if (~~this.oldFocusSec === ~~this.cache.focusHorizonSec)
       this.rows.forEach(row => row.paint())
     else {
       this.rows.forEach(row => row.repaint())
       this.oldFocusSec = this.cache.focusHorizonSec
-    } 
+    }
     //console.log(this.secondPx)
   }
 
@@ -52,14 +52,15 @@ export class TimeScaler {
     this.el.style.cursor = 'grabbing'
     this.clickPosPx = ev.x
     const mmHandler = (ev: MouseEvent): void => {
-      const movePx = ev.x - this.clickPosPx
-      this.moveByPx(movePx)
-      this.clickPosPx = ev.x
-    }, muHandler = (): void => {
-      window.removeEventListener('mousemove', mmHandler)
-      window.removeEventListener('mouseup', muHandler)
-      this.el.style.cursor = ''
-    }
+        const movePx = ev.x - this.clickPosPx
+        this.moveByPx(movePx)
+        this.clickPosPx = ev.x
+      },
+      muHandler = (): void => {
+        window.removeEventListener('mousemove', mmHandler)
+        window.removeEventListener('mouseup', muHandler)
+        this.el.style.cursor = ''
+      }
     window.addEventListener('mousemove', mmHandler)
     window.addEventListener('mouseup', muHandler)
   }
@@ -71,10 +72,14 @@ export class TimeScaler {
     if (start.getTime() < this.cache.startDate.getTime()) {
       start = this.cache.startDate
       end = Hlp.addSecs(
-        this.cache.startDate, this.cache.focusHorizonSec)
+        this.cache.startDate,
+        this.cache.focusHorizonSec
+      )
     } else if (end.getTime() > this.cache.endDate.getTime()) {
       start = Hlp.addSecs(
-        this.cache.endDate, -this.cache.focusHorizonSec)
+        this.cache.endDate,
+        -this.cache.focusHorizonSec
+      )
       end = this.cache.endDate
     }
     this.rows.forEach(row => row.paint())
@@ -87,15 +92,17 @@ export class TimeScaler {
 
   private setRowScales(): void {
     const scales = this.rowsFocus.getRowScales(
-      this.cache.focusHorizonSec)
-    this.rows.forEach((row, i) => 
-      row.setScaleAndHeight(scales.rows[i], scales.rowHeight))
+      this.cache.focusHorizonSec
+    )
+    this.rows.forEach((row, i) =>
+      row.setScaleAndHeight(scales.rows[i], scales.rowHeight)
+    )
   }
 
   // private zoom(x: number, factor: number): void {
   //   const scales = this.rowsFocus.getRowScales(
   //     this.cache.focusHorizonSec)
-  //   this.rows.forEach((row, i) => 
+  //   this.rows.forEach((row, i) =>
   //     row.zoomByScale(x, scales.rows[i], scales.rowHeight))
   // }
 }

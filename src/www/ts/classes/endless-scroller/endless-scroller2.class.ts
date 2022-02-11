@@ -5,7 +5,7 @@ export abstract class EndlessScroller {
   protected cellCon = Hlp.createDiv('plw-es-cell-con')
   protected cells: HTMLDivElement[] = []
   protected cellWidth = 0
-  set heightPx(heightPx: number) { 
+  set heightPx(heightPx: number) {
     this.el.style.height = `${heightPx}px`
   }
 

@@ -5,16 +5,20 @@ import { DtHeadMoveCell } from './dt-head-move-cell.class'
 import { DtService } from './dt-service.class'
 
 export class DtHeadCell extends DtCell {
-  constructor(col: IDataTableColumn, 
-    private readonly dts: DtService) {
+  constructor(
+    col: IDataTableColumn,
+    private readonly dts: DtService
+  ) {
     super(col)
     this.el.classList.add('dt-head-cell')
-    this.el.appendChild(this.createTextEl(
-      col.caption ?? `(${col.dataField})`))
+    this.el.appendChild(
+      this.createTextEl(col.caption ?? `(${col.dataField})`)
+    )
     this.el.appendChild(this.createCellSlider())
     this.el.style.width = col.width == null ? 'auto' : col.width
     this.el.appendChild(
-      this.createSortMark(col.sortOrder, col.sortIndex))
+      this.createSortMark(col.sortOrder, col.sortIndex)
+    )
   }
 
   private createTextEl(text: string): HTMLElement {
@@ -27,14 +31,19 @@ export class DtHeadCell extends DtCell {
     return textEl
   }
 
-  private createSortMark(sortOrder: string | null | undefined, 
-    sortIndex: number | null | undefined): SVGElement {
-    const el = Hlp.createSvg('svg'), 
+  private createSortMark(
+    sortOrder: string | null | undefined,
+    sortIndex: number | null | undefined
+  ): SVGElement {
+    const el = Hlp.createSvg('svg'),
       pl = this.createSortMarkPolyline()
     this.setSortMarkAttributes(el)
-    el.append(pl, this.createSortMarkLine(), 
-      this.createSortMarkIndexText(sortIndex, sortOrder))
-    if (sortOrder === 'desc') 
+    el.append(
+      pl,
+      this.createSortMarkLine(),
+      this.createSortMarkIndexText(sortIndex, sortOrder)
+    )
+    if (sortOrder === 'desc')
       pl.setAttribute('transform', 'rotate(180 255 260)')
     return el
   }
@@ -65,8 +74,9 @@ export class DtHeadCell extends DtCell {
   }
 
   private createSortMarkIndexText(
-    sortIndex: number | null | undefined, 
-    sortOrder: string | null | undefined): SVGTextElement {
+    sortIndex: number | null | undefined,
+    sortOrder: string | null | undefined
+  ): SVGTextElement {
     const txt = Hlp.createSvg('text')
     txt.classList.add('dt-head-sort-svg-order-text')
     txt.setAttribute('x', '330')
@@ -78,8 +88,7 @@ export class DtHeadCell extends DtCell {
 
   private createCellSlider(): HTMLElement {
     const sliderEl = Hlp.createDiv('dt-head-cell-slider')
-    sliderEl.addEventListener('mousedown', ev =>
-      this.resizeCell(ev))
+    sliderEl.addEventListener('mousedown', ev => this.resizeCell(ev))
     return sliderEl
   }
 
@@ -88,7 +97,8 @@ export class DtHeadCell extends DtCell {
     const cell = (ev.target as HTMLElement).parentElement,
       left = cell?.getBoundingClientRect().left,
       rowCells = this.dts.getBodyCellsByOrder(
-        parseInt(cell?.style.order ?? '0'))
+        parseInt(cell?.style.order ?? '0')
+      )
 
     if (cell != null && left != null) {
       this.dts.head.el.style.cursor = 'col-resize'
@@ -97,7 +107,7 @@ export class DtHeadCell extends DtCell {
         if (newVal > 0) {
           const widthStr = `${newVal}px`
           cell.style.width = widthStr
-          rowCells.forEach(rc => rc.el.style.width = widthStr)
+          rowCells.forEach(rc => (rc.el.style.width = widthStr))
         }
       }
       const muHandler = (): void => {
@@ -105,7 +115,9 @@ export class DtHeadCell extends DtCell {
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
         this.refreshLayoutColWidth(
-          parseInt(cell.style.order), cell.style.width)
+          parseInt(cell.style.order),
+          cell.style.width
+        )
       }
       window.addEventListener('mousemove', mmHandler)
       window.addEventListener('mouseup', muHandler)
@@ -113,8 +125,9 @@ export class DtHeadCell extends DtCell {
   }
 
   private refreshLayoutColWidth(order: number, width: string): void {
-    const col =  this.dts.layout?.columns?.find(col => 
-      col.visibleIndex === order)
+    const col = this.dts.layout?.columns?.find(
+      col => col.visibleIndex === order
+    )
     if (col != null) col.width = width
   }
 }

@@ -1,11 +1,16 @@
-import { IDataTableColumn, IDataTableLayout } from '../../interfaces/i-data-table-layout.interface'
+import {
+  IDataTableColumn,
+  IDataTableLayout,
+} from '../../interfaces/i-data-table-layout.interface'
 import Hlp from '../helper.class'
 import { DtHeadCell } from './dt-head-cell.class'
 import { DtService } from './dt-service.class'
 
 export class DtHead {
   private readonly _el: HTMLDivElement
-  get el(): HTMLDivElement { return this._el }
+  get el(): HTMLDivElement {
+    return this._el
+  }
   readonly cells: DtHeadCell[] = []
 
   constructor(private readonly dts: DtService) {
@@ -16,9 +21,11 @@ export class DtHead {
   fill(layout: IDataTableLayout | null | undefined): void {
     const cols = layout?.columns
     this._el.innerHTML = Hlp.isArrNullOrEmpty(cols)
-      ? (layout?.title ?? '') : ''
-    cols?.filter(col => col.visible === true).forEach(col =>
-      this.addHeadCell(col))
+      ? layout?.title ?? ''
+      : ''
+    cols
+      ?.filter(col => col.visible === true)
+      .forEach(col => this.addHeadCell(col))
   }
 
   private addHeadCell(col: IDataTableColumn): void {

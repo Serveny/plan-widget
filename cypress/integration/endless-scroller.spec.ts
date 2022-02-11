@@ -5,16 +5,20 @@ describe('testing endless scroller', () => {
     endlessScroller2 = new EndlessScroller(),
     getLefts = (cells: JQuery<HTMLElement>): JQuery<number> =>
       cells.map((_, el) => parseInt(el.style.left)),
-    checkMove = (additor: number,
-      scroller: EndlessScroller): void => {
-      cy.wrap(scroller.el).children('.plw-es-cell').then(cells => {
-        const oldValues = getLefts(cells)
-        scroller.move(additor)
-        const newValues = getLefts(cells)
-        oldValues.each((i, oldVal) => {
-          expect((oldVal + additor)).eq(newValues[i])
+    checkMove = (
+      additor: number,
+      scroller: EndlessScroller
+    ): void => {
+      cy.wrap(scroller.el)
+        .children('.plw-es-cell')
+        .then(cells => {
+          const oldValues = getLefts(cells)
+          scroller.move(additor)
+          const newValues = getLefts(cells)
+          oldValues.each((i, oldVal) => {
+            expect(oldVal + additor).eq(newValues[i])
+          })
         })
-      })
     }
 
   before('visit test site', () => {

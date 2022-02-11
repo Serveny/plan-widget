@@ -18,43 +18,69 @@
 //
 declare namespace Cypress {
   interface Chainable<Subject> {
-    drag(x: number, y: number): Cypress.Chainable<Subject>;
-    dragTo(x: number | null, y: number | null): Cypress.Chainable<Subject>;
+    drag(x: number, y: number): Cypress.Chainable<Subject>
+    dragTo(
+      x: number | null,
+      y: number | null
+    ): Cypress.Chainable<Subject>
   }
 }
 
-function drag(subject: JQuery, x: number, y: number): Cypress.Chainable<JQuery> {
+function drag(
+  subject: JQuery,
+  x: number,
+  y: number
+): Cypress.Chainable<JQuery> {
   const subj = cy.wrap(subject),
     el = subject[0],
     rect = el.getBoundingClientRect(),
-    startX = rect.left + (rect.width / 2),
-    startY = rect.top + (rect.height / 2)
-  subj.trigger('mousedown', {
-    clientX: startX, clientY: startY,
-  }).then(() => cy.window().then(win => {
-      win.dispatchEvent(new MouseEvent('mousemove', {
-        clientX: startX + x, clientY: startY + y, }))
-      win.dispatchEvent(new MouseEvent('mouseup'))
+    startX = rect.left + rect.width / 2,
+    startY = rect.top + rect.height / 2
+  subj
+    .trigger('mousedown', {
+      clientX: startX,
+      clientY: startY,
     })
-  )
+    .then(() =>
+      cy.window().then(win => {
+        win.dispatchEvent(
+          new MouseEvent('mousemove', {
+            clientX: startX + x,
+            clientY: startY + y,
+          })
+        )
+        win.dispatchEvent(new MouseEvent('mouseup'))
+      })
+    )
   return cy.wrap(subject)
 }
 
-function dragTo(subject: JQuery, 
-  x: number | null, y: number | null): Cypress.Chainable<JQuery> {
+function dragTo(
+  subject: JQuery,
+  x: number | null,
+  y: number | null
+): Cypress.Chainable<JQuery> {
   const subj = cy.wrap(subject),
     el = subject[0],
     rect = el.getBoundingClientRect(),
-    startX = rect.left + (rect.width / 2),
-    startY = rect.top + (rect.height / 2)
-  subj.trigger('mousedown', {
-    clientX: startX, clientY: startY,
-  }).then(() => cy.window().then(win => {
-      win.dispatchEvent(new MouseEvent('mousemove', {
-        clientX: x ?? startX, clientY: y ?? startY, }))
-      win.dispatchEvent(new MouseEvent('mouseup'))
+    startX = rect.left + rect.width / 2,
+    startY = rect.top + rect.height / 2
+  subj
+    .trigger('mousedown', {
+      clientX: startX,
+      clientY: startY,
     })
-  )
+    .then(() =>
+      cy.window().then(win => {
+        win.dispatchEvent(
+          new MouseEvent('mousemove', {
+            clientX: x ?? startX,
+            clientY: y ?? startY,
+          })
+        )
+        win.dispatchEvent(new MouseEvent('mouseup'))
+      })
+    )
   return cy.wrap(subject)
 }
 

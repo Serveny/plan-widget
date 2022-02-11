@@ -1,0 +1,7 @@
+/target
+/dist
+/pkg
+/cypress/screenshots
+/cypress/videos
+/.vscode
+node_modules

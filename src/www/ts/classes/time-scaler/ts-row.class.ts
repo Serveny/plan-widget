@@ -21,7 +21,7 @@ export class TsRow {
   constructor(private cache: ITimeScalerCache) {
     this.el.appendChild(this.cellCon)
     // setTimeout(() => console.log(wasm.each_year_of_interval(
-    //   ~~(new Date().getTime() / 1000), 
+    //   ~~(new Date().getTime() / 1000),
     //   ~~(new Date().getTime() / 1000))), 3000)
   }
 
@@ -75,8 +75,10 @@ export class TsRow {
     }
   }
 
-  setScaleAndHeight(scale: TimeScale | undefined,
-    heightPx: number): void {
+  setScaleAndHeight(
+    scale: TimeScale | undefined,
+    heightPx: number
+  ): void {
     if (!scale) this.hide()
     else {
       this.show()
@@ -110,13 +112,12 @@ export class TsRow {
   }
 
   private getCellWidth(scale: TimeScale): number {
-    return this.el.offsetWidth
-      / (this.cache.focusHorizonSec / scale)
+    return this.el.offsetWidth / (this.cache.focusHorizonSec / scale)
   }
 
   private getCellDateText(date: Date): string {
     switch (this._scale) {
-      case TimeScale.years: 
+      case TimeScale.years:
         return date.getFullYear().toString()
       case TimeScale.quarters:
         return `Q ${Math.ceil((date.getMonth() + 1) / 3)}`
@@ -144,7 +145,8 @@ export class TsRow {
         return this.cache.dateHourMinSecFormat.format(date)
       case TimeScale.none:
         return 'No Scale'
-      default: throw Error('createText: Unknown Scale')
+      default:
+        throw Error('createText: Unknown Scale')
     }
   }
 
@@ -166,9 +168,10 @@ export class TsRow {
   }
 
   private moveCellCon(): void {
-    const leftPx = this.cellWidth *
-      ((this.cache.focusStartDate.getTime() % this._scaleMS)
-        / this._scaleMS)
+    const leftPx =
+      this.cellWidth *
+      ((this.cache.focusStartDate.getTime() % this._scaleMS) /
+        this._scaleMS)
     this.cells[0].style.paddingLeft = `${leftPx}px`
     this.cellCon.style.left = `${-leftPx}px`
   }

@@ -2,7 +2,10 @@ import { GridSlider } from './grid-slider.class'
 //import { IPlanWidget } from '../interfaces/i-plan-widget.interface';
 import { TimeScaler } from './time-scaler/time-scaler.class'
 import { CacheService } from './services/cache.service'
-import { IEntityView, IResourceView } from '../interfaces/i-view.interface'
+import {
+  IEntityView,
+  IResourceView,
+} from '../interfaces/i-view.interface'
 import { DataTable } from './data-table/data-table.class'
 import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interface'
 import { ScrollBarX } from './scroll-bar/scroll-bar-x.class'
@@ -20,17 +23,31 @@ export class PlanWidget /*implements IPlanWidget*/ {
   private readonly scrollBarY: ScrollBarY
   private readonly wasm = wasm
 
-  constructor(containerEl: HTMLElement | null | undefined,
-    options: IPlanWidgetOptions) {
+  constructor(
+    containerEl: HTMLElement | null | undefined,
+    options: IPlanWidgetOptions
+  ) {
     if (containerEl == null) throw '[PlanWidget] containerEl is null'
     const startDate = options.start ?? new Date()
-    this.cache = new CacheService(startDate,
-      options.end ?? new Date())
+    this.cache = new CacheService(
+      startDate,
+      options.end ?? new Date()
+    )
     this.gridSlider = new GridSlider(containerEl)
-    this.resourceTable = new DataTable('plw-resource-table',
-      options.resourceTableOptions, options.locale, true, false)
-    this.entityTable = new DataTable('plw-entity-table',
-      options.entityTableOptions, options.locale, true, true)
+    this.resourceTable = new DataTable(
+      'plw-resource-table',
+      options.resourceTableOptions,
+      options.locale,
+      true,
+      false
+    )
+    this.entityTable = new DataTable(
+      'plw-entity-table',
+      options.entityTableOptions,
+      options.locale,
+      true,
+      true
+    )
     this.timeScaler = new TimeScaler(this.cache)
     this.scrollBarX = new ScrollBarX([5, 30], true)
     this.scrollBarY = new ScrollBarY([65, 30], false)
@@ -40,26 +57,32 @@ export class PlanWidget /*implements IPlanWidget*/ {
     this.gridSlider.fieldM.appendChild(conMiddle)
     this.timeScaler.appendTo(conMiddle)
     this.scrollBarX.appendTo(conMiddle).addResizeObserver()
-    this.scrollBarY.appendTo(conMiddle).bindBarSizeToScrollEls(
-      this.resourceTable.el, this.resourceTable.bodyEl)
+    this.scrollBarY
+      .appendTo(conMiddle)
+      .bindBarSizeToScrollEls(
+        this.resourceTable.el,
+        this.resourceTable.bodyEl
+      )
     this.entityTable.appendTo(this.gridSlider.fieldR)
     this.addHandlers()
-    const start = new Date().getTime(), 
+    const start = new Date().getTime(),
       end = new Date(new Date().setFullYear(2030)).getTime()
     console.log('wasm test1: ', this.wasm.test())
-    console.log('wasm test2: ', this.wasm.
-      each_year_of_interval([start, end]))
+    console.log(
+      'wasm test2: ',
+      this.wasm.each_year_of_interval([start, end])
+    )
     console.log('rTime: ', new Date().getTime() - start)
     console.log(this)
   }
 
   private addHandlers(): void {
-    this.scrollBarX.onChangedPct =
-      (startPct: number, endPct: number): void =>
-        this.onChangedScollbarX(startPct, endPct)
-    this.timeScaler.onChangedDate =
-      (start: Date, end: Date): void =>
-        this.onChangedTimescaler(start, end)
+    this.scrollBarX.onChangedPct = (
+      startPct: number,
+      endPct: number
+    ): void => this.onChangedScollbarX(startPct, endPct)
+    this.timeScaler.onChangedDate = (start: Date, end: Date): void =>
+      this.onChangedTimescaler(start, end)
   }
 
   private onChangedScollbarX(startPct: number, endPct: number): void {

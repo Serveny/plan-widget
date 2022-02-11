@@ -36,8 +36,10 @@ export class ScrollBarX extends ScrollBar {
   protected override getScrollScale(): number {
     if (!this.scrollConEl || !this.contentEl)
       throw 'scroll or content el is null'
-    return this.scrollConEl?.offsetWidth / 
+    return (
+      this.scrollConEl?.offsetWidth /
       (this.contentEl?.offsetWidth + this.contentEl.offsetLeft)
+    )
   }
 
   protected override getXYByEv(ev: MouseEvent): number {
@@ -45,13 +47,15 @@ export class ScrollBarX extends ScrollBar {
   }
 
   protected override getScrollSize(): number {
-    return this.contentEl == null ? 0
+    return this.contentEl == null
+      ? 0
       : this.contentEl.offsetLeft + this.contentEl.offsetWidth
   }
 
   protected override setScrollContentPos(): void {
-    if (this.scrollConEl != null) this.scrollConEl.scrollLeft =
-      this._scrollConOnePctPx * this.barStartPct
+    if (this.scrollConEl != null)
+      this.scrollConEl.scrollLeft =
+        this._scrollConOnePctPx * this.barStartPct
   }
 
   protected override getWheelDelta(ev: WheelEvent): number {
@@ -59,11 +63,12 @@ export class ScrollBarX extends ScrollBar {
   }
 
   protected override getWheelDeltaXOrY(ev: WheelEvent): number {
-    return ev.deltaX == null || ev.deltaX === 0 
-      ? ev.deltaY : ev.deltaX
+    return ev.deltaX == null || ev.deltaX === 0
+      ? ev.deltaY
+      : ev.deltaX
   }
 
   protected override getResizeCursor(): string {
-      return 'e-resize'
+    return 'e-resize'
   }
 }

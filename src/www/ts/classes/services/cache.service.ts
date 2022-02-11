@@ -2,14 +2,20 @@ import Hlp from './../helper.class'
 
 export class CacheService {
   lang = navigator.language
-  dateMonthFormat = new Intl.DateTimeFormat(this.lang,
-    { month: 'short' })
-  dateDayFormat = new Intl.DateTimeFormat(this.lang,
-    { day: 'numeric' })
-  dateHourFormat = new Intl.DateTimeFormat(this.lang,
-    { hour: '2-digit' })
-  dateHourMinSecFormat = new Intl.DateTimeFormat(this.lang,
-    { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  dateMonthFormat = new Intl.DateTimeFormat(this.lang, {
+    month: 'short',
+  })
+  dateDayFormat = new Intl.DateTimeFormat(this.lang, {
+    day: 'numeric',
+  })
+  dateHourFormat = new Intl.DateTimeFormat(this.lang, {
+    hour: '2-digit',
+  })
+  dateHourMinSecFormat = new Intl.DateTimeFormat(this.lang, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
 
   startDate: Date
   endDate: Date
@@ -22,8 +28,8 @@ export class CacheService {
   constructor(startDate: Date, endDate: Date) {
     this.startDate = startDate
     this.endDate = endDate
-    this.horizonSec = (this.endDate.getTime()
-      - this.startDate.getTime()) / 1000
+    this.horizonSec =
+      (this.endDate.getTime() - this.startDate.getTime()) / 1000
     this.focusStartDate = this.startDate
     this.focusEndDate = this.endDate
     this.focusHorizonSec = this.horizonSec
@@ -33,20 +39,22 @@ export class CacheService {
   setHorizon(start: Date, end: Date): void {
     this.startDate = start
     this.endDate = end
-    this.horizonSec = 
+    this.horizonSec =
       (this.endDate.getTime() - this.startDate.getTime()) / 1000
   }
 
   setFocusByDate(start: Date, end: Date): void {
     this.focusStartDate = start
     this.focusEndDate = end
-    this.focusHorizonSec = (this.focusEndDate.getTime() 
-      - this.focusStartDate.getTime()) / 1000
+    this.focusHorizonSec =
+      (this.focusEndDate.getTime() - this.focusStartDate.getTime()) /
+      1000
   }
 
   setFocusByPct(startPct: number, endPct: number): void {
     this.setFocusByDate(
       Hlp.pctToDate(startPct, this.startDate, this.endDate),
-      Hlp.pctToDate(endPct, this.startDate, this.endDate))
+      Hlp.pctToDate(endPct, this.startDate, this.endDate)
+    )
   }
 }
