@@ -1,3 +1,5 @@
+import FloorDate from './date-helper/floor-date.class'
+
 export default class Helper {
   static createDiv(...classes: string[]): HTMLDivElement {
     const el = document.createElement('div')
@@ -60,11 +62,18 @@ export default class Helper {
     return new Date(
       Math.round(
         pct0Dt.getTime() +
-          ((pct100Dt.getTime() - pct0Dt.getTime()) / 100) * pct
+        ((pct100Dt.getTime() - pct0Dt.getTime()) / 100) * pct
       )
     )
   }
   static addSecs(dt: Date, secsToAdd: number): Date {
     return new Date(dt.getTime() + secsToAdd * 1000)
+  }
+  static getWeekNumber(date: Date): number {
+    date = FloorDate.floorToDay(date)
+    date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7))
+    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
+    return Math.ceil(
+      (((date.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
   }
 }

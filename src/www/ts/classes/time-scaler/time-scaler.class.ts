@@ -33,7 +33,7 @@ export class TimeScaler {
     this.secondPx = this.cache.focusHorizonSec / this.el.offsetWidth
     this.setRowScales()
     if (~~this.oldFocusSec === ~~this.cache.focusHorizonSec)
-      this.rows.forEach(row => row.paint())
+      this.rows.forEach(row => row.repaint())
     else {
       this.rows.forEach(row => row.repaint())
       this.oldFocusSec = this.cache.focusHorizonSec
@@ -52,10 +52,10 @@ export class TimeScaler {
     this.el.style.cursor = 'grabbing'
     this.clickPosPx = ev.x
     const mmHandler = (ev: MouseEvent): void => {
-        const movePx = ev.x - this.clickPosPx
-        this.moveByPx(movePx)
-        this.clickPosPx = ev.x
-      },
+      const movePx = ev.x - this.clickPosPx
+      this.moveByPx(movePx)
+      this.clickPosPx = ev.x
+    },
       muHandler = (): void => {
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
@@ -82,7 +82,7 @@ export class TimeScaler {
       )
       end = this.cache.endDate
     }
-    this.rows.forEach(row => row.paint())
+    this.rows.forEach(row => row.repaint())
     if (this.onChangedDate) this.onChangedDate(start, end)
   }
 

@@ -38,7 +38,6 @@ export class TsRow {
     this.removeAllCells()
     if (this._isVisible) {
       this.fillCellCon()
-      this.paint()
     }
   }
 
@@ -56,12 +55,13 @@ export class TsRow {
     }
   }
 
-  paint(): void {
-    if (this._isVisible) {
-      this.retextCells()
-      this.moveCellCon()
-    }
-  }
+  // paint(): void {
+  //   if (this._isVisible) {
+  //     console.log('paint')
+  //     this.retextCells()
+  //     this.moveCellCon()
+  //   }
+  // }
 
   setScaleAndHeight(
     scale: TimeScale | undefined,
@@ -87,11 +87,43 @@ export class TsRow {
   }
 
   private fillCellCon(): void {
-    const widthStr = `${this.cellWidth}px`,
-      cellCount = Math.ceil(this.el.offsetWidth / this.cellWidth) + 1
-    this.cellCon.style.left = `0px`
-    this.cellCon.style.width = `${cellCount * this.cellWidth}px`
-    for (let i = 0; i < cellCount; i++) this.addNewCell(widthStr)
+    let date = this._floorDate(this.cache.focusStartDate),
+      nextDate = this._nextDate(date), conWidth = 0
+    const endMs = this.cache.focusEndDate.getTime(),
+      cellConLeftPx = this.getCellConLeft(date)
+    while (date.getTime() < endMs) {
+      conWidth += this.createCell(date, nextDate)
+      date = nextDate
+      nextDate = this._nextDate(date)
+    }
+    this.cellCon.style.width = `${conWidth}px`
+    this.setCellConLeft(cellConLeftPx)
+  }
+
+  private createCell(date: Date, nextDate: Date): number {
+    const cellWidth = this.timeToPx(
+      (nextDate.getTime() - date.getTime()) / 1000),
+      cell = this.addNewCell(`${cellWidth}px`)
+    cell.textContent = this._dateText(date)
+    date = nextDate
+    nextDate = this._nextDate(date)
+    return cellWidth
+  }
+
+  private timeToPx(seconds: number): number {
+    return (this.el.offsetWidth
+      / this.cache.focusHorizonSec) * seconds
+  }
+
+  private getCellConLeft(firstCellDate: Date): number {
+    return this.timeToPx(
+      (this.cache.focusStartDate.getTime() - firstCellDate.getTime())
+      / 1000)
+  }
+
+  private setCellConLeft(leftPx: number): void {
+    this.cellCon.style.left = `${-leftPx}px`
+    this.cells[0].style.paddingLeft = `${leftPx}px`
   }
 
   private removeAllCells(): void {
@@ -112,20 +144,19 @@ export class TsRow {
   }
 
   private retextCells(): void {
-    let date = this._floorDate(this.cache.focusStartDate)
-    //console.log('sdfa', this.cache.focusStartDate, date)
-    this.cells.forEach(cell => {
-      cell.textContent = this._dateText(date)
-      date = this._nextDate(date)
-    })
+    // let date = this._floorDate(this.cache.focusStartDate)
+    // this.cells.forEach(cell => {
+    //   cell.textContent = this._dateText(date)
+    //   date = this._nextDate(date)
+    // })
   }
 
   private moveCellCon(): void {
-    const leftPx =
-      this.cellWidth *
-      ((this.cache.focusStartDate.getTime() % this._scaleMS) /
-        this._scaleMS)
-    this.cells[0].style.paddingLeft = `${leftPx}px`
-    this.cellCon.style.left = `${-leftPx}px`
+    // const leftPx =
+    //   this.cellWidth *
+    //   ((this.cache.focusStartDate.getTime() % this._scaleMS) /
+    //     this._scaleMS)
+    // this.cells[0].style.paddingLeft = `${leftPx}px`
+    // this.cellCon.style.left = `${-leftPx}px`
   }
 }

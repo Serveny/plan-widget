@@ -1,3 +1,4 @@
+import Helper from '../helper.class'
 import { CacheService } from '../services/cache.service'
 
 export class DateText {
@@ -12,7 +13,7 @@ export class DateText {
     return this.cache.dateMonthFormat.format(date)
   }
   week(date: Date): string {
-    return `W ${date.getUTCDay()}`
+    return `W${Helper.getWeekNumber(date)}`
   }
   day(date: Date): string {
     return this.cache.dateDayFormat.format(date)
