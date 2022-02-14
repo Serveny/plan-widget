@@ -42,9 +42,9 @@ export class TimeScaler {
   }
 
   private addResizeObserver(): void {
-    new ResizeObserver(() => {
+    new ResizeObserver(() =>
       this.rows.forEach(row => row.repaint())
-    }).observe(this.el)
+    ).observe(this.el)
   }
 
   private addMove(ev: MouseEvent): void {

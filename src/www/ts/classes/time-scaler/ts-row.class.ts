@@ -1,8 +1,6 @@
 import { TimeScale } from '../../enums/time-scale.enum'
 import { ITimeScalerCache } from '../../interfaces/i-time-scaler-cache.interface'
 import Hlp from '../helper.class'
-import DtHlp from '../date-helper.class'
-//import * as wasm from '../../../../../pkg/plan_widget_bg.wasm'
 
 export class TsRow {
   private el = Hlp.createDiv('plw-endless-scroller')
@@ -18,28 +16,18 @@ export class TsRow {
   private _scale: TimeScale = TimeScale.none
   private _scaleMS = 0
 
+  private _floorDate: (date: Date) => Date
+  private _nextDate: (date: Date) => Date
+  private _dateText: (date: Date) => string
+
   constructor(private cache: ITimeScalerCache) {
     this.el.appendChild(this.cellCon)
-    // setTimeout(() => console.log(wasm.each_year_of_interval(
-    //   ~~(new Date().getTime() / 1000),
-    //   ~~(new Date().getTime() / 1000))), 3000)
+    const dtFns = this.cache.dateHelper
+      .getDateFunctions(TimeScale.years)
+    this._floorDate = dtFns.floorToDate
+    this._nextDate = dtFns.nextDate
+    this._dateText = dtFns.dateText
   }
-
-  // zoomByScale(x: number, scale: TimeScale | undefined,
-  //   rowHeightPx?: number): void {
-  //   if (scale == null) this.hide()
-  //   else {
-  //     this.show()
-  //     if (rowHeightPx) this.heightPx = rowHeightPx
-  //     this.zoom(x, this.getBlockWidth(scale,
-  //       this.cache.focusHorizonSec))
-  //     if (this.scale !== scale) {
-  //       console.log('retextAllCells', TimeScale[scale])
-  //       this.scale = scale
-  //       this.retextAllCells()
-  //     }
-  //   }
-  // }
 
   appendTo(parentEl: HTMLElement): TsRow {
     parentEl.appendChild(this.el)
@@ -86,8 +74,16 @@ export class TsRow {
       this._scaleMS = scale * 1000
       this.cellWidth = this.getCellWidth(scale)
       this.heightPx = heightPx
+      this.setDateFunctions(scale)
       //console.log('setScale', this._scale, this.cellWidth)
     }
+  }
+
+  private setDateFunctions(scale: TimeScale): void {
+    const dtFns = this.cache.dateHelper.getDateFunctions(scale)
+    this._floorDate = dtFns.floorToDate
+    this._nextDate = dtFns.nextDate
+    this._dateText = dtFns.dateText
   }
 
   private fillCellCon(): void {
@@ -115,56 +111,13 @@ export class TsRow {
     return this.el.offsetWidth / (this.cache.focusHorizonSec / scale)
   }
 
-  private getCellDateText(date: Date): string {
-    switch (this._scale) {
-      case TimeScale.years:
-        return date.getFullYear().toString()
-      case TimeScale.quarters:
-        return `Q ${Math.ceil((date.getMonth() + 1) / 3)}`
-      case TimeScale.months:
-        return this.cache.dateMonthFormat.format(date)
-      case TimeScale.weeks:
-        return `W ${date.getUTCDay()}`
-      case TimeScale.days:
-        return this.cache.dateDayFormat.format(date)
-      case TimeScale.halfDays:
-      case TimeScale.fourthDays:
-      case TimeScale.eighthDays:
-      case TimeScale.twelfthDays:
-      case TimeScale.hours:
-      case TimeScale.halfHours:
-      case TimeScale.fourthHours:
-      case TimeScale.sixthHours:
-      case TimeScale.twelfthHours:
-      case TimeScale.minutes:
-      case TimeScale.halfMinutes:
-      case TimeScale.fourthMinutes:
-      case TimeScale.sixthMinutes:
-      case TimeScale.twelfthMinutes:
-      case TimeScale.seconds:
-        return this.cache.dateHourMinSecFormat.format(date)
-      case TimeScale.none:
-        return 'No Scale'
-      default:
-        throw Error('createText: Unknown Scale')
-    }
-  }
-
   private retextCells(): void {
-    let date = this.ceilDate(this.cache.startDate)
-    console.log('sdfa', this.cache.focusStartDate, date)
+    let date = this._floorDate(this.cache.focusStartDate)
+    //console.log('sdfa', this.cache.focusStartDate, date)
     this.cells.forEach(cell => {
-      cell.textContent = this.getCellDateText(date)
-      date = this.next(date)
+      cell.textContent = this._dateText(date)
+      date = this._nextDate(date)
     })
-  }
-
-  private ceilDate(date: Date): Date {
-    return DtHlp.ceilByScale(date, this._scale)
-  }
-
-  private next(date: Date): Date {
-    return DtHlp.nextByScale(date, this._scale)
   }
 
   private moveCellCon(): void {

@@ -1,3 +1,4 @@
+import { DateHelper } from '../date-helper/date-helper.class'
 import Hlp from './../helper.class'
 
 export class CacheService {
@@ -25,6 +26,8 @@ export class CacheService {
   focusEndDate: Date
   focusHorizonSec: number
 
+  dateHelper: DateHelper
+
   constructor(startDate: Date, endDate: Date) {
     this.startDate = startDate
     this.endDate = endDate
@@ -33,7 +36,12 @@ export class CacheService {
     this.focusStartDate = this.startDate
     this.focusEndDate = this.endDate
     this.focusHorizonSec = this.horizonSec
-    console.log('cache: ', startDate, endDate, this.focusHorizonSec)
+    this.dateHelper = new DateHelper(this)
+    console.log('cache: ',
+      startDate.toLocaleString(),
+      endDate.toLocaleString(),
+      this.focusHorizonSec
+    )
   }
 
   setHorizon(start: Date, end: Date): void {

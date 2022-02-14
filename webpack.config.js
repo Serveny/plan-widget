@@ -1,7 +1,7 @@
 const path = require('path'),
   webpack = require('webpack'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin'),
+  //WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin'),
   { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
@@ -45,10 +45,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/www/index.html',
     }),
-    new WasmPackPlugin({
-      crateDirectory: path.resolve(__dirname, 'src/rust'),
-      outName: 'plan_widget_wasm',
-    }),
+    // new WasmPackPlugin({
+    //   crateDirectory: path.resolve(__dirname, 'src/rust'),
+    //   outName: 'plan_widget_wasm',
+    // }),
     // Have this example work in Edge which doesn't ship `TextEncoder` or
     // `TextDecoder` at this time.
     new webpack.ProvidePlugin({

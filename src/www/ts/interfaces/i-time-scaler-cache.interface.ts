@@ -1,3 +1,5 @@
+import { DateHelper } from '../classes/date-helper/date-helper.class'
+
 export interface ITimeScalerCache {
   dateMonthFormat: Intl.DateTimeFormat
   dateDayFormat: Intl.DateTimeFormat
@@ -11,4 +13,6 @@ export interface ITimeScalerCache {
   focusStartDate: Date
   focusEndDate: Date
   focusHorizonSec: number
+
+  dateHelper: DateHelper
 }

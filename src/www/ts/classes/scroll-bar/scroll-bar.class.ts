@@ -294,10 +294,8 @@ export abstract class ScrollBar {
   }
 
   private createResizeEls(): void {
-    (this.barResizeStart = Hlp.createDiv(
-      'plw-sb-resize-field-start'
-    )),
-      (this.barResizeEnd = Hlp.createDiv('plw-sb-resize-field-end'))
+    this.barResizeStart = Hlp.createDiv('plw-sb-resize-field-start')
+    this.barResizeEnd = Hlp.createDiv('plw-sb-resize-field-end')
     this.barEl.append(this.barResizeStart, this.barResizeEnd)
   }
 }

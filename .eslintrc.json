@@ -1,5 +1,7 @@
 {
-  "ignorePatterns": ["*.js"],
+  "ignorePatterns": [
+    "*.js"
+  ],
   "env": {
     "browser": true,
     "es2021": true
@@ -14,7 +16,9 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "rules": {
     "max-len": [
       "warn",
@@ -23,9 +27,15 @@
         "ignorePattern": "^import .*"
       }
     ],
-    "max-depth": ["error", 4],
+    "max-depth": [
+      "error",
+      4
+    ],
     "linebreak-style": 0,
-    "semi": ["error", "never"],
+    "semi": [
+      "error",
+      "never"
+    ],
     "no-unexpected-multiline": "error",
     "@typescript-eslint/no-explicit-any": 2,
     "@typescript-eslint/explicit-function-return-type": 2,

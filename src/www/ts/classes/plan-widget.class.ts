@@ -11,7 +11,7 @@ import { IPlanWidgetOptions } from '../interfaces/i-plan-widget-options.interfac
 import { ScrollBarX } from './scroll-bar/scroll-bar-x.class'
 import Hlp from './helper.class'
 import { ScrollBarY } from './scroll-bar/scroll-bar-y.class'
-import * as wasm from 'plan-widget-wasm'
+//import * as wasm from 'plan-widget-wasm'
 
 export class PlanWidget /*implements IPlanWidget*/ {
   private readonly cache: CacheService
@@ -21,7 +21,7 @@ export class PlanWidget /*implements IPlanWidget*/ {
   private readonly timeScaler: TimeScaler
   private readonly scrollBarX: ScrollBarX
   private readonly scrollBarY: ScrollBarY
-  private readonly wasm = wasm
+  //private readonly wasm = wasm
 
   constructor(
     containerEl: HTMLElement | null | undefined,
@@ -65,15 +65,15 @@ export class PlanWidget /*implements IPlanWidget*/ {
       )
     this.entityTable.appendTo(this.gridSlider.fieldR)
     this.addHandlers()
-    const start = new Date().getTime(),
-      end = new Date(new Date().setFullYear(2030)).getTime()
-    console.log('wasm test1: ', this.wasm.test())
-    console.log(
-      'wasm test2: ',
-      this.wasm.each_year_of_interval([start, end])
-    )
-    console.log('rTime: ', new Date().getTime() - start)
-    console.log(this)
+    // const start = new Date().getTime(),
+    //   end = new Date(new Date().setFullYear(2030)).getTime()
+    // console.log('wasm test1: ', this.wasm.test())
+    // console.log(
+    //   'wasm test2: ',
+    //   this.wasm.each_year_of_interval([start, end])
+    // )
+    // console.log('rTime: ', new Date().getTime() - start)
+    // console.log(this)
   }
 
   private addHandlers(): void {
