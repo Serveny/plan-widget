@@ -28,10 +28,13 @@ export class PlanWidget /*implements IPlanWidget*/ {
     options: IPlanWidgetOptions
   ) {
     if (containerEl == null) throw '[PlanWidget] containerEl is null'
-    const startDate = options.start ?? new Date()
+    const startDate = options.start ?? new Date(),
+      endDate = options.end ?? new Date(new Date().setDate(+7))
+    if (startDate.getTime() > endDate.getTime())
+      throw '[PlanWidget] Start date cannot be bigger than end date'
     this.cache = new CacheService(
       startDate,
-      options.end ?? new Date()
+      endDate
     )
     this.gridSlider = new GridSlider(containerEl)
     this.resourceTable = new DataTable(
@@ -77,7 +80,7 @@ export class PlanWidget /*implements IPlanWidget*/ {
   }
 
   private addHandlers(): void {
-    this.scrollBarX.onChangedPct = (
+    this.scrollBarX.onUserChangedPct = (
       startPct: number,
       endPct: number
     ): void => this.onChangedScollbarX(startPct, endPct)

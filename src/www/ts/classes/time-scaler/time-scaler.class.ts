@@ -9,7 +9,7 @@ export class TimeScaler {
   private clickPosPx = 0
   private rowsFocus: TsRowsFocus
   private secondPx = 0
-  private oldFocusSec = 0
+  private offsetLeft = 0
 
   onChangedDate?: (start: Date, end: Date) => void
 
@@ -20,8 +20,9 @@ export class TimeScaler {
     this.rows.forEach(row => row.appendTo(this.el))
     this.addResizeObserver()
     this.el.addEventListener('mousedown', ev => this.addMove(ev))
-    // this.el.addEventListener('wheel', ev =>
-    //   this.zoom(ev.x, ev.deltaY > 0 ? 1.1 : 0.9))
+    this.el.addEventListener('wheel', ev =>
+      this.zoom(ev.x, ev.deltaY)
+    )
   }
 
   appendTo(containerEl: HTMLElement): void {
@@ -32,19 +33,15 @@ export class TimeScaler {
   paint(): void {
     this.secondPx = this.cache.focusHorizonSec / this.el.offsetWidth
     this.setRowScales()
-    if (~~this.oldFocusSec === ~~this.cache.focusHorizonSec)
-      this.rows.forEach(row => row.repaint())
-    else {
-      this.rows.forEach(row => row.repaint())
-      this.oldFocusSec = this.cache.focusHorizonSec
-    }
+    this.rows.forEach(row => row.repaint())
     //console.log(this.secondPx)
   }
 
   private addResizeObserver(): void {
-    new ResizeObserver(() =>
+    new ResizeObserver(() => {
+      this.offsetLeft = this.el.getBoundingClientRect().left
       this.rows.forEach(row => row.repaint())
-    ).observe(this.el)
+    }).observe(this.el)
   }
 
   private addMove(ev: MouseEvent): void {
@@ -99,10 +96,13 @@ export class TimeScaler {
     )
   }
 
-  // private zoom(x: number, factor: number): void {
-  //   const scales = this.rowsFocus.getRowScales(
-  //     this.cache.focusHorizonSec)
-  //   this.rows.forEach((row, i) =>
-  //     row.zoomByScale(x, scales.rows[i], scales.rowHeight))
-  // }
+  // TODO
+  private zoom(x: number, factor: number): void {
+    const pos = ((x - this.offsetLeft) / this.el.offsetWidth)
+    this.cache.focusStartDate.getTime() * factor
+
+    console.log('Mitte: ', pos, factor)
+
+    this.paint()
+  }
 }

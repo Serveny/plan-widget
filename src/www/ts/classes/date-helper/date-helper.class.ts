@@ -47,72 +47,72 @@ export class DateHelper {
       [TimeScale.halfDays, new ScaleFunctions(
         FloorDate.floorToHalfDay,
         NextDate.nextHalfDay,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.fourthDays, new ScaleFunctions(
         FloorDate.floorToFourthDay,
         NextDate.nextFourthDay,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.eighthDays, new ScaleFunctions(
         FloorDate.floorToEighthDay,
         NextDate.nextEighthDay,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.twelfthDays, new ScaleFunctions(
         FloorDate.floorToTwelfthDay,
         NextDate.nextTwelfthDay,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.hours, new ScaleFunctions(
         FloorDate.floorToHour,
         NextDate.nextHour,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.halfHours, new ScaleFunctions(
         FloorDate.floorToHalfHour,
         NextDate.nextHalfHour,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.fourthHours, new ScaleFunctions(
         FloorDate.floorToFourthHour,
         NextDate.nextFourthHour,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.sixthHours, new ScaleFunctions(
         FloorDate.floorToSixthHour,
         NextDate.nextSixthHour,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.twelfthHours, new ScaleFunctions(
         FloorDate.floorToTwelfthHour,
         NextDate.nextTwelfthHour,
-        this.dateText.day
+        this.dateText.hour
       )],
       [TimeScale.minutes, new ScaleFunctions(
         FloorDate.floorToMinute,
         NextDate.nextMinute,
-        this.dateText.day
+        this.dateText.second
       )],
       [TimeScale.halfMinutes, new ScaleFunctions(
         FloorDate.floorToHalfMinute,
         NextDate.nextHalfMinute,
-        this.dateText.day
+        this.dateText.second
       )],
       [TimeScale.fourthMinutes, new ScaleFunctions(
         FloorDate.floorToFourthMinute,
         NextDate.nextFourthMinute,
-        this.dateText.day
+        this.dateText.second
       )],
       [TimeScale.sixthMinutes, new ScaleFunctions(
         FloorDate.floorToSixthMinute,
         NextDate.nextSixthMinute,
-        this.dateText.day
+        this.dateText.second
       )],
       [TimeScale.twelfthMinutes, new ScaleFunctions(
         FloorDate.floorToTwelfthMinute,
         NextDate.nextTwelfthMinute,
-        this.dateText.day
+        this.dateText.second
       )],
       [TimeScale.seconds, new ScaleFunctions(
         FloorDate.floorToSecond,

@@ -18,6 +18,9 @@ export class DateText {
   day(date: Date): string {
     return this.cache.dateDayFormat.format(date)
   }
+  hour(date: Date): string {
+    return this.cache.dateHourFormat.format(date)
+  }
   second(date: Date): string {
     return this.cache.dateHourMinSecFormat.format(date)
   }

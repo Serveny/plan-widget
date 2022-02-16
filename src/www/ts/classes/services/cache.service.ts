@@ -11,6 +11,7 @@ export class CacheService {
   })
   dateHourFormat = new Intl.DateTimeFormat(this.lang, {
     hour: '2-digit',
+    minute: '2-digit',
   })
   dateHourMinSecFormat = new Intl.DateTimeFormat(this.lang, {
     hour: '2-digit',

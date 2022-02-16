@@ -8,7 +8,7 @@ export abstract class ScrollBar {
   get end(): number {
     return this._barEndPct
   }
-  onChangedPct?: (startPct: number, endPct: number) => void
+  onUserChangedPct?: (startPct: number, endPct: number) => void
 
   // Container
   protected readonly conEl = Hlp.createDiv('plw-sb-con')
@@ -94,7 +94,6 @@ export abstract class ScrollBar {
     this._barEndPx = this._barEndPct * this._conOnePctPx
     this._barSizePx = this._barEndPx - this._barStartPx
     this.drawBar(this._barStartPx, this._barSizePx)
-    this.callOnChanged()
   }
 
   // =======================================================
@@ -160,7 +159,6 @@ export abstract class ScrollBar {
     this._barStartPct = this.getPctByPx(this._barStartPx)
     this._barEndPct = this.getPctByPx(this._barEndPx)
     this.drawBar(this._barStartPx, this._barSizePx)
-    this.callOnChanged()
   }
 
   private addMove(mdEv: MouseEvent): void {
@@ -193,7 +191,10 @@ export abstract class ScrollBar {
       window.removeEventListener('mouseup', onMu)
       this.moveOnMouseup()
     },
-      onMm = (ev: MouseEvent): void => mmHandler(ev)
+      onMm = (ev: MouseEvent): void => {
+        mmHandler(ev)
+        this.callOnUserChanged()
+      }
     window.addEventListener('mousemove', onMm)
     window.addEventListener('mouseup', onMu)
   }
@@ -265,10 +266,10 @@ export abstract class ScrollBar {
     this.setBarByPct(startPct, this._scrollScale * 100 + startPct)
   }
 
-  private callOnChanged(): void {
+  private callOnUserChanged(): void {
     this.setScrollContentPos()
-    if (this.onChangedPct != null)
-      this.onChangedPct(this._barStartPct, this._barEndPct)
+    if (this.onUserChangedPct != null)
+      this.onUserChangedPct(this._barStartPct, this._barEndPct)
   }
 
   private onConWheel(ev: WheelEvent): void {
@@ -278,6 +279,7 @@ export abstract class ScrollBar {
     if (newStart < 0) this.moveBarToConStart()
     else if (newEnd > this._conSizePx) this.moveBarToConEnd()
     else this.setBarByPx(newStart, newEnd)
+    this.callOnUserChanged()
   }
 
   private onWheel(delta: number): void {
@@ -286,6 +288,7 @@ export abstract class ScrollBar {
     if (newStart < 0) this.moveBarToConStart()
     else if (newEnd > this._conSizePx) this.moveBarToConEnd()
     else this.setBarByPx(newStart, newEnd)
+    this.callOnUserChanged()
   }
 
   private onScrollConWheel(ev: WheelEvent): void {

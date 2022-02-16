@@ -3,19 +3,13 @@ import { ITimeScalerCache } from '../../interfaces/i-time-scaler-cache.interface
 import Hlp from '../helper.class'
 
 export class TsRow {
-  private el = Hlp.createDiv('plw-endless-scroller')
-  private cellCon = Hlp.createDiv('plw-es-cell-con')
-  private cells: HTMLDivElement[] = []
-  private cellWidth = 0
   set heightPx(heightPx: number) {
     this.el.style.height = `${heightPx}px`
     this.el.style.lineHeight = `${heightPx}px`
   }
-
+  private el = Hlp.createDiv('plw-endless-scroller')
+  private cellCon = Hlp.createDiv('plw-es-cell-con')
   private _isVisible = true
-  private _scale: TimeScale = TimeScale.none
-  private _scaleMS = 0
-
   private _floorDate: (date: Date) => Date
   private _nextDate: (date: Date) => Date
   private _dateText: (date: Date) => string
@@ -35,7 +29,7 @@ export class TsRow {
   }
 
   repaint(): void {
-    this.removeAllCells()
+    this.cellCon.innerHTML = ''
     if (this._isVisible) {
       this.fillCellCon()
     }
@@ -55,14 +49,6 @@ export class TsRow {
     }
   }
 
-  // paint(): void {
-  //   if (this._isVisible) {
-  //     console.log('paint')
-  //     this.retextCells()
-  //     this.moveCellCon()
-  //   }
-  // }
-
   setScaleAndHeight(
     scale: TimeScale | undefined,
     heightPx: number
@@ -70,12 +56,9 @@ export class TsRow {
     if (!scale) this.hide()
     else {
       this.show()
-      this._scale = scale
-      this._scaleMS = scale * 1000
-      this.cellWidth = this.getCellWidth(scale)
       this.heightPx = heightPx
       this.setDateFunctions(scale)
-      //console.log('setScale', this._scale, this.cellWidth)
+      console.log('setScale', TimeScale[scale])
     }
   }
 
@@ -100,9 +83,13 @@ export class TsRow {
     this.setCellConLeft(cellConLeftPx)
   }
 
+  private getCellWidth(date: Date, nextDate: Date): number {
+    return this.timeToPx(
+      (nextDate.getTime() - date.getTime()) / 1000)
+  }
+
   private createCell(date: Date, nextDate: Date): number {
-    const cellWidth = this.timeToPx(
-      (nextDate.getTime() - date.getTime()) / 1000),
+    const cellWidth = this.getCellWidth(date, nextDate),
       cell = this.addNewCell(`${cellWidth}px`)
     cell.textContent = this._dateText(date)
     date = nextDate
@@ -122,41 +109,15 @@ export class TsRow {
   }
 
   private setCellConLeft(leftPx: number): void {
-    this.cellCon.style.left = `${-leftPx}px`
-    this.cells[0].style.paddingLeft = `${leftPx}px`
-  }
-
-  private removeAllCells(): void {
-    this.cells.forEach(cell => cell.remove())
-    this.cells = []
+    this.cellCon.style.left = `${-leftPx}px`;
+    (this.cellCon.firstChild as HTMLElement)
+      .style.paddingLeft = `${leftPx}px`
   }
 
   private addNewCell(cellWidthStr: string): HTMLDivElement {
     const cell = Hlp.createDiv('plw-es-cell')
     cell.style.width = cellWidthStr
-    this.cells.push(cell)
     this.cellCon.appendChild(cell)
     return cell
-  }
-
-  private getCellWidth(scale: TimeScale): number {
-    return this.el.offsetWidth / (this.cache.focusHorizonSec / scale)
-  }
-
-  private retextCells(): void {
-    // let date = this._floorDate(this.cache.focusStartDate)
-    // this.cells.forEach(cell => {
-    //   cell.textContent = this._dateText(date)
-    //   date = this._nextDate(date)
-    // })
-  }
-
-  private moveCellCon(): void {
-    // const leftPx =
-    //   this.cellWidth *
-    //   ((this.cache.focusStartDate.getTime() % this._scaleMS) /
-    //     this._scaleMS)
-    // this.cells[0].style.paddingLeft = `${leftPx}px`
-    // this.cellCon.style.left = `${-leftPx}px`
   }
 }
