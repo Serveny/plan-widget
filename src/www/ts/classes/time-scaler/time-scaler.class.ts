@@ -34,13 +34,12 @@ export class TimeScaler {
     this.secondPx = this.cache.focusHorizonSec / this.el.offsetWidth
     this.setRowScales()
     this.rows.forEach(row => row.repaint())
-    //console.log(this.secondPx)
   }
 
   private addResizeObserver(): void {
     new ResizeObserver(() => {
       this.offsetLeft = this.el.getBoundingClientRect().left
-      this.rows.forEach(row => row.repaint())
+      this.paint()
     }).observe(this.el)
   }
 
@@ -79,8 +78,8 @@ export class TimeScaler {
       )
       end = this.cache.endDate
     }
-    this.rows.forEach(row => row.repaint())
     if (this.onChangedDate) this.onChangedDate(start, end)
+    this.rows.forEach(row => row.repaint())
   }
 
   private pxToSecond(px: number): number {
@@ -91,18 +90,29 @@ export class TimeScaler {
     const scales = this.rowsFocus.getRowScales(
       this.cache.focusHorizonSec
     )
-    this.rows.forEach((row, i) =>
+    this.rows.forEach((row: TsRow, i: number) =>
       row.setScaleAndHeight(scales.rows[i], scales.rowHeight)
     )
   }
 
   // TODO
   private zoom(x: number, factor: number): void {
-    const pos = ((x - this.offsetLeft) / this.el.offsetWidth)
-    this.cache.focusStartDate.getTime() * factor
+    const pos = ((x - this.offsetLeft) / this.el.offsetWidth),
+      factorMs = this.cache.focusHorizonSec * 10 * factor,
+      startMs = this.cache.focusStartDate.getTime()
+        - (factorMs * (1 - pos)),
+      endMs = this.cache.focusEndDate.getTime()
+        + (factorMs * pos)
 
     console.log('Mitte: ', pos, factor)
-
-    this.paint()
+    if (startMs >= this.cache.startDate.getTime()
+      && endMs <= this.cache.endDate.getTime()
+    ) {
+      if (this.onChangedDate) this.onChangedDate(
+        new Date(startMs),
+        new Date(endMs)
+      )
+      this.paint()
+    }
   }
 }

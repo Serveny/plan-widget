@@ -109,9 +109,9 @@ export class TsRow {
   }
 
   private setCellConLeft(leftPx: number): void {
-    this.cellCon.style.left = `${-leftPx}px`;
-    (this.cellCon.firstChild as HTMLElement)
-      .style.paddingLeft = `${leftPx}px`
+    this.cellCon.style.left = `${-leftPx}px`
+    const firstCell = (this.cellCon.firstChild as HTMLElement)
+    if (firstCell) firstCell.style.paddingLeft = `${leftPx}px`
   }
 
   private addNewCell(cellWidthStr: string): HTMLDivElement {
