@@ -4,11 +4,7 @@ export default class FloorDate {
   }
   static floorToQuarter(date: Date): Date {
     const month = date.getMonth()
-    return new Date(
-      date.getFullYear(),
-      month - (month % 3),
-      1
-    )
+    return new Date(date.getFullYear(), month - (month % 3), 1)
   }
   static floorToMonth(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), 1)

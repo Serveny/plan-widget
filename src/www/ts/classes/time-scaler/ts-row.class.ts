@@ -9,18 +9,19 @@ export class TsRow {
   }
   private el = Hlp.createDiv('plw-endless-scroller')
   private cellCon = Hlp.createDiv('plw-es-cell-con')
-  private _isVisible = true
-  private _floorDate: (date: Date) => Date
-  private _nextDate: (date: Date) => Date
-  private _dateText: (date: Date) => string
+  private isVisible = true
+  private floorDate: (date: Date) => Date
+  private nextDate: (date: Date) => Date
+  private dateText: (date: Date) => string
 
   constructor(private cache: ITimeScalerCache) {
     this.el.appendChild(this.cellCon)
-    const dtFns = this.cache.dateHelper
-      .getDateFunctions(TimeScale.years)
-    this._floorDate = dtFns.floorToDate
-    this._nextDate = dtFns.nextDate
-    this._dateText = dtFns.dateText
+    const dtFns = this.cache.dateHelper.getDateFunctions(
+      TimeScale.years
+    )
+    this.floorDate = dtFns.floorToDate
+    this.nextDate = dtFns.nextDate
+    this.dateText = dtFns.dateText
   }
 
   appendTo(parentEl: HTMLElement): TsRow {
@@ -30,22 +31,22 @@ export class TsRow {
 
   repaint(): void {
     this.cellCon.innerHTML = ''
-    if (this._isVisible) {
+    if (this.isVisible) {
       this.fillCellCon()
     }
   }
 
   show(): void {
-    if (!this._isVisible) {
+    if (!this.isVisible) {
       this.el.style.display = ''
-      this._isVisible = true
+      this.isVisible = true
     }
   }
 
   hide(): void {
-    if (this._isVisible) {
+    if (this.isVisible) {
       this.el.style.display = 'none'
-      this._isVisible = false
+      this.isVisible = false
     }
   }
 
@@ -58,59 +59,62 @@ export class TsRow {
       this.show()
       this.heightPx = heightPx
       this.setDateFunctions(scale)
-      console.log('setScale', TimeScale[scale])
+      //console.log('setScale', TimeScale[scale])
     }
   }
 
   private setDateFunctions(scale: TimeScale): void {
     const dtFns = this.cache.dateHelper.getDateFunctions(scale)
-    this._floorDate = dtFns.floorToDate
-    this._nextDate = dtFns.nextDate
-    this._dateText = dtFns.dateText
+    this.floorDate = dtFns.floorToDate
+    this.nextDate = dtFns.nextDate
+    this.dateText = dtFns.dateText
   }
 
   private fillCellCon(): void {
-    let date = this._floorDate(this.cache.focusStartDate),
-      nextDate = this._nextDate(date), conWidth = 0
+    let date = this.floorDate(this.cache.focusStartDate),
+      nextDate = this.nextDate(date),
+      conWidth = 0
     const endMs = this.cache.focusEndDate.getTime(),
       cellConLeftPx = this.getCellConLeft(date)
     while (date.getTime() < endMs) {
       conWidth += this.createCell(date, nextDate)
       date = nextDate
-      nextDate = this._nextDate(date)
+      nextDate = this.nextDate(date)
     }
     this.cellCon.style.width = `${conWidth}px`
     this.setCellConLeft(cellConLeftPx)
   }
 
   private getCellWidth(date: Date, nextDate: Date): number {
-    return this.timeToPx(
-      (nextDate.getTime() - date.getTime()) / 1000)
+    return this.timeToPx((nextDate.getTime() - date.getTime()) / 1000)
   }
 
   private createCell(date: Date, nextDate: Date): number {
     const cellWidth = this.getCellWidth(date, nextDate),
       cell = this.addNewCell(`${cellWidth}px`)
-    cell.textContent = this._dateText(date)
+    cell.textContent = this.dateText(date)
     date = nextDate
-    nextDate = this._nextDate(date)
+    nextDate = this.nextDate(date)
     return cellWidth
   }
 
   private timeToPx(seconds: number): number {
-    return (this.el.offsetWidth
-      / this.cache.focusHorizonSec) * seconds
+    return (
+      (this.el.offsetWidth / this.cache.focusHorizonSec) * seconds
+    )
   }
 
   private getCellConLeft(firstCellDate: Date): number {
     return this.timeToPx(
-      (this.cache.focusStartDate.getTime() - firstCellDate.getTime())
-      / 1000)
+      (this.cache.focusStartDate.getTime() -
+        firstCellDate.getTime()) /
+        1000
+    )
   }
 
   private setCellConLeft(leftPx: number): void {
     this.cellCon.style.left = `${-leftPx}px`
-    const firstCell = (this.cellCon.firstChild as HTMLElement)
+    const firstCell = this.cellCon.firstChild as HTMLElement
     if (firstCell) firstCell.style.paddingLeft = `${leftPx}px`
   }
 

@@ -187,10 +187,10 @@ export abstract class ScrollBar {
     mmHandler: (ev: MouseEvent) => void
   ): void {
     const onMu = (): void => {
-      window.removeEventListener('mousemove', onMm)
-      window.removeEventListener('mouseup', onMu)
-      this.moveOnMouseup()
-    },
+        window.removeEventListener('mousemove', onMm)
+        window.removeEventListener('mouseup', onMu)
+        this.moveOnMouseup()
+      },
       onMm = (ev: MouseEvent): void => {
         mmHandler(ev)
         this.callOnUserChanged()

@@ -23,7 +23,7 @@ export class DtBodyRow {
   constructor(
     private _order: number,
     private _data: IView,
-    private _layout: IDataTableLayout | null | undefined
+    private layout: IDataTableLayout | null | undefined
   ) {
     this.el.style.order = this._order.toString()
     this.addCells()
@@ -41,7 +41,7 @@ export class DtBodyRow {
 
   private addCells(): void {
     const rowMap = Hlp.objToMap(this._data)
-    this._layout?.columns?.forEach(col => {
+    this.layout?.columns?.forEach(col => {
       if (col.visible) this.addCell(rowMap, col)
     })
   }

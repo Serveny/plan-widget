@@ -10,96 +10,102 @@ export class TsRowsFocus {
       this.rowHeights.push(scalerHeight / i)
 
     this.rowScales = [
-      new TsRowScales(
+      new TsRowScales(TimeScale.years, [TimeScale.years]),
+      new TsRowScales(TimeScale.quarters, [
         TimeScale.years,
-        [TimeScale.years]
-      ),
-      new TsRowScales(
         TimeScale.quarters,
-        [TimeScale.years, TimeScale.quarters]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.months, [
+        TimeScale.years,
         TimeScale.months,
-        [TimeScale.years, TimeScale.months]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.weeks, [
+        TimeScale.months,
         TimeScale.weeks,
-        [TimeScale.months, TimeScale.weeks]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.days, [
+        TimeScale.months,
+        TimeScale.weeks,
         TimeScale.days,
-        [TimeScale.months, TimeScale.weeks, TimeScale.days]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.halfDays, [
+        TimeScale.days,
         TimeScale.halfDays,
-        [TimeScale.days, TimeScale.halfDays]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.fourthDays, [
+        TimeScale.days,
         TimeScale.fourthDays,
-        [TimeScale.days, TimeScale.fourthDays]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.eighthDays, [
+        TimeScale.days,
         TimeScale.eighthDays,
-        [TimeScale.days, TimeScale.eighthDays]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.twelfthDays, [
+        TimeScale.days,
         TimeScale.twelfthDays,
-        [TimeScale.days, TimeScale.twelfthDays]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.twelfthDays, [
+        TimeScale.days,
         TimeScale.twelfthDays,
-        [TimeScale.days, TimeScale.twelfthDays]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.twelfthDays, [
+        TimeScale.days,
         TimeScale.twelfthDays,
-        [TimeScale.days, TimeScale.twelfthDays]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.hours, [
+        TimeScale.days,
         TimeScale.hours,
-        [TimeScale.days, TimeScale.hours]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.halfHours, [
+        TimeScale.days,
         TimeScale.halfHours,
-        [TimeScale.days, TimeScale.halfHours]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.fourthHours, [
+        TimeScale.days,
         TimeScale.fourthHours,
-        [TimeScale.days, TimeScale.fourthHours]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.sixthHours, [
+        TimeScale.days,
         TimeScale.sixthHours,
-        [TimeScale.days, TimeScale.sixthHours]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.twelfthHours, [
+        TimeScale.days,
         TimeScale.twelfthHours,
-        [TimeScale.days, TimeScale.twelfthHours]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.halfMinutes, [
+        TimeScale.days,
         TimeScale.halfMinutes,
-        [TimeScale.days, TimeScale.halfMinutes]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.fourthMinutes, [
+        TimeScale.days,
         TimeScale.fourthMinutes,
-        [TimeScale.days, TimeScale.fourthMinutes]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.sixthMinutes, [
+        TimeScale.days,
         TimeScale.sixthMinutes,
-        [TimeScale.days, TimeScale.sixthMinutes]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.twelfthMinutes, [
+        TimeScale.days,
         TimeScale.twelfthMinutes,
-        [TimeScale.days, TimeScale.twelfthMinutes]
-      ),
-      new TsRowScales(
+      ]),
+      new TsRowScales(TimeScale.seconds, [
+        TimeScale.days,
         TimeScale.seconds,
-        [TimeScale.days, TimeScale.seconds]
-      ),
-    ]
+      ]),
+    ].reverse()
+  }
+
+  setActivationPoints(conWidthPx: number): void {
+    const maxCells = Math.floor(conWidthPx / 100)
+    this.rowScales.forEach(
+      rs => (rs.activationPoint = rs.duration * maxCells)
+    )
   }
 
   getRowScales(durationSec: number): TsRowScales {
-    durationSec /= 4
-    return this.rowScales.find(rs => rs.duration < durationSec) ??
-      this.rowScales[this.rowScales.length - 1]
+    return (
+      this.rowScales.find(rs => rs.activationPoint > durationSec) ??
+      this.rowScales[0]
+    )
   }
 }

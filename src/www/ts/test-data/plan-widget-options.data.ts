@@ -6,8 +6,8 @@ import FloorDate from '../classes/date-helper/floor-date.class'
 
 const options: IPlanWidgetOptions = {
   locale: 'en',
-  start: FloorDate.floorToDay(new Date()),
-  end: NextDate.nextDay(new Date()),
+  start: FloorDate.floorToYear(new Date()),
+  end: NextDate.nextYear(new Date()),
   resourceTableOptions: ResourceTestLayout,
   entityTableOptions: EntityTestLayout,
 }

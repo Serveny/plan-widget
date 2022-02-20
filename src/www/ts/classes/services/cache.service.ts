@@ -38,7 +38,8 @@ export class CacheService {
     this.focusEndDate = this.endDate
     this.focusHorizonSec = this.horizonSec
     this.dateHelper = new DateHelper(this)
-    console.log('cache: ',
+    console.log(
+      'cache: ',
       startDate.toLocaleString(),
       endDate.toLocaleString(),
       this.focusHorizonSec

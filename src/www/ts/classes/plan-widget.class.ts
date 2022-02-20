@@ -32,10 +32,7 @@ export class PlanWidget /*implements IPlanWidget*/ {
       endDate = options.end ?? new Date(new Date().setDate(+7))
     if (startDate.getTime() > endDate.getTime())
       throw '[PlanWidget] Start date cannot be bigger than end date'
-    this.cache = new CacheService(
-      startDate,
-      endDate
-    )
+    this.cache = new CacheService(startDate, endDate)
     this.gridSlider = new GridSlider(containerEl)
     this.resourceTable = new DataTable(
       'plw-resource-table',

@@ -83,10 +83,7 @@ export default class NextDate {
       date.getMinutes() + 1
     )
   }
-  private static nextMinutePart(
-    date: Date,
-    divisor: number
-  ): Date {
+  private static nextMinutePart(date: Date, divisor: number): Date {
     const seconds = date.getSeconds()
     return new Date(
       date.getFullYear(),

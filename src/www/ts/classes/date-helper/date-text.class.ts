@@ -2,7 +2,7 @@ import Helper from '../helper.class'
 import { CacheService } from '../services/cache.service'
 
 export class DateText {
-  constructor(public cache: CacheService) { }
+  constructor(public cache: CacheService) {}
   year(date: Date): string {
     return date.getFullYear().toString()
   }

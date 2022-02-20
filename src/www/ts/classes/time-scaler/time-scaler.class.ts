@@ -27,6 +27,7 @@ export class TimeScaler {
 
   appendTo(containerEl: HTMLElement): void {
     containerEl.appendChild(this.el)
+    this.rowsFocus.setActivationPoints(this.el.offsetWidth)
     this.paint()
   }
 
@@ -39,6 +40,7 @@ export class TimeScaler {
   private addResizeObserver(): void {
     new ResizeObserver(() => {
       this.offsetLeft = this.el.getBoundingClientRect().left
+      this.rowsFocus.setActivationPoints(this.el.offsetWidth)
       this.paint()
     }).observe(this.el)
   }
@@ -48,10 +50,10 @@ export class TimeScaler {
     this.el.style.cursor = 'grabbing'
     this.clickPosPx = ev.x
     const mmHandler = (ev: MouseEvent): void => {
-      const movePx = ev.x - this.clickPosPx
-      this.moveByPx(movePx)
-      this.clickPosPx = ev.x
-    },
+        const movePx = ev.x - this.clickPosPx
+        this.moveByPx(movePx)
+        this.clickPosPx = ev.x
+      },
       muHandler = (): void => {
         window.removeEventListener('mousemove', mmHandler)
         window.removeEventListener('mouseup', muHandler)
@@ -95,24 +97,33 @@ export class TimeScaler {
     )
   }
 
-  // TODO
   private zoom(x: number, factor: number): void {
-    const pos = ((x - this.offsetLeft) / this.el.offsetWidth),
-      factorMs = this.cache.focusHorizonSec * 10 * factor,
-      startMs = this.cache.focusStartDate.getTime()
-        - (factorMs * (1 - pos)),
-      endMs = this.cache.focusEndDate.getTime()
-        + (factorMs * pos)
+    factor = this.cache.focusHorizonSec * factor
+    const posMs =
+        this.cache.focusStartDate.getTime() +
+        this.pxToSecond(x - this.offsetLeft) * 1000,
+      halfHorizon = this.cache.focusHorizonSec * 500,
+      startMs = posMs - halfHorizon - factor,
+      endMs = posMs + halfHorizon + factor
+    this.zoomTo(startMs, endMs)
+  }
 
-    console.log('Mitte: ', pos, factor)
-    if (startMs >= this.cache.startDate.getTime()
-      && endMs <= this.cache.endDate.getTime()
-    ) {
-      if (this.onChangedDate) this.onChangedDate(
-        new Date(startMs),
-        new Date(endMs)
-      )
-      this.paint()
-    }
+  private zoomTo(startMs: number, endMs: number): void {
+    const newHorizonMs = endMs - startMs
+    if (newHorizonMs >= this.cache.horizonSec * 1000) {
+      startMs = this.cache.startDate.getTime()
+      endMs = this.cache.endDate.getTime()
+    } else if (newHorizonMs > 1000) {
+      if (startMs < this.cache.startDate.getTime()) {
+        startMs = this.cache.startDate.getTime()
+        endMs = startMs + newHorizonMs
+      } else if (endMs > this.cache.endDate.getTime()) {
+        endMs = this.cache.endDate.getTime()
+        startMs = endMs - newHorizonMs
+      }
+    } else return
+    if (this.onChangedDate)
+      this.onChangedDate(new Date(startMs), new Date(endMs))
+    this.paint()
   }
 }
