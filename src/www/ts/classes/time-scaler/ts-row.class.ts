@@ -22,6 +22,7 @@ export class TsRow {
     this.floorDate = dtFns.floorToDate
     this.nextDate = dtFns.nextDate
     this.dateText = dtFns.dateText
+    //this.el.addEventListener('click', ev => this.zoomToCell(ev))
   }
 
   appendTo(parentEl: HTMLElement): TsRow {
@@ -61,6 +62,15 @@ export class TsRow {
       this.setDateFunctions(scale)
       //console.log('setScale', TimeScale[scale])
     }
+  }
+
+  private zoomToCell(ev: MouseEvent): void {
+    const dateClick = this.cache.getDateByCalendarPosX(ev.x)
+    this.cache.setFocusByDate(
+      this.floorDate(dateClick),
+      this.nextDate(dateClick)
+    )
+    console.log(dateClick.toLocaleString())
   }
 
   private setDateFunctions(scale: TimeScale): void {
