@@ -1,11 +1,3 @@
-:warning: **WIP**
+# plan-widget
 
-<div align="center">
-
-# Plan Widget
-
-_A TypeScript planning widget_
-
-</div>
-
-![Plannig Widget Demo](widget_demo.png)
+A TypeScript planning widget.
